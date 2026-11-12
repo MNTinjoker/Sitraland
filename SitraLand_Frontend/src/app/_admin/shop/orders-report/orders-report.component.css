@@ -1,8 +1,0 @@
-@media (max-width: 760px) {
-  ::ng-deep #basketDetail .p-dialog-mask {
-    width: 90% !important;
-  }
-.widthTable {
-  min-width: 115px !important;
-}
-}
