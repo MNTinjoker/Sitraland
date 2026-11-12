@@ -177,8 +177,7 @@ jobs:
           username: ${{ secrets.PROD_FTP_USERNAME }}
           password: ${{ secrets.PROD_FTP_PASSWORD }}
           port: 21
-          protocol: ftps
-          security: strict
+          protocol: ftp
           local-dir: artifacts/deploy/
           server-dir: httpdocs/
           dry-run: true
