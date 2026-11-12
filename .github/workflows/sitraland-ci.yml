@@ -170,7 +170,68 @@ jobs:
           PY
 
 
-      - name: Dry-run deploy to Sitraland production
+      
+      - name: Create maintenance page
+        run: |
+          mkdir -p artifacts/maintenance
+
+          cat > artifacts/maintenance/app_offline.htm <<'EOF'
+          <!DOCTYPE html>
+          <html lang="fa" dir="rtl">
+          <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <title>بروزرسانی سایت</title>
+          </head>
+          <body>
+            <h2>سایت در حال بروزرسانی است</h2>
+            <p>لطفاً چند دقیقه دیگر مجدداً مراجعه کنید.</p>
+          </body>
+          </html>
+          EOF
+
+      - name: Put production app offline
+        id: put_app_offline
+        env:
+          FTP_SERVER: sitraland.com
+          FTP_USERNAME: ${{ secrets.PROD_FTP_USERNAME }}
+          FTP_PASSWORD: ${{ secrets.PROD_FTP_PASSWORD }}
+        run: |
+          python3 - <<'PY'
+          import ftplib
+          import os
+
+          with ftplib.FTP(timeout=30) as ftp:
+              ftp.connect(os.environ["FTP_SERVER"], 21, timeout=30)
+              ftp.login(
+                  os.environ["FTP_USERNAME"],
+                  os.environ["FTP_PASSWORD"]
+              )
+              ftp.set_pasv(True)
+              ftp.cwd("httpdocs")
+
+              files = ftp.nlst()
+
+              if any(
+                  item.rstrip("/").split("/")[-1].lower() == "app_offline.htm"
+                  for item in files
+              ):
+                  raise SystemExit(
+                      "app_offline.htm already exists. Refusing to overwrite."
+                  )
+
+              with open(
+                  "artifacts/maintenance/app_offline.htm", "rb"
+              ) as page:
+                  ftp.storbinary("STOR app_offline.htm", page)
+
+          print("Production application is offline.")
+          PY
+
+      - name: Wait for application shutdown
+        run: sleep 12
+
+      - name: Deploy to Sitraland production
         uses: SamKirkland/FTP-Deploy-Action@v4.4.0
         with:
           server: sitraland.com
@@ -180,7 +241,7 @@ jobs:
           protocol: ftp
           local-dir: artifacts/deploy/
           server-dir: httpdocs/
-          dry-run: true
+          dry-run: false
           dangerous-clean-slate: false
           log-level: standard
           exclude: |
@@ -195,3 +256,35 @@ jobs:
             **/App_Data/**
             Files/**
             **/Files/**
+
+      - name: Bring production app online
+        if: success()
+        env:
+          FTP_SERVER: sitraland.com
+          FTP_USERNAME: ${{ secrets.PROD_FTP_USERNAME }}
+          FTP_PASSWORD: ${{ secrets.PROD_FTP_PASSWORD }}
+        run: |
+          python3 - <<'PY'
+          import ftplib
+          import os
+
+          with ftplib.FTP(timeout=30) as ftp:
+              ftp.connect(os.environ["FTP_SERVER"], 21, timeout=30)
+              ftp.login(
+                  os.environ["FTP_USERNAME"],
+                  os.environ["FTP_PASSWORD"]
+              )
+              ftp.set_pasv(True)
+              ftp.cwd("httpdocs")
+              ftp.delete("app_offline.htm")
+
+          print("Production application is online.")
+          PY
+
+      - name: Report deployment failure
+        if: failure() && steps.put_app_offline.outcome == 'success'
+        run: |
+          echo "::error::Deployment failed after taking the application offline."
+          echo "Keep the site offline until deployment is reviewed or backup is restored."
+          echo "Remove httpdocs/app_offline.htm manually after recovery."
+
