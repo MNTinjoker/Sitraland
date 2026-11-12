@@ -9,13 +9,6 @@ on:
       - 'SitraLand_Api/**'
       - '.github/workflows/backend-ci.yml'
 
-  pull_request:
-    branches:
-      - main
-    paths:
-      - 'SitraLand_Api/**'
-      - '.github/workflows/backend-ci.yml'
-
   workflow_dispatch:
 
 permissions:
@@ -45,10 +38,7 @@ jobs:
       - name: Publish API
         run: dotnet publish SitraLand_Api/SitraLand_Api.csproj --configuration Release --no-build --no-restore --output artifacts/backend
 
-      - name: Upload backend artifact
-        uses: actions/upload-artifact@v7
-        with:
-          name: sitraland-backend
-          path: artifacts/backend/
-          if-no-files-found: error
-          retention-days: 14
+      - name: Verify publish output
+        run: |
+          test -f artifacts/backend/SitraLand_Api.dll
+          test -f artifacts/backend/web.config

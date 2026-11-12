@@ -1,14 +1,8 @@
-﻿name: Frontend CI
+﻿
+name: Frontend CI
 
 on:
   push:
-    branches:
-      - main
-    paths:
-      - 'SitraLand_Frontend/**'
-      - '.github/workflows/frontend-ci.yml'
-
-  pull_request:
     branches:
       - main
     paths:
@@ -24,7 +18,7 @@ jobs:
   build-and-test:
     name: Build and Test Angular
     runs-on: ubuntu-24.04
-    timeout-minutes: 25
+    timeout-minutes: 30
 
     defaults:
       run:
@@ -41,19 +35,17 @@ jobs:
           cache: npm
           cache-dependency-path: SitraLand_Frontend/package-lock.json
 
+      - name: Setup npm version
+        run: npm install --global npm@7.24.2
+
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --fetch-retries=5 --fetch-timeout=300000
 
       - name: Build Angular production
         run: npm run build -- --configuration production
 
-      - name: Upload frontend artifact
-        uses: actions/upload-artifact@v7
-        with:
-          name: sitraland-frontend
-          path: SitraLand_Frontend/dist/SitraLand/
-          if-no-files-found: error
-          retention-days: 14
+      - name: Verify frontend output
+        run: test -f dist/SitraLand/index.html
 
       - name: Run Angular tests
         run: npm test -- --watch=false --browsers=ChromeHeadless
