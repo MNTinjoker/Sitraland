@@ -1,0 +1,158 @@
+<div class="appUserContainer">
+  <div class="container">
+    <div>
+      <div class="text-center" *ngIf="loader">
+        <div class="preloader mx-auto">
+          <!-- <i class="fa fa-spin fa-spinner fa-2x"></i> -->
+        </div>
+      </div>
+      <div class="row mt-3 mb-5" *ngIf="!loader">
+        <div class="col-12 mb-3">
+          <div class="product-box row text-right">
+            <div class="col-lg-5 col-12 ">
+              <img class="w-100" [src]="server + productDetail.imageFolderPath" alt=""
+                (click)='open(server + productDetail.imageFolderPath)'>
+
+              <!-- <div class="simple-carousel-container mb-4 mb-lg-0" dir="ltr">
+                <p-galleria id="productGallery" [(value)]="imageGallery" [showItemNavigators]="true"
+                  [responsiveOptions]="responsiveOptions" [circular]="true" [numVisible]="5">
+                  <ng-template pTemplate="item" let-item>
+                    <ng-container>
+                      <ng-container *ngIf='item.url &&
+                        item.url?.toLowerCase().endsWith("png") ||
+                        item.url?.toLowerCase().endsWith("jpg") ||
+                        item.url?.toLowerCase().endsWith("jpeg") ||
+                        item.url?.toLowerCase().endsWith("gif")'>
+                        <img [src]="server +'shop/'+ item.url" class="img-fluid h-custom round-custom main-img"
+                          (click)='open(item.imageIndex)' />
+                      </ng-container>
+                      <ng-container *ngIf='item.url && item.url?.toLowerCase().endsWith("mp4") ||
+                      item.url?.toLowerCase().endsWith("m4v") ||
+                      item.url?.toLowerCase().endsWith("m3u8")'>
+                        <div>
+                          <video controls class="video-player h-custom round-custom main-img">
+                            <source [src]="server + 'shop/'+  item.url + '#t=0.001' " [type]="'video/' + item.type ">
+                          </video>
+                        </div>
+                      </ng-container>
+                    </ng-container>
+                  </ng-template>
+                  <ng-template pTemplate="thumbnail" let-item>
+                    <div class="grid grid-nogutter justify-content-center thumb">
+                      <img *ngIf='item.url &&
+                      item.url?.toLowerCase().endsWith("png") ||
+                      item.url?.toLowerCase().endsWith("jpg") ||
+                      item.url?.toLowerCase().endsWith("jpeg") ||
+                      item.url?.toLowerCase().endsWith("gif")' [src]="server +'shop/'+ item.url" class="thumb" />
+                      <img *ngIf='item.url && item.url?.toLowerCase().endsWith("mp4") ||
+                      item.url?.toLowerCase().endsWith("m4v") ||
+                      item.url?.toLowerCase().endsWith("m3u8")' src="../../../assets/images/red-video-blue-icon.png"
+                        class="thumb" />
+                    </div>
+                  </ng-template>
+                </p-galleria>
+              </div> -->
+              <!-- <div class="gallery-container  p-relative">
+                <div class="product-gallery__featured p-relative">
+                  <owl-carousel-o [options]="productCarouselOption" #owlCar id="productCat">
+                    <ng-container *ngFor="let item of imageGallery">
+                      <ng-template carouselSlide [id]="item.url" [width]="imageSize" class="ltr">
+
+                        <ng-container *ngIf=' item.url && item.url?.toLowerCase().endsWith("png") ||
+                      item.url?.toLowerCase().endsWith("jpg") || item.url?.toLowerCase().endsWith("jpeg") ||
+                      item.url?.toLowerCase().endsWith("gif")'>
+                          <img [src]="server +'shop/'+ item.url" class="img-fluid pointer h-custom round-custom main-img"
+                            (click)='displayGalleryBox(item.imageIndex    )' />
+                          (click)='open(item.imageIndex)'
+                        </ng-container>
+                        <ng-container *ngIf='item.url && item.url?.toLowerCase().endsWith("mp4") ||
+                      item.url?.toLowerCase().endsWith("m4v") ||
+                      item.url?.toLowerCase().endsWith("m3u8")'>
+                          <div (click)='displayGalleryBox(item.imageIndex)'>
+                            <video controls class="video-player h-custom round-custom main-img">
+                              <source [src]="server + 'shop/'+  item.url + '#t=0.001' " [type]="'video/' + item.type" />
+                            </video>
+                          </div>
+                        </ng-container>
+                      </ng-template>
+                    </ng-container>
+                  </owl-carousel-o>
+                </div> -->
+
+              <!-- <div class="product-gallery__carousel p-relative">
+                  <owl-carousel-o id="thumbCar" [options]="productThumbCarouselOption">
+                    <ng-container *ngFor="let item of imageGallery; let i = index">
+                      <ng-template carouselSlide [id]="item.url+i" [width]="35">
+                        <a (click)="owlCar.to(item.url); changeimage(item.url+i)">
+                          <img *ngIf='item.url &&
+                          item.url?.toLowerCase().endsWith("png") ||
+                          item.url?.toLowerCase().endsWith("jpg") ||
+                          item.url?.toLowerCase().endsWith("jpeg") ||
+                          item.url?.toLowerCase().endsWith("gif")' [src]="server +'shop/'+ item.url" class="thumb"
+                            [ngClass]="{'product-gallery__carousel-item--active':selectedImage === item.url+i || (i == 0 && !selectedImage)}" />
+                          <img *ngIf='item.url && item.url?.toLowerCase().endsWith("mp4") ||
+                          item.url?.toLowerCase().endsWith("m4v") ||
+                          item.url?.toLowerCase().endsWith("m3u8")' src="../../../assets/images/red-video-blue-icon.png"
+                            [ngClass]="{'product-gallery__carousel-item--active':selectedImage === item.url+i || (i == 0 && !selectedImage)}"
+                            class="thumb" />
+                        </a>
+                      </ng-template>
+                    </ng-container>
+                  </owl-carousel-o>
+                </div> -->
+            </div>
+            <div class="col-lg-7 col-12">
+              <h5 class="title-vod product-title mb-3">{{productDetail.productName}}</h5>
+              <h6 class="title-vod mb-1">ویژگی‌ها:</h6>
+              <p class="product-info border-bottom pb-2 mb-3" [innerHTML]="productDetail.productDescription"></p>
+              <h6 *ngIf="productDetail.fldDescriptionSend" class="title-vod  mb-1">توضیحات :</h6>
+              <p *ngIf="productDetail.extraDetails" class="product-info mb-3 border-bottom pb-2"
+                [innerHTML]="productDetail.extraDetails"></p>
+              <div class="d-flex pb-3 mt-3 justify-content-between">
+                <p class="mb-0"> مبلغ </p>
+                <div class="d-flex justify-content-center">
+                  <p class="mb-0 h6 ml-1 tamCoin-number">{{productDetail.price | inputNumberSplit}}
+                    <small>ریال</small>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 text-center pt-4 border-top">
+              <button (click)="addToCart()" class="btn btn-danger pointer" [disabled]="productDetail.count < 0 ">
+                افزودن به سبد خرید
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="col-12">
+          <app-product-carousel [categoryId]="categoryId"></app-product-carousel>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="modalGalleryBox" *ngIf='showGalleryBox' class="modalShadow">
+  <div class="gallery-body text-center pt-0">
+    <owl-carousel-o [options]="productCarouselOption" #owlPr>
+      <ng-container *ngFor="let item of imageGallery">
+        <ng-template carouselSlide [id]="item.url" class="ltr">
+          <ng-container *ngIf=' item.url && item.url?.toLowerCase().endsWith("png") ||
+                item.url?.toLowerCase().endsWith("jpg") || item.url?.toLowerCase().endsWith("jpeg") ||
+                item.url?.toLowerCase().endsWith("gif")'>
+            <img [src]="server +'shop/'+ item.url" class="img-fluid round-custom main-img" />
+          </ng-container>
+          <ng-container *ngIf='item.url && item.url?.toLowerCase().endsWith("mp4") ||
+                item.url?.toLowerCase().endsWith("m4v") ||
+                item.url?.toLowerCase().endsWith("m3u8")'>
+            <div>
+              <video controls class="video-player round-custom main-img">
+                <source [src]="server + 'shop/'+  item.url + '#t=0.001' " [type]="'video/' + item.type" />
+              </video>
+            </div>
+          </ng-container>
+        </ng-template>
+      </ng-container>
+    </owl-carousel-o>
+  </div>
+</div>

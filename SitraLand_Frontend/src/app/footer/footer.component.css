@@ -1,0 +1,140 @@
+.footer-container {
+    width: calc(89% - 6.5vw) !important;
+    margin-right: 16vw !important;
+    margin-bottom: 0vw !important;
+    min-height: 195px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-radius: 15px;
+    background-color: #001f3b;
+    color: white;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+    bottom: 0px;
+}
+
+.footer-detail {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: right;
+}
+
+.map-container {}
+
+.footer-address {
+    width: 215px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.social-media {
+    display: flex;
+    justify-content: space-around;
+}
+
+.social {
+    width: 50px;
+    height: 50px;
+}
+
+.help-shop {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 0px 10px;
+}
+
+.title-footer {
+    text-align: center;
+    font-size: 18px;
+}
+
+.wrapper-footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.help-shop li {
+    text-align: center;
+    width: 134px;
+}
+
+.img-option {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    fill: #ffffff;
+}
+
+.option-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    width: 100px;
+    height: 100px;
+}
+
+.img-text {
+    margin-top: 8px;
+    margin-bottom: 0px;
+    font-size: 10px;
+}
+
+.optionofsitra {
+    display: flex;
+    justify-content: space-around;
+}
+
+@media(max-width: 760px) {
+    .footer-container {
+        width: calc(99% - -0.5vw) !important;
+        margin-right: 0vw !important;
+        margin-bottom: 1vw !important;
+        min-height: 412px;
+        background-color: #001f3b;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        border-top-right-radius: 0px;
+        border-top-left-radius: 0px;
+        bottom: 0px;
+    }
+
+    .footer-address {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 25px;
+    }
+
+    .help-shop {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 0px 10px;
+        flex-wrap: wrap;
+    }
+
+    .title-footer {
+        text-align: right;
+        font-size: 18px;
+    }
+
+    .option-footer {
+        text-align: right;
+        width: 165px;
+    }
+
+    .wrapper-footer {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+    }
+}

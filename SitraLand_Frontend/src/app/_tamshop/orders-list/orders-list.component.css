@@ -1,0 +1,251 @@
+.prepare-badge {
+  border-radius: 35px;
+  background: rgba(241, 138, 0, 0.10);
+  color: #F18A00;
+  /* display: inline-flex; */
+  padding: 4px 12px 4px 18px;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.recieved-badge {
+  border-radius: 35px;
+  background: #E8F6EC;
+  color: #18A941;
+  /* display: inline-flex; */
+  padding: 4px 12px 4px 18px;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.accepted-badge {
+  border-radius: 35px;
+  background: rgba(119, 119, 119, 0.10);
+  color: #777777;
+  /* display: inline-flex; */
+  padding: 4px 12px 4px 18px;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.cancel-badge {
+  border-radius: 35px;
+  background: rgba(196, 22, 28, 0.10);
+  color: #C4161C;
+  /* display: inline-flex; */
+  padding: 4px 12px 4px 18px;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.check-customer-badge {
+  border-radius: 35px;
+  background: rgba(0, 81, 255, 0.1);
+  color: #0074f1;
+  /* display: inline-flex; */
+  padding: 4px 12px 4px 18px;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.unknown-badge {
+  border-radius: 35px;
+  background: rgba(119, 119, 119, 0.10);
+  color: #777777;
+  /* display: inline-flex; */
+  padding: 4px 12px 4px 18px;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.accept-order-badge {
+  border-radius: 35px;
+  background: #E8F6EC;
+  color: #18A941;
+  /* display: inline-flex; */
+  padding: 4px 12px 4px 18px;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.cancel-order-badge {
+  border-radius: 35px;
+  background: rgba(196, 22, 28, 0.10);
+  color: #C4161C;
+  /* display: inline-flex; */
+  padding: 4px 12px 4px 18px;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.event-badge {
+  border-radius: 35px;
+  background: #f2e8ff;
+  color: #666666;
+  /* display: inline-flex; */
+  padding: 4px 12px 4px 18px;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.main-box {
+  border-radius: 20px;
+  background: #FFF;
+  box-shadow: 0px 0px 40px 0px rgba(0, 0, 0, 0.05);
+}
+
+.prepare-border {
+  border-right: 5px solid #F18A00;
+  border-radius: 20px;
+}
+
+.recieved-border {
+  border-right: 5px solid #18A941;
+  border-radius: 20px;
+}
+
+.accepted-border {
+  border-right: 5px solid #777777;
+  border-radius: 20px;
+}
+
+.cancel-border {
+  border-right: 5px solid #C4161C;
+  border-radius: 20px;
+}
+
+.check-customer-border {
+  border-right: 5px solid #0074f1;
+  border-radius: 20px;
+}
+
+.unknown-border {
+  border-right: 5px solid #777777;
+  border-radius: 20px;
+}
+
+.accept-order-border {
+  border-right: 5px solid #18A941;
+  border-radius: 20px;
+}
+
+.cancel-order-border {
+  border-right: 5px solid #C4161C;
+  border-radius: 20px;
+}
+
+.event-border {
+  border-right: 5px solid #bb63ee;
+  border-radius: 20px;
+}
+
+.text-gray {
+  color: #777777;
+  font-size: 30px;
+}
+
+.no-data-title {
+  color: #2D3748;
+  text-align: center;
+  font-size: 18px !important;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 148%;
+  /* 35.52px */
+}
+
+.no-data-text {
+  color: #636363;
+  text-align: center;
+  font-size: 13px !important;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 100%;
+  /* 18px */
+}
+
+.paymentStatus {
+  font-size: large;
+}
+
+.sending-icon {
+  filter: invert(44%) sepia(75%) saturate(560%) hue-rotate(341deg) brightness(104%) contrast(82%);
+}
+
+.event-icon {
+  width: 20px;
+}
+
+.mt-100 {
+  margin-top: 100em;
+  width: 950px !important;
+}
+
+.w-80 {
+  width: 80%;
+}
+
+.ticketBox {
+  position: relative;
+  border-radius: 20px;
+  border: 1px solid #AEAEAE;
+  background-color: white;
+}
+
+.color-b {
+  color: #5c4de6;
+}
+
+.border-dashed-bottom {
+  border-bottom: 3px dashed #AEAEAE;
+}
+
+.border-dashed-left {
+  border-left: 3px dashed #AEAEAE;
+}
+
+.border-dashed-top {
+  border-top: 3px dashed #AEAEAE;
+}
+
+
+.ticketBox {
+  position: relative;
+  border-radius: 20px;
+  border: 1px solid #AEAEAE;
+  background-color: white;
+}
+
+.title-in-border {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 0px 11px;
+  border-radius: 20px;
+  font-weight: bold;
+}
+
+.hideScroll {
+  overflow: hidden !important;
+}
+
+.font-16 {
+  font-size: 16px;
+}
+
+@media (max-width: 768px) {
+  .font-sm {
+    font-size: 12.5px !important;
+  }
+}

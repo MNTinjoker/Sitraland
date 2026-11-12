@@ -1,0 +1,190 @@
+<div class="appUserContainer main">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 text-center mt-2">
+        <div class="mt-3">
+          <div class="d-flex justify-content-around">
+            <span>
+              <img src="../../../assets/images/add-order-icon.svg" alt="">
+              <p>ثبت سفارش</p>
+            </span>
+            <span>
+              <img *ngIf="step == '1'" src="../../../assets/images/signpost.png" alt="">
+              <img *ngIf="step != '1'" src="../../../assets/images/add-address-icon.png" alt="">
+              <p [ngClass]="{'text-black': step == '2' || step == '3', 'text-gray' : step == '1' }" class="font-12">ثبت
+                آدرس
+              </p>
+            </span>
+            <span class="text-gray">
+              <img *ngIf="step == '3'" src="../../../assets/images/final-order-icon.png" alt="">
+              <img *ngIf="step != '3'" src="../../../assets/images/clipboard-tick.png" alt="">
+              <p [ngClass]="{'text-black': step == '3', 'text-gray' : step !== '3' }">تکمیل سفارش</p>
+            </span>
+          </div>
+          <div class="progress mt-1">
+            <div class="progress-bar progress-bar-striped bg-danger"
+              [ngClass]="{'1' : 'first-step', '2' : 'second-step', '3' : 'third-step'}[step]" role="progressbar"
+              aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div *ngIf="step == '1'" class="col-12 mt-2 ml-3 p-4 border-box shadow ">
+        <h6>
+          آدرس تحویل سفارش
+        </h6>
+        <hr>
+        <div class="row">
+          <div class="col-lg-6 col-12">
+            <label class="mb-0"><span class="text-danger mb-0">*</span></label>
+            <input type="text" class="form-control" id="name" name="name" [(ngModel)]="userInfo.name" placeholder="نام"
+              PersianAlpha="true" />
+          </div>
+          <div class="col-lg-6 col-12">
+            <label class="mb-0"><span class="text-danger mb-0">*</span></label>
+            <input type="text" class="form-control" id="lastName" name="lastName" [(ngModel)]="userInfo.lastName"
+              placeholder="نام خانوادگی" PersianAlpha="true" />
+          </div>
+          <div class="col-lg-6 col-12">
+            <label class="mb-0"><span class="text-danger mb-0">*</span></label>
+            <input type="text" class="form-control" id="mobile" name="mobile" [(ngModel)]="userInfo.mobile"
+              placeholder="تلفن همراه" OnlyNumber="true" maxlength="11" />
+          </div>
+          <div class="col-lg-6 col-12">
+            <label class="mb-0"><span class="text-danger mb-0">*</span></label>
+            <input type="text" class="form-control" id="nationalCode" name="nationalCode"
+              [(ngModel)]="userInfo.nationalCode" placeholder=" کد ملی" OnlyNumber="true" maxlength="10" />
+          </div>
+          <div class="col-lg-6 col-12">
+            <label class="mb-0"><span class="text-danger mb-0">*</span></label>
+            <input type="text" class="form-control" id="State" name="State" [(ngModel)]="userInfo.State"
+              placeholder="استان" PersianAlpha="true" />
+          </div>
+          <div class="col-lg-6 col-12">
+            <label class="mb-0"><span class="text-danger mb-0">*</span></label>
+            <input type="text" class=" form-control" id="address" name="address" [(ngModel)]="userInfo.address"
+              placeholder="آدرس محل سکونت" PersianAlpha="true" />
+          </div>
+          <div class=" col-lg-6 col-12">
+            <textarea class="h-100 my-2 form-control" [(ngModel)]="userInfo.orderDescription"
+              placeholder=" توضیحات"></textarea>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="step == '2'" class="col-12 mt-2 ml-3 p-2 border-box shadow">
+        <h6>
+          خلاصه سفارش
+        </h6>
+        <p class="text-gray">
+          کالای شما به آدرس زیر ارسال میگردد . لطفا در زمان ثبت دقت نمایید
+        </p>
+        <hr>
+        <div class="row">
+          <div class="col-md-6 col-12 pt-1 border-box-left">
+            <span class="text-black font-Weight-500" alt="">
+              سبد خرید: </span>
+            <div class="row mr-2" *ngFor="let item of cartDetail">
+              <div class="row my-2 w-100">
+                <div class="col-4">
+                  <img width="50" [src]="server + item.fldProductImageUrl" alt="">
+                </div>
+                <div class="col-8">
+                  <p class="text-justify">{{item.productName}}</p>
+                </div>
+              </div>
+              <!-- <div class="w-100" *ngIf="item.propertyList">
+                <table class="table table-bordered" *ngIf="item.propertyList.length>0">
+                  <thead>
+                    <tr>
+                      <th scope="col">ویژگی</th>
+                      <th scope="col">مقدار</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let elem of item.propertyList">
+                      <td>{{elem.title}}</td>
+                      <td>{{elem.value}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div> -->
+            </div>
+          </div>
+          <div class="col-md-6 col-12 pt-1">
+            <div>
+              <div class="d-flex flex-row justify-content-between">
+                <p class="mb-0"> مبلغ نهایی :</p>
+                <div class="d-flex justify-content-center">
+                  <p class="mb-0 h6 ml-1 tamCoin-number">{{finalPrice | inputNumberSplit}} <small>ریال</small> </p>
+                </div>
+              </div>
+              <span class="text-black font-Weight-500 mt-3" alt="">
+                آدرس تحویل : </span>
+              <p class="mt-3">
+                {{userInfo.address}}</p>
+              <p class="text-gray"> تحویل گیرنده : <span class="text-black font-Weight-500">{{receiverName}}</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="step == '3'" class="col-12 mt-2 p-2 border-box text-center shadow">
+        <img src="../../../assets/images/final-order-icon.png" alt="">
+        <h6>سفارش شما با موفقیت تکمیل شد!</h6>
+        <p class="text-green">شماره سفارش جهت پیگیری:
+          <span>{{orderTrackingId}}</span>
+        </p>
+        <p class="btn btn-outline-danger pointer" (click)="gotoTamShop()">بازگشت به صفحه اصلی </p>
+      </div>
+      <div class="col-12 mt-2 ml-3 p-1 my-4">
+        <div class="pb-2"></div>
+        <div class="d-flex justify-content-between" *ngIf="step == '1'">
+          <button class="btn btn-outline-danger font-12 text-left pointer" (click)="gotoBasket()">بازگشت به سبد
+            خرید</button>
+          <button class="btn btn-success px-4 " (click)="confirmAddressModal()">تایید
+            آدرس تحویل</button>
+        </div>
+        <div class="d-flex justify-content-between" *ngIf="step == '2'">
+          <button class="btn btn-outline-danger font-12 text-left pointer" (click)="backToFirstStep()"> بازگشت به صفحه
+            آدرس تحویل
+          </button>
+          <button class="btn btn-success button-radius" (click)="finalApproval()">
+            {{buttonTxt}}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<p-dialog id="confirmAddressModal" [showHeader]="false" [(visible)]="showConfirmAddress"
+  [ngClass]="{'modalShadow': showConfirmAddress}" [closeOnEscape]="false">
+  <div class="modal-body">
+    <div class="swal2-icon swal2-warning swal2-animate-warning-icon" style="display: flex;"></div>
+    <div class="col-12 text-center">
+      <div>
+        <p class="bold font-16 mb-4">سفارش به آدرس زیر ارسال می‌شه؛ برای جلوگیری از اشتباه لطفا از درست بودن آدرس مطمئن
+          بشید و بعد سفارش رو نهایی کنید.
+        </p>
+        <p>
+          {{userInfo.address}}
+        </p>
+      </div>
+      <div>
+        <p>تحویل گیرنده : {{receiverName}}</p>
+      </div>
+      <p class="bold mt-4">آیا تایید می کنی ؟</p>
+    </div>
+    <hr>
+    <div class="col-12 text-center">
+      <button class="btn btn-success mx-2 py-2 button-accordion" (click)="confirmAddress()">بله
+        انجام بده </button>
+      <button class="btn btn-danger mx-2 py-2 button-accordion" (click)="cancelConfirmAddress()">منصرف
+        شدم</button>
+    </div>
+  </div>
+</p-dialog>

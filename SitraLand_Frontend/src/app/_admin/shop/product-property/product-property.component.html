@@ -1,0 +1,97 @@
+<div class="appContainer bg-white">
+  <div class="text-right">
+    <div class="row mt-3 p-3 ">
+      <div class="col-12 col-md-12">
+        <div class="form-group">
+          <h4 class="text-dark text-center"> مدیریت ویژگی </h4>
+          <hr>
+        </div>
+      </div>
+      <div class="container-fluid mt-2">
+        <div class="row mt-3 p-3 ">
+          <div class="form-group col-md-6">
+            <label> ویژگی</label>
+            <ng-select2 #property='ngModel' [data]="propertiesList" [options]='propertyOption' name='property'
+              width='100%' [(ngModel)]='model.property' (valueChanged)="selectedProperty($event)" required>
+            </ng-select2>
+          </div>
+
+          <div class="form-group col-md-6">
+            <label> مقدار</label>
+            <ng-select2 #propertyValue='ngModel' [data]="propertyValuesList" [options]='propertyValueOption'
+              name='propertyValue' width='100%' [(ngModel)]='model.propertyValue' required>
+            </ng-select2>
+          </div>
+          <div class="col-12">
+            <div class="form-group">
+              <button *ngIf='!submit' class="btn btn-danger"
+                (click)="saveInfo()">{{isEditMode?"ویرایش":"افزودن"}}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="container-fluid mt-2">
+        <div class="row mt-3 bg-white p-3 ">
+
+          <div class="col-md-12 col-12 col-lg-12">
+            <p-table #dt id="myTable" styleClass="p-datatable-gridlines" [value]="ProductPropertyList"
+              [autoLayout]="true" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+              currentPageReportTemplate="نمایش {first} تا {last} " [rowsPerPageOptions]="[10,25,50]"
+              *ngIf="ProductPropertyList">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th pSortableColumn="fldFirstName">ویژگی<p-sortIcon field="fldTitleProperty"></p-sortIcon>
+                  </th>
+                  <th> مقدار
+                  </th>
+                  <th></th>
+                </tr>
+
+                <tr>
+                  <th class="widthPrimeTh">
+                    <input pInputText type="text"
+                      (input)="dt.filter($event.target.value, 'fldTitleProperty', 'startsWith')" class="form-control">
+                  </th>
+                  <th class="widthPrimeTh">
+                  </th>
+                  <th class="widthPrimeTh">
+                  </th>
+                </tr>
+
+              </ng-template>
+              <ng-template pTemplate="body" let-data>
+                <tr>
+                  <td class="px-2">
+                    <div class="py-2 widthClassPrime">
+                      <span>{{data.fldTitleProperty}}</span>
+                    </div>
+                  </td>
+                  <td class="px-2">
+                    <div class="py-2 widthClassPrime">
+                      <span>{{data.fldPropertyValueTitle}}</span>
+                    </div>
+                  </td>
+                  <td class="px-2">
+                    <div class="py-2 widthClassPrime">
+                      <button class="btn btn-outline-primary mx-1" (click)="edit(data)">ویرایش</button>
+                      <!-- <button class="btn btn-outline-danger" ‌>حذف</button> -->
+                      <button class="btn btn-outline-danger mx-1" (click)="delete(data)">حذف</button>
+
+
+                    </div>
+                  </td>
+                  <!-- <td class="px-2">
+                    <div class="py-2 widthClassPrime">
+                      <button class="btn btn-outline-warning">ویرایش</button>
+                      <button class="btn btn-outline-danger" ‌>حذف</button>
+                    </div>
+                  </td> -->
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </div>
+        <hr>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,92 @@
+<div class="appContainer">
+  <div class="container-fluid px-5">
+    <div class="form-group text-center border-bottom">
+      <h4 class="text-dark text-center py-3"> جزئیات {{title}} </h4>
+    </div>
+    <div class="row">
+      <div class="col-lg-6 col-md-6 col-12 mb-4">
+        <label for="merchantPrice"> قیمت فروشنده</label>
+        <input type="text" class="form-control" id="merchantPrice" name="merchantPrice" OnlyNumber
+          [(ngModel)]="product.merchantPrice">
+        <!-- <span *ngIf="product.merchantPrice" class="text-danger mt-3">
+          مبلغ : {{ product.merchantPrice | inputNumberSplit }} ریال</span> -->
+      </div>
+      <div class="col-lg-6 col-md-6 col-12 mb-4" *ngIf="userType == 1 || userType == 28">
+        <label for=" tamlandPrice"> قیمت تام‌لند</label>
+        <input type="text" class="form-control" id="tamlandPrice" name="tamlandPrice" OnlyNumber
+          [(ngModel)]="product.tamlandPrice">
+        <!-- <span *ngIf="product.tamlandPrice" class="text-danger mt-3">
+          مبلغ : {{ product.tamlandPrice | inputNumberSplit }} ریال</span> -->
+      </div>
+      <div class="col-lg-6 col-md-6 col-12 mb-4" *ngIf="userType == 1 || userType == 28">
+        <label for="salesProfitPrice"> سود فروش</label>
+        <input type="text" class="form-control" id="salesProfitPrice" name="salesProfitPrice" OnlyNumber
+          [(ngModel)]="product.salesProfitPrice">
+        <!-- <span *ngIf="product.salesProfitPrice" class="text-danger mt-3">
+          مبلغ : {{ product.salesProfitPrice | inputNumberSplit }} ریال</span> -->
+      </div>
+      <div class="col-lg-6 col-md-6 col-12 mb-4">
+        <label for="discountPercent"> درصد تخفیف</label>
+        <input type="text" class="form-control" id="discountPercent" name="discountPercent" OnlyNumber
+          [(ngModel)]="product.discountPercent">
+      </div>
+
+      <div class="col-lg-6 col-md-6 col-12 mb-4">
+        <label for="coinPercentage"> درصد استفاده از کوین</label>
+        <input type="text" class="form-control" id="coinPercentage" name="coinPercentage" OnlyNumber
+          [(ngModel)]="product.coinPercentage">
+      </div>
+      <div class="col-lg-4 col-md-4 col-12 mb-4" *ngIf="userType == 1 || userType == 28">
+        <div class="custom-control custom-checkbox mt-4 pt-1 mr-3">
+          <input type="checkbox" class="custom-control-input" name="isActive" id="isActive"
+            [(ngModel)]="product.isActive">
+          <label for="isActive" class="custom-control-label pt-1"> فعال است ؟</label>
+        </div>
+      </div>
+      <div class="col-12 mt-3 mb-3 mx-2">
+        <button (click)="saveProductDetail()" class="btn btn-danger">
+          ذخیره
+        </button>
+      </div>
+      <div class="col-12 pt-3 border-top">
+        <!-- <p-table #dt styleClass="p-datatable-gridlines" [autoLayout]="true" [rows]="10" [paginator]="true"
+          [value]="productDetailList" *ngIf='productDetailList.length > 0'>
+          <ng-template pTemplate="header">
+            <tr>
+              <th class="min-width">قیمت فروشنده</th>
+              <th class="min-width" *ngIf="userType == 1 || userType == 28">قیمت تام‌لند</th>
+              <th class="min-width" *ngIf="userType == 1 || userType == 28">سود فروش</th>
+              <th class="min-width">درصد تخفیف</th>
+              <th class="min-width" *ngIf="userType == 1 || userType == 28">فعال؟</th>
+              <th class="min-width">ویرایش</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-product>
+            <tr>
+              <td class="min-width">
+                {{product.fldTamPriceSellers | NumberSplitPrice}}
+              </td>
+              <td class="min-width" *ngIf="userType == 1 || userType == 28">
+                {{product.fldTamPriceAdmin | NumberSplitPrice}}
+              </td>
+              <td class="min-width" *ngIf="userType == 1 || userType == 28">
+                {{product.fldTamPriceSalesProfit | NumberSplitPrice}}
+              </td>
+              <td class="min-width">
+                {{product.fldDiscountPercent}}
+              </td>
+              <td class="min-width" *ngIf="userType == 1 || userType == 28">
+                {{product.fldIsActiveTitle}}
+              </td>
+              <td class="min-width">
+                <button class="btn btn-outline-primary mx-1" (click)='edit(product)'>
+                  ویرایش
+                </button>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table> -->
+      </div>
+    </div>
+  </div>
+</div>

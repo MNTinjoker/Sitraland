@@ -1,0 +1,172 @@
+<!-- <div class="appUserContainer bg-none">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-lg-9 round p-1 ">
+        <app-ads-slider [promotions]="promotions" [ads]="ads"></app-ads-slider> -->
+<!-- <img *ngIf="!ads || ads.length==0" src="../../../assets/images/tamshop-main-slider.png" alt=""> -->
+<!-- </div>
+      <div class="col-12 col-lg-3 flipbox p-1 justify-content-lg-end height-325" [@fadeInOut]>
+        <div class="flipMainOn flipMainOnHeader course-type-box round  text-center h-100
+                     shadow card mx-auto">
+          <div
+            class="p-2 flip-mainCard-front flip-front-main-header round  d-flex justify-content-around align-items-center flex-column">
+            <div class="text-right">
+              <p class="text-white font-22 bold text-right">تام‌لندی‌ها</p>
+              <p class="text-white font-16 bold text-right">تام‌شاپ، امتیاز تام‌لندی بودن!</p>
+            </div>
+            <img src="../../../assets/images/glass_trophy 2.png" alt="" width="115" height="124">
+          </div>
+          <div
+            class="p-2 flip-mainCard-back flip-back-main-header round d-flex justify-content-around align-items-center flex-column">
+            <div class="text-right pr-3"> -->
+<!-- <p class="text-white font-22 bold text-right">تام‌لندی ها</p> -->
+<!-- <p class="text-white font-16 bold text-right">تام‌شاپ، امتیاز تام‌لندی بودن!</p> -->
+<!-- <p class="text-white font-13 ">
+                تام‌شاپ، امتیاز ویژه‌ای برای شما تام‌لندی‌هاست که می‌تونید با استفاده از تام‌کوین‌هایی که جمع کردین، کلی
+                محصول جذاب و متنوع سفارش بدین.
+              </p>
+            </div>
+            <div class="d-flex flex-row align-items-end w-100 justify-content-around">
+              <img src="../../../assets/images/glass_trophy 2.png" alt="" width="115" height="124">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="text-center my-3 coin-back">
+      <p class="intro bold pt-3">چه‌جوری تام‌کوین به‌دست بیارم؟</p>
+    </div>
+    <div class="row position-relative justify-content-center">
+      <div class="dash-border d-none d-lg-block"></div>
+      <div class="" [ngClass]="{'my-2 my-lg-0': [2,4].includes(item.index)}" *ngFor="let item of flipBoxList">
+        <div class="text-center mb-5 d-none d-lg-block">
+          <span class="step border">{{item.index}}</span>
+        </div>
+        <div class="box-flip flipbox mx-1" [@fadeInOut]>
+          <div class="flipMainOn h-100 course-type-box round text-center
+          shadow card mx-auto">
+            <div
+              class="flip-mainCard-front round w-100 h-100 d-flex justify-content-around align-items-center flex-column">
+              <img [src]="item.img" alt="tamland" class="box-icon">
+              <p class="cards-title">{{item.title}}</p>
+            </div>
+            <div
+              class="px-2 flip-mainCard-back round h-100 d-flex flex-column justify-content-center align-items-center">
+              <p class="text-white">
+                {{item.backHeader}}
+              </p>
+              <img [src]="item.backImg" alt="" width="42" height="42">
+              <p class="text-white mt-3 font-15">{{item.backTitle}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row discount-wrap" *ngIf="onlyTamCoinProduct.length>0">
+      <div class="col-12 discount-box d-lg-flex my-5 pb-3 position-relative">
+        <div class="col-lg-3 col-12 text-center mt-4">
+          <img src="../../../assets/images/onlyTamCarousel.png" class="ts-slider-coin d-none d-lg-block" alt="">
+          <img src="../../../assets/images/texture.png" class="position-absolute texture" alt="" width="929">
+        </div>
+        <div class="col-lg-9 col-12 py-4">
+          <div class="">
+            <p-carousel dir="ltr" id="onlyTamCoinProduct" [value]="onlyTamCoinProduct" [numVisible]="3" [numScroll]="1"
+              [circular]="true" autoplayInterval="3000" [responsiveOptions]="responsiveCarouselOptions">
+              <ng-template let-product pTemplate="item">
+
+                <div class="carousel-box custom-carousel-box d-flex flex-column justify-content-between"
+                  [ngClass]="{'lock-product ': !product.fldActiveDispaly}">
+                  <p *ngIf="!product.fldActiveDispaly" class="lock-text lock-amazing-text">در سطح تام استار شما نمی باشد
+                  </p>
+                  <div class="mb-3">
+                    <img (click)="goToProductDetail(product.fldPkDetailProduct, product.fldPkProduct)"
+                      class="img-owl-carousel-o custom-round img-fluid"
+                      [src]="server +'shop/'+ product.fldProductImageUrl" />
+                  </div>
+                  <div class="d-flex justify-content-between flex-column align-items-end">
+                    <p class="name-owl-carousel-o mt-3">{{product.fldProductTitle}}</p>
+                    <div class="d-flex align-items-center">
+                      <span class="coinTitle font-10">تام‌کوین</span> <span
+                        class="pl-1 font-16 bold pr-2">{{product.fldAmountCoin}} </span>
+                      <img src="../../../assets/images/coin.png" class="discount-coin-img" width="24" alt="">
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+            </p-carousel>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="text-center mt-5">
+      <h4 class="bold text-center font-18 pb-3">دسته‌بندی تام‌شاپ</h4>
+      <div class="d-flex justify-content-around flex-wrap mt-3">
+        <ng-container *ngFor="let category of categories">
+          <div class="cat-container pointer" *ngIf="category.fldcount!=0">
+            <img [src]="category.src" class="my-1 shop-icon" (click)="goToCategory(category.fldPkCategory)" alt="">
+            <p class="pt-2 shop-icon-text">{{category.fldCategoryTitle}}</p>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+
+    <div class="row my-4">
+      <div class="col-12">
+        <div class="simple-carousel-container ltr">
+          <p class="bold font-18">محصولات تام‌شاپ</p>
+          <p-carousel dir="ltr" id="allProduct" [value]="allItemList" [numVisible]="4" [numScroll]="1"
+            autoplayInterval="3000" [circular]="true" [responsiveOptions]="responsiveCarouselOptions">
+            <ng-template let-product pTemplate="item">
+              <p *ngIf="!product.fldActiveDispaly " class="lock-text lock-text-slider lock-slider-text">در سطح تام استار
+                شما نمی باشد
+              </p>
+              <div [ngClass]="{'lock-product': !product.fldActiveDispaly}"
+                class="border-1 surface-border border-round m-2 text-center py-5 px-3 w-100 h-100">
+                <div class="mb-3 border round p-2">
+                  <img (click)="goToProductDetail(product.fldPkDetailProduct, product.fldPkProduct)"
+                    class="simple-carousel-image w-6 img-fluid" [src]="server +'shop/'+ product.fldProductImageUrl" />
+                  <p class="name-owl-carousel-o mt-3">{{product.fldProductTitle}}</p>
+                </div>
+              </div>
+            </ng-template>
+          </p-carousel>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->
+<div class="appUserContainer">
+  <div class="text-right">
+    <div class="col-lg-12 mb-3">
+      <div class="col-lg-12 container-banner shadow p-0">
+        <img src="../../../assets/images/banner.jpg" class="w-100 container-banner" alt="">
+      </div>
+
+      <p class="title-text mt-3">دسته بندی ها</p>
+
+      <div class="container-category shadow col-lg-12 mt-3">
+        <div class="option-category" (click)="goToProductCartegory(2)">
+          <img class="img-category p-1" src="../../../assets/images/engine.svg" alt="">
+          <p class="mt-2">موتور</p>
+        </div>
+        <div class="option-category" (click)="goToProductCartegory(3)">
+          <img class="img-category p-1" src="../../../assets/images/gearbox.svg" alt="">
+          <p class="mt-2">گیربکس</p>
+        </div>
+        <div class="option-category" (click)="goToProductCartegory(5)">
+          <img class="img-category p-1" src="../../../assets/images/electronic.svg" alt="">
+          <p>برقی</p>
+        </div>
+        <div class="option-category" (click)="goToProductCartegory(4)">
+          <img class="img-category p-1" src="../../../assets/images/body.svg" alt="">
+          <p class="mt-2">بدنه</p>
+        </div>
+        <div class="option-category" (click)="goToProductCartegory(6)">
+          <img class="img-category p-1" src="../../../assets/images/more.svg" alt="">
+          <p class="mt-2">سایر</p>
+        </div>
+      </div>
+      <app-product-carousel [categoryId]="categoryId"></app-product-carousel>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,86 @@
+<div class="appUserContainer main">
+  <div class="">
+    <div class="row">
+      <div class="col-12">
+        <h6>سفارشات</h6>
+      </div>
+      <div class="filter-button-group my-4 col-md-10 col-12">
+        <div class="row">
+          <div class="text-center">
+            <button class="btn btn-outline-secondary btn-block" (click)="filterOrders(-1)">همه</button>
+          </div>
+          <div class="text-center mx-3">
+            <button class="btn btn-outline-danger btn-block" (click)="filterOrders(0)">سفارشات ارسال نشده</button>
+          </div>
+          <div class="text-center">
+            <button class="btn btn-outline-warning btn-block" (click)="filterOrders(1)">سفارشات ارسال شده</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <!-- {
+          "status": 0,
+      } -->
+        <p-table #dt styleClass="p-datatable-gridlines" [autoLayout]="true" [rows]="10" [paginator]="true"
+          [value]="ordersList" *ngIf='ordersList.length > 0'>
+          <ng-template pTemplate="header">
+            <tr>
+              <th class="min-width">شماره سفارش</th>
+              <th class="widthTable">
+                نام سفارش دهنده
+              </th>
+              <th class="widthTable">
+                تلفن همراه
+              </th>
+              <th class="widthTable">
+                استان
+              </th>
+              <th class="widthTable">
+                محصولات
+              </th>
+              <th class="min-width button-box"></th>
+            </tr>
+            <tr>
+              <th class="widthPrimeTh">
+                <input pInputText type="text" (input)="dt.filter($event.target.value, 'basketCode', 'contains');"
+                  class="form-control">
+              </th>
+              <th class="widthPrimeTh">
+                <input pInputText type="text" (input)="dt.filter($event.target.value, 'fullName', 'contains');"
+                  class="form-control">
+              </th>
+              <th class="widthPrimeTh">
+                <input pInputText type="text" (input)="dt.filter($event.target.value, 'mobile', 'contains');"
+                  class="form-control">
+              </th>
+              <th class="widthPrimeTh">
+                <input pInputText type="text" (input)="dt.filter($event.target.value, 'ostan', 'contains');"
+                  class="form-control">
+              </th>
+              <th class="min-width"></th>
+              <th class="min-width"></th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-order let-i="rowIndex">
+            <tr>
+              <td class="min-width">{{order.basketCode}}</td>
+              <td class="min-width">{{order.fullName}}</td>
+              <td class="min-width">{{order.mobile}}</td>
+              <td class="min-width">{{order.ostan}}</td>
+              <td class="min-width">{{order.product}}</td>
+              <td class="min-width button-box">
+                <button *ngIf="order.status == 0" class="btn btn-outline-primary mx-05"
+                  (click)='sendOrderConfirm(order.basketCode)'>
+                  ارسال شده
+                </button>
+                <button class="btn btn-outline-danger mx-2" (click)='gotoOrderDetail(order.basketCode)'>
+                  جزئیات سفارش
+                </button>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+
+      </div>
+    </div>
+  </div>

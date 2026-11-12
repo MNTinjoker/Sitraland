@@ -1,0 +1,108 @@
+<div class="appContainer bg-white">
+  <div class="text-right">
+    <div class="container-fluid">
+      <div class="form-group col-12">
+        <button (click)="goToConfg()" class="btn btn-primary">
+          <i class="fa fa-plus"></i> محصول
+        </button>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <p-table #dt styleClass="p-datatable-gridlines" [autoLayout]="true" [rows]="10" [paginator]="true"
+            [value]="productList" *ngIf='productList.length > 0'>
+            <ng-template pTemplate="header">
+              <tr>
+                <th class="min-width">#</th>
+                <th class="min-width">تصویر</th>
+                <th class="widthTable">
+                  نام 
+                </th>
+                <th class="widthTable" pSortableColumn='count' pResizableColumn>
+                  تعداد <p-sortIcon field='count'>
+                  </p-sortIcon>
+                </th>
+                <th  class="widthTable" pSortableColumn='price' pResizableColumn>
+                  قیمت <p-sortIcon field='price'>
+                  </p-sortIcon>
+                </th>
+                <th class="widthTable">
+                  توضیحات 
+                </th>
+                <!-- <th class="min-width" pSortableColumn='extraDetails' pResizableColumn>توضیحات اضافه
+                  <p-sortIcon field='extraDetails'> </p-sortIcon>
+                </th> -->
+                <th class="widthTable" pSortableColumn='isActive' pResizableColumn>
+                  فعال<p-sortIcon field='isActive'>
+                  </p-sortIcon>
+                </th>
+                <th class="min-width button-box"></th>
+              </tr>
+              <tr>
+                <th class="min-width"></th>
+                <th class="min-width"></th>
+                <th class="widthPrimeTh">
+                  <input pInputText type="text" (input)="dt.filter($event.target.value, 'productName', 'contains');"
+                  class="form-control">
+                </th>
+                <th class="widthPrimeTh">
+                  <input pInputText type="text" (input)="dt.filter($event.target.value, 'count', 'contains');"
+                     class="form-control">
+                </th>
+                <th class="widthPrimeTh">
+                  <input pInputText type="text" (input)="dt.filter($event.target.value, 'price', 'contains');"
+                   class="form-control">
+                </th>
+                <th class="widthPrimeTh">
+                  <input pInputText type="text" (input)="dt.filter($event.target.value, 'description', 'contains');"
+                     class="form-control">
+                </th>
+                <!-- <th class="min-width"></th> -->
+                <th class="min-width"></th>
+                <th class="button-box"></th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-product let-i="rowIndex">
+              <tr>
+                <td class="min-width">{{i+1}}</td>
+                <td class="min-width">
+                  <img width="50" [src]="server + product.imageFolderPath" alt="">
+                </td>
+                <td class="min-width">
+                  {{product.productName}}
+                </td>
+                <td class="min-width">
+                  {{product.count}}
+                </td>
+                <td class="min-width">
+                  {{product.price}}
+                </td>
+                <td class="min-width">
+                  {{product.description}}
+                </td>
+                <!-- <td class="min-width">
+                  {{product.extraDetails}}
+                </td> -->
+                <td class="min-width">
+                  {{product.fldIsActiveTitle}}
+                </td>
+                <td class="min-width button-box">
+                  <!-- <button class="btn btn-outline-success mx-05" (click)='goToProductProperty(product.fldPkProduct)'>
+                    ویژگی ها
+                  </button> -->
+
+                  <button class="btn btn-outline-primary mx-05" (click)='goToProductConfig(product.productId)'>
+                    ویرایش
+                  </button>
+                  <button class="btn btn-outline-danger mx-05" (click)='deleteProduct(product.productId)'>
+                    حذف
+                  </button>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

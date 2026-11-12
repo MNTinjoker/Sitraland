@@ -1,0 +1,46 @@
+.fa-eye-slash,
+.fa-eye {
+  color: black;
+  position: absolute;
+  top: 14px;
+  left: 10px;
+  cursor: pointer;
+}
+
+.appContainer {
+  width: calc(95% - 10vw) !important;
+  margin-right: 12vw !important;
+}
+
+.hideBtn {
+  display: none !important;
+}
+
+.showBtn {
+  display: block !important;
+}
+
+.btn-outline-danger {
+  float: left;
+}
+
+.btn-outline-success {
+  float: left;
+}
+
+.btn-outline-success:hover .fa-check,
+.btn-outline-warning:hover .fa-user,
+.btn-outline-danger:hover .fa-close,
+.btn-outline-primary:hover .fa-pencil {
+  color: whitesmoke !important;
+}
+
+.ediButtonsCol {
+  min-width: 22rem;
+}
+
+@media (max-width : 760px) {
+  .appContainer {
+    margin-right: 7vw !important;
+  }
+}

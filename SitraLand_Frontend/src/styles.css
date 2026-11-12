@@ -1,0 +1,377 @@
+ /* @import './assets/fa/css/fontawesome-all.css';
+@import './assets/fa/css/fa-brands.css';
+@import './assets/fa/css/fa-light.css';
+@import './assets/fa/css/fa-solid.css'; */
+
+ /* @import '../node_modules/persian-datepicker/dist/css/persian-datepicker.min.css'; 
+
+ 
+
+@import '../node_modules/ngx-owl-carousel-o/lib/styles/prebuilt-themes/owl.carousel.css';
+@import '../node_modules/ngx-owl-carousel-o/lib/styles/prebuilt-themes/owl.theme.default.css';
+ */
+
+ @import "~angular-notifier/styles";
+
+ @font-face {
+   font-family: 'myFont';
+   src: url('assets/fonts/IRANSans.eot') format('eot'),
+     url('assets/fonts/IRANSans.ttf') format('truetype'),
+     url('assets/fonts/IRANSans.woff') format('woff'),
+     url('assets/fonts/IRANSans.woff2') format('woff2');
+   font-style: normal;
+   font-weight: normal;
+ }
+
+ @font-face {
+   font-family: 'yekan-medium';
+   src: url('assets/fonts/IRANSans.eot') format('eot'),
+     url('assets/fonts/IRANSans.ttf') format('truetype'),
+     url('assets/fonts/IRANSans.woff') format('woff'),
+     url('assets/fonts/IRANSans.woff2') format('woff2');
+   font-style: normal;
+   font-weight: normal;
+ }
+
+ @font-face {
+   font-family: 'yekan-bold';
+   src: format('truetype'), url('assets/fonts/iranyekanwebboldfanum.woff') format('woff'), url('assets/fonts/iranyekanwebmediumfanum.woff') format('woff2');
+   font-style: normal;
+   font-weight: normal;
+ }
+
+ body {
+   /* background-color: #929292 !important; */
+   background-color: #fff !important;
+   font-family: "yekan-medium" !important;
+   font-size: 13px !important;
+   direction: rtl;
+   color: white;
+ }
+
+ /* .title-vod{
+  color: white;
+  font-weight: 400;
+ } */
+
+ .appContainer {
+   width: calc(96% - 10vw);
+   margin-right: 11vw;
+   padding-top: 5rem;
+   min-height: 100vh;
+   /* background: #929292; */
+   background-color: #fff !important;
+   text-align: right;
+ }
+
+ .appUserContainer {
+   width: calc(90% - 6.5vw) !important;
+   margin-right: 16vw !important;
+   padding-top: 5rem;
+   min-height: 100vh;
+   text-align: right;
+   /* background: #F9F9F9; */
+ }
+
+ .modalShadow {
+   position: fixed;
+   z-index: 1000;
+   left: 0;
+   top: 0;
+   width: 100%;
+   height: 100%;
+   overflow: auto;
+   background-color: rgba(0, 0, 0, 0.4);
+ }
+
+ .p-dialog-mask {
+   margin: 10px auto !important;
+   display: block !important;
+   position: static !important;
+   width: 50% !important;
+   height: auto !important;
+ }
+
+ .p-dialog {
+   border: none !important;
+ }
+
+ .p-dialog-draggable {
+   margin: auto !important;
+   font-size: 13px !important;
+ }
+
+ a {
+   color: #707070 !important;
+   display: block;
+ }
+
+ a:hover {
+   color: #707070 !important;
+   text-decoration: none !important;
+ }
+
+ .btn-danger {
+   background-color: #C74200 !important;
+   border-color: #C74200 !important;
+ }
+
+ .btn-danger:hover {
+   background-color: rgba(213, 28, 41, .6);
+   border-color: #C74200 !important;
+ }
+
+ .btn-danger:focus,
+ .btn-danger.focus {
+   box-shadow: 0 0 0 .2rem rgba(213, 28, 41, .6)
+ }
+
+ .btn-danger.disabled,
+ .btn-danger:disabled {
+   background-color: #ab464c;
+   border-color: transparent
+ }
+
+
+ .btn-outline-danger:disabled:hover {
+   color: #ab464c !important;
+   background-color: transparent;
+ }
+
+ .btn-danger:not(:disabled):not(.disabled):active,
+ .btn-danger:not(:disabled):not(.disabled).active,
+ .show>.btn-danger.dropdown-toggle {
+   background-color: #ab464c;
+   border-color: transparent
+ }
+
+ .btn-danger:not(:disabled):not(.disabled):active:focus,
+ .btn-danger:not(:disabled):not(.disabled).active:focus,
+ .show>.btn-danger.dropdown-toggle:focus {
+   box-shadow: 0 0 0 .2rem rgba(213, 28, 41, .6)
+ }
+
+
+ /* Drag--Drop-Upload-Form */
+ *,
+ *:before,
+ *:after {
+   -webkit-box-sizing: border-box;
+   -moz-box-sizing: border-box;
+   box-sizing: border-box;
+ }
+
+ input:focus,
+ select:focus,
+ textarea:focus,
+ button:focus {
+   outline: none;
+ }
+
+ .drop {
+   width: 90%;
+   height: 220px;
+   border: 3px dashed #DADFE3;
+   border-radius: 15px;
+   overflow: hidden;
+   text-align: center;
+   background: transparent;
+   -webkit-transition: all 0.5s ease-out;
+   -moz-transition: all 0.5s ease-out;
+   transition: all 0.5s ease-out;
+   margin-top: 0px;
+   margin-right: auto;
+   margin-left: auto;
+   margin-bottom: 10px;
+   position: absolute;
+   top: 0;
+   left: 0;
+   bottom: 0;
+   right: 0;
+ }
+
+ .drop .cont {
+   height: 170px;
+   color: #8E99A5;
+   -webkit-transition: all 0.5s ease-out;
+   -moz-transition: all 0.5s ease-out;
+   transition: all 0.5s ease-out;
+   margin: auto;
+   position: absolute;
+   top: 0;
+   left: 0;
+   bottom: 0;
+   right: 0;
+ }
+
+ .drop .cont i {
+   font-size: 40px;
+   color: #787e85;
+   position: relative;
+ }
+
+ .drop .cont .tit {
+   font-size: 30px;
+   text-transform: uppercase;
+   font-weight: 900;
+ }
+
+ .drop .cont .desc {
+   color: #787e85;
+   font-size: 18px;
+ }
+
+ .drop .cont .browse {
+   margin: 10px 25%;
+   color: white;
+   padding: 8px 16px;
+   border-radius: 4px;
+   background: #c44100;
+ }
+
+ .drop input {
+   width: 100%;
+   height: 100%;
+   cursor: pointer;
+   background: red;
+   opacity: 0;
+   margin: auto;
+   position: absolute;
+   top: 0;
+   left: 0;
+   bottom: 0;
+   right: 0;
+ }
+
+ .pointer {
+   cursor: pointer;
+ }
+
+ #list {
+   width: 100%;
+   text-align: left;
+   position: absolute;
+   left: 0;
+   top: 0;
+ }
+
+ .dashed_upload {
+   height: 200px;
+ }
+
+ ul li {
+   list-style: none;
+ }
+
+ .lock-product {
+   filter: grayscale(1);
+ }
+
+ .pointer {
+   cursor: pointer;
+ }
+
+ .lock-text {
+   font-weight: bold;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   font-size: 14px;
+   content: '';
+   width: 220px;
+   height: 40px;
+   position: absolute;
+   z-index: 2;
+   transform: rotate(-45deg);
+   border-radius: 15px;
+   background-color: rgb(196 196 196);
+   color: rgb(86 86 86);
+ }
+
+
+ @media(max-width: 769px) {
+   .drop {
+     height: 300px;
+   }
+
+   .appUserContainer {
+     margin-left: auto !important;
+     margin-right: auto !important;
+   }
+
+   .p-dialog-mask {
+     width: 90% !important;
+   }
+ }
+
+ /* end style  */
+ /* loader */
+
+ .preloader {
+   width: 8vmax;
+   height: 8vmax;
+   border-right: 4px solid #2f3c45;
+   border-radius: 100%;
+   animation: spinRight 800ms linear infinite;
+ }
+
+ .preloader:before,
+ .preloader:after {
+   content: '';
+   width: 6vmax;
+   height: 6vmax;
+   display: block;
+   position: absolute;
+   top: calc(50% - 3vmax);
+   left: calc(50% - 3vmax);
+   border-left: 3px solid #2f3c45;
+   border-radius: 100%;
+   animation: spinLeft 800ms linear infinite;
+ }
+
+ .preloader:after {
+   width: 4vmax;
+   height: 4vmax;
+   top: calc(50% - 2vmax);
+   left: calc(50% - 2vmax);
+   border: 0;
+   border-right: 2px solid #2f3c45;
+   animation: none;
+ }
+
+ @keyframes spinLeft {
+   from {
+     transform: rotate(0deg);
+   }
+
+   to {
+     transform: rotate(720deg);
+   }
+ }
+
+ @keyframes spinRight {
+   from {
+     transform: rotate(360deg);
+   }
+
+   to {
+     transform: rotate(0deg);
+   }
+ }
+
+ /* end style  */
+
+ .p-datatable .p-datatable-tbody>tr>td {
+   text-align: center !important;
+   padding: 0.5rem 0.5rem !important;
+   font-family: 'yekan-medium' !important;
+   font-size: small;
+ }
+
+ .p-datatable .p-datatable-thead>tr>th {
+   text-align: center !important;
+   padding: 0.5rem 0.5rem !important;
+   font-family: 'yekan-medium' !important;
+   font-size: small;
+
+ }

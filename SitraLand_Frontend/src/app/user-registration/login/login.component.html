@@ -1,0 +1,22 @@
+<div class="col-12">
+  <form class="login col-lg-4 col-12" #myForm='ngForm' (ngSubmit)='login(myForm)'>
+    <img class="logo" src="../../../assets/images/logo.png" class="logo" alt="SitraLand">
+    <h6 class="my-4">ورود</h6>
+    <div class="w-100 mt-4">
+      <input #mobile='ngModel' type="text" placeholder=" شماره همراه" id="mobile" name="mobile"
+        [(ngModel)]="userDetail.mobile" class="input-login lock-input"
+        [ngClass]="{'shaking-border': mobile.invalid && mobile.touched}" required>
+    </div>
+    <div class="w-100 mt-4">
+      <input #password='ngModel' type="password" placeholder="رمز عبور" id="password" name="password"
+        [(ngModel)]="userDetail.password" class="input-login lock-input"
+        [ngClass]="{'shaking-border': password.invalid && password.touched}" required>
+    </div>
+    <button class="btn btn-danger w-100 mt-3" type="submit">ورود</button>
+    <div class="mt-4 text-right">
+      <!-- <h6 href="#">Forgot password</h6> -->
+      <h6 class="text-secondary pointer " routerLink="/signup">ثبت‌نام</h6>
+    </div>
+  </form>
+</div>
+

@@ -1,0 +1,86 @@
+<div class="appUserContainer main">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <h5 class="title-style">
+          جزئیات سفارش
+        </h5>
+      </div>
+    </div>
+    <div class="row d-flex justify-content-center">
+      <div class="col-12 main-box p-3">
+        <div class="d-flex justify-content-start">
+          <span class="px-3 detail-title">کد پیگیری سفارش : <span
+              class="small-title px-2">{{ordersDetail.basketCode}}</span></span>
+          <span class="px-3 detail-title">تاریخ ثبت سفارش : <span
+              class="small-title px-2">{{ordersDetail.basketDate}}</span></span>
+          <span class="px-3 detail-title"> وضعیت: <span class="small-title px-2">{{ordersDetail.status==1 ? "ارسال شده"
+              : "در حال بررسی"}}</span></span>
+        </div>
+        <hr>
+        <div class="my-3">
+          <div class="d-flex justify-content-between">
+            <span class="d-flex justify-content-start">
+              <span class="px-3 detail-title"> سفارش دهنده : <span class="small-title px-2">{{ordersDetail.name}}
+                  {{ordersDetail.lastName}}</span></span>
+              <span class="px-3 detail-title">شماره موبایل : <span
+                  class="small-title px-2">{{ordersDetail.mobile}}</span></span>
+            </span>
+            <div>
+            </div>
+          </div>
+          <p class="my-3 px-3 detail-title">
+            آدرس:<span class="small-title px-2">
+              <ng-container>{{ordersDetail.address}}</ng-container>
+            </span>
+          </p>
+        </div>
+        <hr>
+        <div class="my-3 px-3 d-flex justify-content-between">
+          <span class="detail-title">مبلغ کل سفارش : <span class="small-title">
+              {{ordersDetail.totalPrice | inputNumberSplit}}
+              ریال</span>
+          </span>
+          <p class="mb-0"> {{ totalPrice > 50000000 ? 'هزینه ارسال رایگان' : 'هزینه ارسال : پرداخت در محل'}} </p>
+        </div>
+        <div class="m-1 order-box p-3">
+          <div class="row border-bottom py-2" *ngFor="let item of ordersDetailList">
+            <div class="col-12">
+              <div class="d-lg-flex justify-content-between text-mobile-center">
+                <div class="d-flex flex-column">
+                  <h5 class="title-style px-1">مشخصات مرسوله</h5>
+                </div>
+              </div>
+
+            </div>
+            <div class="col-lg-3 col-12 text-center d-flex flex-column justify-content-around align-items-center">
+              <img width="100px" [src]="server + item.imageFolderPath" alt="">
+            </div>
+            <div class="col-lg-6 col-12">
+              <p class="detail-title">
+                {{item.productName}}
+                ({{item.fldCountProduct}})
+              </p>
+              <!-- <table class="table table-bordered" *ngIf="item.propertyList.length > 0">
+                <thead>
+                  <tr>
+                    <th scope="col">ویژگی</th>
+                    <th scope="col">مقدار</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let property of item.propertyList">
+                    <td>{{property.fldTitleProperty}}</td>
+                    <td>{{property.fldPropertyValueTitle}}</td>
+                  </tr>
+                </tbody>
+              </table> -->
+              <!-- <p *ngIf="item.fldNumberOfDayToSend" class="detail-title"> مدت زمان ارسال کالا : <span
+                  class="small-title px-1 ">{{item.fldNumberOfDayToSend}} روز کاری</span></p> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

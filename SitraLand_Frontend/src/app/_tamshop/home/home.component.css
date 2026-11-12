@@ -1,0 +1,500 @@
+/* .appUserContainer {
+  background: #F9F9F9; */
+/* background-image: url('../../../assets/images/bg-tamshop-home.png'); */
+/* background-repeat: no-repeat;
+  background-position-y: 2rem;
+  background-blend-mode: luminosity;
+  background-blend-mode: luminosity;
+} */
+
+.shop-icon {
+  width: 100px;
+}
+
+.shop-icon-text {
+  font-size: 14px;
+}
+
+::ng-deep #onlyTamCoinProduct .p-carousel .p-carousel-content .p-carousel-prev {
+  background: #293F4C !important;
+
+  .pi-chevron-left:before {
+    color: white;
+  }
+}
+
+::ng-deep #onlyTamCoinProduct .p-carousel .p-carousel-content .p-carousel-next {
+  background: #293F4C !important;
+
+  .pi-chevron-right:before {
+    color: white;
+  }
+}
+
+/* ::ng-deep #onlyTamCoinProduct .p-carousel .p-carousel-content .p-carousel-container .p-carousel-items-content {
+  background-color: red;
+} */
+
+::ng-deep #onlyTamCoinProduct .p-carousel-item {
+  position: relative !important;
+}
+
+::ng-deep #allProduct .p-carousel-item {
+  position: relative !important;
+}
+
+
+::ng-deep #allProduct .p-carousel .p-carousel-content .p-carousel-prev {
+  /* position: absolute !important;
+  left: 590px;
+  bottom: 10px; */
+  border: 1px solid darkgray;
+
+}
+
+::ng-deep #allProduct .p-carousel .p-carousel-content .p-carousel-next {
+  /* position: absolute !important;
+  right: 550px;
+  bottom: 10px; */
+  border: 1px solid darkgray;
+}
+
+::ng-deep #allProduct .p-carousel .p-carousel-indicators {
+  display: none !important;
+}
+
+
+
+
+.coin-back {
+  /* background: url('../../../assets/images/coin-layer.png'); */
+  background-size: contain;
+  background-repeat: no-repeat;
+  height: 130px;
+}
+
+.discount-wrap {
+  overflow-x: hidden;
+  overflow-y: clip;
+}
+
+.custom-carousel-box {
+  padding: 10px !important;
+
+  img {
+    border-radius: 12px, 12px, 0px, 0px !important;
+  }
+}
+
+.cards-title {
+  color: #2D3748;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.box-icon {
+  width: 76px;
+  height: 76px;
+}
+
+.box-flip {
+  width: 216px;
+  height: 216px;
+}
+
+.bg-none {
+  background: none !important;
+}
+
+.intro {
+  font-size: 32px;
+  color: #2D3748;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.thin {
+  font-weight: 400;
+}
+
+.banner {
+  width: 100%;
+  height: auto;
+  margin-bottom: 15px;
+}
+
+.height-320 {
+  height: 320px;
+}
+
+.height-325 {
+  height: 325px;
+}
+
+.course-type-box i {
+  font-size: 3.5rem;
+  border-color: none !important;
+}
+
+.flipbox {
+  perspective: 1000px;
+}
+
+.round {
+  border-radius: 15px;
+}
+
+.flipMainOn {
+  position: relative;
+  transition: transform 1s;
+  transform-style: preserve-3d;
+}
+
+.flipbox:hover .flipMainOn {
+  transform: rotateY(180deg);
+}
+
+.flipOn {
+  position: relative;
+  width: 357px;
+  transition: transform 1s;
+  transform-style: preserve-3d;
+  background-color: #C4161C !important;
+}
+
+.flipbox:hover .flipOn {
+  transform: rotateY(180deg);
+}
+
+.bottom-0 {
+  bottom: 0;
+}
+
+.flip-mainCard-front,
+.flip-mainCard-back {
+  background-size: cover;
+  background-repeat: no-repeat;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.flip-card-front,
+.flip-card-back {
+  height: 401px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.flip-mainCard-back {
+  position: absolute;
+  transform: rotateY(180deg);
+  overflow-y: auto;
+  height: 90%;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background-color: #c4161c;
+}
+
+.flip-card-back {
+  position: absolute;
+  transform: rotateY(180deg);
+  overflow-y: auto;
+  height: 90%;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.font-10 {
+  font-size: 10px;
+}
+
+.font-15 {
+  font-size: 15px;
+}
+
+.font-16 {
+  font-size: 16px;
+}
+
+.font-18 {
+  font-size: 18px;
+}
+
+.font-20 {
+  font-size: 20px;
+}
+
+.font-22 {
+  font-size: 22px;
+}
+
+.font-28 {
+  font-size: 28px;
+}
+
+.font-30 {
+  font-size: 30px;
+}
+
+.flip-front-main-header {
+  /* background: url('../../../assets/images/bg-left-main-tamshop-front.png'); */
+  background-size: cover;
+  width: 100%;
+  height: 100%;
+}
+
+.flip-back-main-header {
+  /* background: url('../../../assets/images/bg-left-main-tamshop.png'); */
+  background-size: cover;
+  width: 100%;
+  height: 100%;
+}
+
+.more {
+  color: #9D2E31 !important;
+}
+
+.texture {
+  height: 100px;
+  right: 215px;
+  top: -22px;
+  overflow-x: hidden;
+
+}
+
+.dash-border {
+  border: 1px dashed #D7D7D7;
+  width: 80%;
+  position: absolute;
+  left: 126px;
+  z-index: -1;
+  top: 10px;
+}
+
+.step {
+  border: 1px solid #D7D7D7;
+  border-radius: 50%;
+  padding: 10px 17px;
+  background-color: white;
+}
+
+.coinTitle {
+  color: #2D3748;
+}
+
+.discount-box {
+  height: 292px;
+  background-color: #FFC700;
+  mix-blend-mode: normal;
+  /* box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); */
+  border-radius: 25px;
+}
+
+.ts-slider-coin {
+  width: 170px;
+  z-index: 2;
+}
+
+.img-owl-carousel-o {
+  width: 100% !important;
+  height: 170px !important;
+  margin: auto !important;
+  border-radius: 12px, 12px, 0px, 0px;
+}
+
+.simple-carousel-container {
+  border-radius: 16px !important;
+  background-color: white !important;
+  padding: 20px !important;
+}
+
+.simple-carousel-image {
+  width: 236px !important;
+  height: 236px !important;
+}
+
+.name-owl-carousel-o {
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 190%;
+  text-align: right;
+  color: #2D3748;
+}
+
+.carousel-box {
+  position: relative !important;
+  width: 197px !important;
+  height: 300px !important;
+  background: #FFFFFF !important;
+  box-shadow: 0px 0px 18.4737px rgba(0, 0, 0, 0.1) !important;
+  border-radius: 16px !important;
+  padding: 15px !important;
+  margin: auto !important;
+}
+
+.discount-coin-img {
+  width: 32px !important;
+}
+
+.cat-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.appUserContainer {
+  width: calc(91% - 6.5vw) !important;
+  margin-right: 15vw !important;
+  padding-top: 5rem;
+  min-height: 100vh;
+  background: #F9F9F9;
+}
+
+.container-banner {
+  border-radius: 15px;
+}
+
+.title-text {
+  color: #303e45;
+  font-size: 18px;
+}
+
+
+
+.container-category {
+  height: 130px;
+  border-radius: 15px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: #5c7975;
+  overflow-y: auto;
+}
+
+.option-category {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  cursor: pointer;
+}
+
+.img-category {
+  width: 80px;
+  height: 80px;
+  border-radius: 12px;
+  filter: invert(100%) sepia(2%) saturate(0%) hue-rotate(140deg) brightness(1020%) contrast(100%);
+}
+
+
+.img-category:hover {
+  width: 80px;
+  height: 80px;
+  border-radius: 12px;
+  box-shadow: 4px 5px 19px 2px #4c6966;
+}
+
+.option-category p {
+  margin: 0px;
+  color: #fff;
+}
+
+.itemofcarousel {
+  background-color: #F9F9F9;
+}
+
+.optionofsitra {
+  display: flex;
+  justify-content: space-around;
+}
+
+.img-option {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+}
+
+.img-text {
+  margin-top: 8px;
+  margin-bottom: 0px;
+  font-size: 10px;
+}
+
+.option-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  width: 100px;
+  height: 100px;
+}
+
+
+@media (max-width: 769px) {
+  .flipMainOnHeader {
+    height: 300px !important;
+  }
+
+
+  .texture {
+    right: 0px;
+    overflow-x: hidden;
+  }
+
+  .appUserContainer {
+    margin-right: 0 !important;
+    width: 100% !important;
+    padding-top: 95px;
+    margin-bottom: 4rem;
+    background-attachment: none;
+    background-size: 100% !important;
+    overflow: hidden;
+  }
+}
+
+.container-carousel {
+  height: fit-content;
+  border-radius: 15px;
+  background-color: #c44100;
+}
+
+.custom-round {
+  border-radius: 12px 12px 0px 0px !important;
+}
+
+.lock-amazing-text {
+  top: 100px;
+  left: -10px;
+}
+
+
+.lock-slider-text {
+  top: 150px;
+  left: 30px
+}
+
+@media screen and (max-width : 768px) {
+  .lock-slider-text {
+    top: 150px !important;
+    left: 60px !important
+  }
+
+}

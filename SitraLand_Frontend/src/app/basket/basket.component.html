@@ -1,0 +1,120 @@
+<div class="appUserContainer ">
+    <div class="container">
+        <div *ngIf="mode == 1">
+            <div class="text-center" *ngIf="loader">
+                <div class="preloader mx-auto">
+                    <!-- <i class="fa fa-spin fa-spinner fa-2x"></i> -->
+                </div>
+            </div>
+            <div class="row mt-3 mb-5">
+                <div class="col-12 col-lg-9 mb-3" *ngIf="!loader">
+                    <div class="basket-box">
+                        <div class="d-lg-flex justify-content-between">
+                            <div class="d-flex">
+                                <!-- <img src="../../../assets/images/BuyShop.svg" width="24" height="24" alt=""> -->
+                                <h5 class="title-vod  font-weight-bold mr-2"> سبد خرید</h5>
+                            </div>
+                            <p (click)="removeAllProduct()" class="text-danger mb-0 pt-1 pointer">حذف همه از سبد
+                                خرید</p>
+                        </div>
+                        <p-table #dt id="basketShop" styleClass="p-datatable-gridlines" [autoLayout]="true" [rows]="10"
+                            [paginator]="true" [value]="cartDetail">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th class="min-width"></th>
+                                    <th class="min-width">نام محصول</th>
+                                    <th class="min-width"> قیمت محصول</th>
+                                    <th class="min-width"> تخفیف</th>
+                                    <th class="min-width"> مبلغ پرداختی</th>
+                                    <th class="min-width w-150"> </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-product>
+                                <tr>
+                                    <td class="min-width">
+                                        <img width="50" [src]="server + product.imageFolderPath" alt="">
+                                    </td>
+                                    <td class="min-width">
+                                        {{product.productName}}
+                                    </td>
+                                    <td class="min-width">
+                                        <div class="d-flex justify-content-center">
+                                            <p class="mb-0 h6 ml-2 tamCoin-number">
+                                                <!-- {{getWithoutVat(product.price) | inputNumberSplit }} -->
+                                                {{product.price | inputNumberSplit }}
+                                                ریال
+                                            </p>
+                                        </div>
+                                    </td>
+                                    <td class="min-width">
+                                        <!-- <div *ngIf="product.fldDiscountPercent != 0"
+                                            class="d-flex justify-content-center align-items-start">
+                                            <span> فروش ویژه :</span>
+                                            <span
+                                                class="discount-number mr-2 px-2">{{product.fldDiscountPercent}}%</span>
+                                        </div>
+                                        <div *ngIf="product.fldDiscountPercent == 0">
+                                            <span class="text-danger"> -</span>
+                                        </div> -->
+                                    </td>
+                                    <!-- <td class="min-width">
+                                        <div class="d-flex justify-content-center">
+                                            <span class="discount-number mr-2 px-2">10%</span>
+                                        </div>
+                                    </td> -->
+                                    <td class="min-width">
+                                        <!-- <div *ngIf="product.price" class="d-flex justify-content-center"> -->
+                                        <div class="d-flex justify-content-center">
+                                            <p class="mb-0 h6 ml-2 tamCoin-number">
+                                                {{(product.price | inputNumberSplit)}} ریال</p>
+                                        </div>
+                                    </td>
+                                    <td class="min-width">
+                                        <div class="add-remove-box">
+                                            <div class="d-flex justify-content-around">
+                                                <img (click)="eventProduct(product.productId , 1)"
+                                                    [ngClass]="{'disabled-icone': product.count == product.fldPurchaseLimit}"
+                                                    src="../../assets/images/basket-plus-svgrepo-com.svg"
+                                                    class="pointer" width="24" alt="">
+                                                <h6 class="pt-1 mb-0">{{product.count}}</h6>
+                                                <img [ngClass]="{'disabled-icone': product.count == 1}"
+                                                    (click)="eventProduct(product.productId , 2)"
+                                                    src="../../assets/images/basket-remove-svgrepo-com.svg"
+                                                    class="pointer" width="24" alt="">
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                    </div>
+                </div>
+                <div *ngIf="cartDetail.length > 0" class="col-12 px-2 col-lg-3 mb-3 basket-box">
+                    <div class="d-flex border-bottom pb-3 mt-1">
+                        <!-- <img src="../../../assets/images/bag-basket-shop.svg" width="24" height="24" alt=""> -->
+                        <h6 class="title-vod  font-weight-bold mr-2 mb-0 pt-1"> مشخصات سفارش </h6>
+                    </div>
+                    <div class="d-flex border-bottom pb-3 mt-3 justify-content-between">
+                        <p class="mb-0">جمع سبد خرید ( {{totalProduct}} عدد )</p>
+                        <div class="d-flex justify-content-center">
+                            <p class="mb-0 h6 ml-2 tamCoin-number">{{totalPrice | inputNumberSplit}} ریال</p>
+                        </div>
+                    </div>
+
+                    <div class="border-bottom pb-3 mt-3 text-center">
+                        <p class="mb-0"> {{ totalPrice > 50000000 ? 'هزینه ارسال رایگان' : 'هزینه ارسال : پرداخت در محل'}} </p>
+                        <small>هزینه ارسال سفارشات زیر ۵ میلیون تومان به عهده خود مشتری می باشد</small>
+                    </div>
+                    <button class="btn btn-danger w-100" (click)="saveOrder()"> ثبت سفارش</button>
+                </div>
+            </div>
+
+        </div>
+        <div *ngIf="mode == 2" class="row">
+            <div class="col-12 text-center shadow rounded bg-white py-5">
+                <img width="200" src="../../assets/images/basket-empty.svg" alt="">
+                <h5 class="mt-3 title-vod ">سبد خرید شما خالی است!</h5>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,196 @@
+<div class="appContainer">
+  <div class="container-fluid px-5">
+    <div class="form-group text-center border-bottom">
+      <h4 class="text-dark text-center py-3">{{title}}</h4>
+    </div>
+    <div class="row form-row text-right">
+      <div class="col-lg-4 col-md-4 col-12 mb-4">
+        <label for="title">نام محصول</label>
+        <input type="text" class="form-control" id="title" name="title" [(ngModel)]="product.title">
+      </div>
+      <div class="col-md-4 col-12 form-group mb-5">
+        <!-- <span class="text-danger">*</span> -->
+        <label class="" for="price"> قیمت محصول</label>
+        <input #price='ngModel' class="form-control" id="price" name="price" [(ngModel)]="product.price"
+          OnlyNumber="true" required />
+        <p class="p-1" *ngIf="product.price > 0"> {{product.price |inputNumberSplit}}
+          ریال</p>
+        <!-- <span class="text-danger" *ngIf='price.invalid && price.touched'>
+                قیمت محصول را وارد کنید
+              </span> -->
+      </div>
+      <div class="col-lg-4 col-md-4 col-12 mb-4">
+        <label for="index"> تعداد</label>
+        <input type="text" class="form-control" id="count" name="count" OnlyNumber [(ngModel)]="product.count">
+      </div>
+
+
+
+      <div class="col-lg-4 col-md-4 col-12  mb-4">
+        <label for="category"> دسته بندی محصولات</label>
+        <ng-select2 name='category' width='100%' [(ngModel)]='product.categorySelected' [options]="OptionNgSelected"
+          [data]="categoryHomeList">
+        </ng-select2>
+      </div>
+
+      <!-- <div class="col-lg-4 col-md-4 col-12 mb-4" *ngIf="userType == 1 || userType == 28||categoryActive">
+        <label for="seller"> فروشنده</label>
+        <ng-select2 name='seller' width='100%' [(ngModel)]='product.sellerSelected' [data]="merchantList">
+        </ng-select2>
+      </div> -->
+
+      <!-- <div *ngIf="categoryActive" class="col-lg-4 col-md-4 col-12 mb-4">
+        <label for="categoryHomePage">دسته بندی صفحه اول</label>
+        <ng-select2 name='categoryHomePage' width='100%' [(ngModel)]='product.categorySelectedHomePage'
+          [data]="categoryHomeList" [options]="OptionNgSelected">
+        </ng-select2>
+      </div> -->
+      <div class="col-lg-4 col-md-4 col-12 mb-4">
+        <div class="custom-control custom-checkbox mt-4 pt-1 mr-3">
+          <input type="checkbox" class="custom-control-input" name="isActive" id="isActive"
+            [(ngModel)]="product.isActive">
+          <label for="isActive" class="custom-control-label pt-1"> فروش ویژه</label>
+        </div>
+      </div>
+
+      <div class="col-12 mb-4">
+        <label>توضیحات</label>
+        <textarea class="desciription" name="text" [(ngModel)]="product.description">
+              </textarea>
+      </div>
+
+      <div class="col-12 mb-4">
+        <label> مشخصات</label>
+        <ckeditor [editor]="Editor" [(ngModel)]="product.extraDetail" name="courseDesc"></ckeditor>
+<!-- 
+        <textarea class="extraDetail" name="text" [(ngModel)]="product.extraDetail">
+        </textarea> -->
+      </div>
+
+      <!-- <div class="col-lg-4 col-md-4 col-12 mb-4">
+        <label for="index"> محدودیت سفارش</label>
+        <input type="text" class="form-control" id="purchaseLimit" name="purchaseLimit" OnlyNumber
+          [(ngModel)]="product.purchaseLimit">
+      </div> -->
+
+
+      <!-- <div class="col-12 d-lg-flex">
+        <button class="btn btn-primary" (click)="showPhotoGalleryModal()">گالری تصاویر</button>
+      </div> -->
+      <div class="col-12 d-lg-flex">
+        <div class="col-lg-6 col-12 mt-4 pt-2">
+          <div class="dashed_upload mt-2">
+            <div class="wrapper" *ngIf='!product.Filename   else fileList'>
+              <div class="drop">
+                <div class="cont">
+                  <i class="fa fa-cloud-upload"></i>
+                  <div class="">
+                    <h3>
+                      بکشید و رها کنید
+                    </h3>
+                  </div>
+                  <div class="desc">
+                    یا
+                  </div>
+                  <div class="browse">
+                    برای انتخاب فایل کلیک کنید
+                  </div>
+                  <div class="desc">
+
+                  </div>
+                </div>
+                <output id="list"></output><input id="files" type="file"
+                  (change)="handleFileInput()">
+              </div>
+            </div>
+            <ng-template #fileList>
+              <table class='table'>
+                <tr>
+                  <td>{{product.Filename}}</td>
+                  <td><a (click)='removeFile()' class='pointer text-danger'><i class='fa fa-trash fa-2x'></i></a>
+                  </td>
+                </tr>
+              </table>
+            </ng-template>
+          </div>
+        </div>
+        <div *ngIf="notShow" class="col-lg-6 col-12 mt-4 text-center">
+          <ng-container>
+            <ng-container *ngIf='product.imageFolderPath &&
+                                           product.Filename.toLowerCase().endsWith("png") ||
+                                           product.Filename.toLowerCase().endsWith("jpg") ||
+                                           product.Filename.toLowerCase().endsWith("jpeg") ||
+                                           product.Filename.toLowerCase().endsWith("gif")'>
+              <img [src]='serverAddress + product.Filename' (error)="this.notShow = false" class="img-fluid" width="150"
+                (click)='open( serverAddress + product.Filename)'>
+            </ng-container>
+            <ng-container *ngIf='product.Filename && product.Filename.toLowerCase().endsWith("mp4") ||
+                                               product.Filename.toLowerCase().endsWith("m4v") ||
+                                               product.Filename.toLowerCase().endsWith("m3u8")'>
+              <div>
+                <video controls class="video-player rounded mx-auto w-100">
+                  <source [src]="serverAddress + product.Filename" type="">
+                </video>
+              </div>
+            </ng-container>
+          </ng-container>
+        </div>
+      </div>
+
+      <div class="col-12 mt-3 mb-5 mx-2  border-top">
+        <button (click)="saveProduct()" class="btn btn-danger mt-4" [disabled]='submit'>
+          ذخیره
+          <i *ngIf='submit' class="fa fa-spin fa-spinner"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modalShadow" *ngIf="isShowPhotoGalleryModal">
+  <p-dialog header="گالری محصولات" [(visible)]="isShowPhotoGalleryModal" [modal]="true" [style]="{ width: '50vw' }"
+    [draggable]="false" [resizable]="false">
+
+    <table class='table gallery' *ngIf="productGallery.length>0">
+      <tr>
+        <th>#</th>
+        <th>نام</th>
+        <th></th>
+      </tr>
+      <tr *ngFor="let elem of productGallery; let i">
+        <td *ngIf="elem.name">
+          <img *ngIf="elem.fldFkMasterProduct && !elem.isVideo" [src]='serverAddress + elem.name'
+            (error)="this.notShow = false" class="img-fluid vertical-align-middle" width="150"
+            (click)='open( serverAddress + elem.name)'>
+          <img *ngIf="!elem.fldFkMasterProduct && !elem.isVideo" [src]='elem.src' (error)="this.notShow = false"
+            class="img-fluid vertical-align-middle" width="150" (click)='open( elem.src)'>
+          <img *ngIf="elem.fldFkMasterProduct && elem.isVideo" src='../../../../assets/images/video-icon.png'
+            (error)="this.notShow = false" class="img-fluid vertical-align-middle" width="150"
+            (click)='open( serverAddress + elem.name , true)'>
+          <img *ngIf="!elem.fldFkMasterProduct && elem.isVideo" src='../../../../assets/images/video-icon.png'
+            (error)="this.notShow = false" class="img-fluid vertical-align-middle" width="150" (click)='open(1 )'>
+        </td>
+        <td class="vertical-align-middle">{{elem.name}}</td>
+        <!-- <td class="vertical-align-middle"><a (click)='deleteImageProduct(elem.id)' class='pointer text-danger'><i
+              class='fa fa-trash fa-2x'></i></a>
+        </td> -->
+        <td class="vertical-align-middle"><a class='pointer text-info'><i class='fa fa-edit fa-2x'></i></a>
+        </td>
+      </tr>
+    </table>
+    <div class="col-12 form-group mb-5">
+      <div class="custom-dropzone fileUploader selectedProduct" ngx-dropzone
+        [accept]="'image/* ,video/mp4,video/x-m4v,video/*'" (change)="onSelect($event)" id="targetProduct"
+        [multiple]="true">
+        <ngx-dropzone-label>
+          <div>
+            <h6 id="firstUploadLabel" class="mr-top-130 fileUploadLabel">انتخاب فایل</h6>
+          </div>
+        </ngx-dropzone-label>
+      </div>
+      <div class="text-left">
+        <button class="mt-4 btn btn-primary" (click)="saveProductImage()">ذخیره گالری</button>
+      </div>
+    </div>
+  </p-dialog>
+</div>

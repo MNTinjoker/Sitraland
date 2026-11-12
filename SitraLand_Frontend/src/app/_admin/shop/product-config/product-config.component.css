@@ -1,0 +1,8 @@
+.desciription {
+  min-width: 100%;
+  border-radius: 5px;
+}
+
+.vertical-align-middle {
+  vertical-align: middle !important
+}

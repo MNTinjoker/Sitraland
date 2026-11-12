@@ -1,0 +1,870 @@
+.basket-num::before {
+  width: 20px;
+  background-color: #c44100;
+  border-radius: 3px;
+  content: attr(data-content);
+  color: white;
+  text-align: center;
+  border-radius: 50%;
+  position: absolute;
+  top: -0.5rem;
+  z-index: 1;
+  left: 1.5rem;
+}
+
+.logoS {
+  width: 6rem;
+}
+
+/* .logoS:hover {
+  width: 3.8rem;
+  border-radius: 50%;
+  border: solid 1px #4c6966;
+} */
+
+
+
+.sidebar {
+  direction: rtl;
+  text-align: center;
+  height: 88vh;
+  width: 170px;
+  /* padding: 75px 0 80px; */
+  position: fixed;
+  top: 4.3rem;
+  right: 2rem;
+  /* background-color: #fff; */
+  border-radius: 2rem;
+  z-index: 99;
+  box-shadow: 0 0 5px rgb(0 0 0 / 20%);
+  animation-name: fadeRight;
+  animation-duration: 0.8s;
+  background-color: #5c7975;
+  color: white;
+}
+
+.navContainer {
+  z-index: 100;
+  width: 100%;
+  height: 60px;
+  position: fixed;
+  top: 0;
+  box-shadow: 0px 15px 25px rgba(0, 0, 0, 0.05);
+  background: rgba(0, 0, 0, 0.22);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(6.2px);
+  -webkit-backdrop-filter: blur(6.2px);
+}
+
+.sidebar .active .sidebar-icon {
+  /* filter: brightness(0) saturate(100%) invert(15%) sepia(73%) saturate(6600%) hue-rotate(350deg) brightness(88%) contrast(87%); */
+}
+
+.sidebar .active .sidebarr-icon {
+  background-position: top right
+}
+
+.sidebar .active .sidebarBack {
+  background-color: #929292;
+  border-radius: 1rem;
+  width: 90%;
+  margin: auto;
+}
+
+.sidebarr .disable {
+  cursor: not-allowed
+}
+
+.sidebarr .disable .sidebarr-icon {
+  background-position: top left
+}
+
+.sidebar .active * {
+  /* color: #c44100 !important; */
+  color: #fff !important;
+  font-weight: bold;
+}
+
+.sidebarr-icon {
+  width: 55px;
+  height: 55px;
+  margin: 3% auto;
+  background-size: 300%;
+  background-position: top left
+}
+
+
+.sideBarBtn .icon {
+  fill: #444
+}
+
+.sideBarBtn:hover {
+  color: #630007
+}
+
+.sideBarBtn:hover .icon {
+  fill: #630007
+}
+
+.sideBarBtn .icon {
+  width: 30%;
+  margin: 2% auto
+}
+
+.sideBarBtn.active {
+  color: #c44100
+}
+
+.sideBarBtn.active .icon {
+  fill: #c44100
+}
+
+.sideBarBtn.disabled {
+  color: #c2c2c2;
+  cursor: not-allowed
+}
+
+.sideBarBtn.disabled .icon {
+  fill: #c2c2c2
+}
+
+.sidebar-icon {
+  width: 2rem;
+  height: 3rem;
+  filter: invert(0%) sepia(2%) saturate(0%) hue-rotate(140deg) brightness(1020%) contrast(100%);
+  /* margin: 20% auto; */
+}
+
+.icon-text {
+  color: #fff;
+}
+
+.sidebarAdmin {
+  direction: rtl;
+  text-align: center;
+  height: 100vh;
+  width: 150px;
+  padding: 75px 0 80px;
+  position: fixed;
+  top: 0;
+  right: 0;
+  background-color: #fff;
+  z-index: 99;
+  box-shadow: 0 0 5px rgba(0, 0, 0, .2)
+}
+
+.notifications-num {
+  width: 20px;
+  background-color: #c44100;
+  border-radius: 3px;
+  color: white;
+  text-align: center;
+  border-radius: 50%;
+  position: absolute;
+  top: -0.5rem;
+  z-index: 1;
+  left: 1.5rem;
+}
+
+.iconboxBlinker {
+  background-color: #c34000 !important;
+  animation: blinker2 2s linear infinite;
+  -webkit-animation: blinker2 2s linear infinite;
+  border-radius: 8px;
+  padding: 2px;
+}
+
+.iconboxBlinker img {
+  filter: invert(100%) sepia(3%) saturate(0%) hue-rotate(210deg) brightness(153%) contrast(104%);
+}
+
+.logo {
+  width: 120px;
+}
+
+.logoN {
+  width: 60px;
+}
+
+.logoInLive {
+  position: absolute !important;
+  margin-right: 4% !important;
+}
+
+.sidebar-mobie {
+  z-index: 1000 !important;
+  direction: rtl;
+  text-align: center;
+  width: 300px;
+  position: fixed;
+  top: 4.3rem;
+  right: 0;
+  background-color: #fff;
+  border-radius: 25px 0px 0px 25px;
+  z-index: 99;
+  box-shadow: 0 0 5px rgb(0 0 0 / 20%);
+  -webkit-animation-name: fadeRight;
+  animation-name: fadeRight;
+  -webkit-animation-duration: 0.8s;
+  animation-duration: 0.8s;
+  padding: 0px 15px;
+  overflow-y: auto !important;
+  max-height: 90vh !important;
+}
+
+.sidebar-mobie::-webkit-scrollbar {
+  width: 1px;
+  height: 6px;
+}
+
+.basket-num {
+  text-decoration: none;
+}
+
+.userInfoBox {
+  border: 1px solid #8f969c;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  padding: 3px;
+}
+
+.userInfoIcon {
+  font-size: 30px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.deleteRegion {
+  background-color: #c44100;
+  border: 1px solid #c44100;
+  color: white;
+}
+
+
+
+.wallet-modal {
+  position: fixed;
+  max-width: calc(100% - 10px);
+  width: 210px;
+  height: 150px;
+  border-radius: 5px;
+  z-index: 500;
+  background-color: white;
+  top: 44px;
+  left: 136px;
+  transition: all 1s;
+  border: solid 1px #ddd;
+  padding: 10px;
+}
+
+.hidden {
+  display: none;
+}
+
+
+.btn-info,
+.btn-info:hover {
+  color: #fff;
+}
+
+
+
+.starIcontit {
+  width: 40px;
+}
+
+.StarText {
+  font-size: 14px;
+}
+
+.StarNumber {
+  font-size: 18px;
+  color: #c44100;
+}
+
+.StarNumbertit {
+  font-size: 18px;
+  color: #c44100;
+}
+
+.modalWidth {
+  max-width: 55% !important;
+}
+
+.numberOfStar {
+  position: absolute;
+  border-radius: 50%;
+  font-size: 11px !important;
+  min-width: 20px;
+  min-height: 20px;
+  padding: 5px !important;
+  color: #ffffff;
+  cursor: pointer;
+  top: -0.6rem;
+  right: -0.5rem;
+}
+
+.starIcon {
+  width: 27px;
+  margin-bottom: 6px;
+}
+
+.modalTit {
+  display: block;
+}
+
+.profile-modal {
+  position: fixed;
+  max-width: calc(100% - 10px);
+  width: 180px;
+  height: auto;
+  border-radius: 5px;
+  z-index: 500;
+  background-color: #fff;
+  top: 2.9rem;
+  left: 10px;
+  transition: opacity 1s;
+  padding: 10px;
+  animation-name: fadeIn;
+  animation-duration: 0.8s;
+}
+
+.notif-modal {
+  position: fixed;
+  max-width: calc(100% - 10px);
+  width: 220px;
+  height: auto;
+  border-radius: 5px;
+  z-index: 500;
+  background-color: #fff;
+  top: 2.9rem;
+  left: 10%;
+  transition: opacity 1s;
+  padding: 10px;
+  animation-name: fadeIn;
+  animation-duration: 0.8s;
+}
+
+.font {
+  font-size: 11px !important;
+  text-decoration: none;
+  text-align: right;
+}
+
+.profileAccount {
+  width: 40px;
+}
+
+.notify-text {
+  width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: right;
+  margin: 0;
+}
+
+hr {
+  margin-top: 0.5rem !important;
+  margin-bottom: 0.5rem !important;
+  border: 0;
+  border-top: 1px solid #e6e6e6 !important;
+}
+
+footer {
+  position: fixed;
+  height: 100px;
+  z-index: 999;
+  bottom: -36px;
+  background-color: #fff;
+  width: 100%;
+}
+
+/*  radio   */
+.myradio {
+  position: relative;
+  display: none;
+}
+
+.myradio+label {
+  width: 114px;
+  padding: 7px;
+  border-radius: 5px;
+  position: relative;
+  text-align-last: center;
+  font-size: 12px !important;
+}
+
+.myradio+label {
+  background-color: #edf0f5;
+  border: none;
+  color: black;
+  cursor: pointer;
+}
+
+.myradio+label:hover {
+  cursor: pointer;
+  background-color: #C4161C;
+  border: 3px #FFFFFF;
+  color: #FFFFFF;
+}
+
+.myradio:focus+label {
+  cursor: pointer;
+  background-color: #C4161C;
+  border: 3px #FFFFFF;
+  color: #FFFFFF;
+}
+
+.myradio:checked+label {
+  cursor: pointer;
+  background-color: #C4161C;
+  border: 3px #FFFFFF;
+  color: #FFFFFF;
+}
+
+.radioImage {
+  width: 25px;
+  position: absolute;
+  right: 16px;
+  bottom: 5px;
+}
+
+.footer-text {
+  font-size: 8px !important;
+  color: black;
+}
+
+.p-dialog-mask {
+  margin: 10px auto !important;
+  display: block !important;
+  position: static !important;
+  width: 50% !important;
+  height: auto !important;
+}
+
+.question {
+  font-size: 2em;
+}
+
+.resultStar {
+  width: 20px;
+}
+
+.showDetail {
+  font-size: 12px;
+}
+
+.modal-lg {
+  max-width: 85%;
+}
+
+.tamLogo {
+  position: absolute;
+  right: 5%;
+  top: 12px;
+}
+
+.gift {
+  width: 27px;
+}
+
+.menuImage {
+  width: 25px;
+}
+
+.consultM {
+  position: absolute;
+  left: 30px;
+}
+
+.tamlandImage {
+  width: 100px;
+}
+
+#StarModal .p-dialog-mask {
+  margin: 10px auto !important;
+  display: block !important;
+  position: static !important;
+  width: 60% !important;
+  height: auto !important;
+}
+
+#report .p-dialog-mask {
+  margin: 10px auto !important;
+  display: block !important;
+  position: static !important;
+  width: 90% !important;
+  height: auto !important;
+}
+
+#tamcoin .p-dialog-mask {
+  margin: 10px auto !important;
+  display: block !important;
+  position: static !important;
+  width: 90% !important;
+  height: auto !important;
+}
+
+#profile .p-dialog-mask {
+  margin: 10px auto !important;
+  display: block !important;
+  position: static !important;
+  width: 30% !important;
+  height: auto !important;
+}
+
+.admin {
+  width: 2.5em;
+}
+
+.operator {
+  width: 3em;
+}
+
+/* ticket style */
+.fa-ticket {
+  color: #C4161C;
+  font-size: 20px;
+}
+
+.tooltip-Blink {
+  position: relative;
+}
+
+.admin-ticket-badge {
+  position: absolute;
+  left: 1.5rem !important;
+  top: 1rem !important;
+  color: #50565f;
+}
+
+.user-ticket-badge {
+  position: absolute;
+  left: 1.5rem !important;
+  top: 1rem !important;
+  color: #50565f;
+}
+
+.blink_me {
+  animation: blinker 2s linear infinite;
+  -webkit-animation: blinker 2s linear infinite;
+}
+
+.iconbox {
+  position: relative;
+  border-radius: 50%;
+  background-color: #EBEBEB;
+  width: 2rem;
+  height: 2rem;
+}
+
+.buyNavbar {
+  position: absolute;
+  top: 0.3rem;
+  left: 0.4rem;
+}
+
+.border-right {
+  border-right: 2px solid #929292 !important;
+}
+
+.m3 {
+  margin-right: 3rem !important;
+}
+
+.icon-mobile-size {
+  filter: invert(17%) sepia(11%) saturate(1700%) hue-rotate(179deg) brightness(41%) contrast(85%);
+  width: 24px;
+  height: 24px;
+}
+
+.text-icon-mobile-size {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 27px;
+  color: #2D3748;
+  margin-right: 0.3rem;
+}
+
+.coin-mobile-size {
+  width: 35px;
+}
+
+.numberOfStar-mobile-size {
+  position: absolute;
+  border-radius: 50%;
+  font-size: 11px !important;
+  min-width: 20px;
+  min-height: 20px;
+  padding: 5px !important;
+  color: #ffffff;
+  cursor: pointer;
+  top: -0.6rem;
+  right: 1rem;
+}
+
+.notifications-num-mobile-size {
+  width: 20px;
+  background-color: #c44100;
+  border-radius: 3px;
+  color: white;
+  text-align: center;
+  border-radius: 50%;
+  position: absolute;
+  top: -0.5rem;
+  z-index: 1;
+  right: 1rem;
+}
+
+.iconbox-mobile-size {
+  position: relative;
+  border-radius: 50%;
+  background-color: #EBEBEB;
+  width: 35px;
+  height: 35px;
+}
+
+.buyNavbar-mobile-size {
+  position: absolute;
+  top: 20%;
+  left: 20%;
+  width: 22px;
+}
+
+.margin-auto {
+  margin: 0 auto;
+}
+
+.border-Ip {
+  border-radius: 20px !important;
+}
+
+.hamburger {
+  width: 50px;
+  height: 20px;
+
+}
+
+.hideSidebar {
+  display: none;
+}
+
+.line-hamurger {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background-color: rgb(0, 0, 0);
+
+}
+
+
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes blinker2 {
+  50% {
+    opacity: 0.2;
+  }
+}
+
+
+
+@media(max-width:769px) {
+
+  .logoInLive {
+    margin-right: 5% !important;
+    position: relative !important;
+  }
+
+  .modalWidth {
+    max-width: 100% !important;
+  }
+
+  .StarNumber {
+    font-size: 15px;
+  }
+
+  .profileM,
+  .basket-num {
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+  }
+
+  .modal-lg {
+    max-width: 100% !important;
+  }
+
+  .font {
+    font-size: 12px !important;
+  }
+
+  .showDetail {
+    font-size: 11px !important;
+  }
+
+  .resultStar {
+    width: 12px !important;
+  }
+
+  /* .hamburger {
+    padding-right: 0px !important;
+  } */
+
+  .profileImage {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .sidebar {
+    direction: rtl;
+    text-align: center;
+    height: 88vh;
+    width: 170px;
+    /* padding: 75px 0 80px; */
+    position: fixed;
+    top: 4.3rem;
+    right: 0rem;
+    /* background-color: #fff; */
+    border-radius: 2rem;
+    z-index: 99;
+    box-shadow: 0 0 5px rgb(0 0 0 / 20%);
+    animation-name: fadeRight;
+    animation-duration: 0.8s;
+    background-color: #5c7975;
+    color: white;
+  }
+}
+
+
+
+.left {
+  text-align: left;
+
+  .date {
+    color: #17A6C1;
+    font-size: 12px;
+    margin-bottom: 5px;
+  }
+
+  .cat-badge {
+    padding: 3px;
+    background: #e8e8e7;
+    width: 55px;
+    border-radius: 15px;
+    font-size: 10px;
+    text-align: center;
+    border-radius: 0px 8px 8px 8px;
+  }
+}
+
+.text-modal-body {
+  font-size: 12px;
+  color: #777777;
+}
+
+.text-modal-course-title {
+  color: #2eaccc;
+}
+
+.h-20p {
+  height: 20px;
+}
+
+.font-10 {
+  font-size: 10px !important;
+}
+
+.right {
+  .name {
+    font-size: 14px;
+    color: #777777;
+  }
+
+  .image {
+    width: 20px;
+    height: 20px;
+    padding-left: 5px;
+  }
+}
+
+
+
+.button-container {
+  button {
+    width: 100px;
+  }
+}
+
+.font-10 {
+  font-size: 10px;
+}
+
+@media(max-width : 760px) {
+  ::ng-deep #notif-modal .p-dialog-draggable {
+    width: 90% !important;
+  }
+}
+
+@media(min-width:450px)and (max-width:769px) {
+  .tamLogo {
+    right: 9% !important;
+  }
+
+  .footer-text {
+    font-size: 14px !important;
+  }
+}
+
+@media(min-width:900px)and (max-width:1025px) {
+  .tamLogo {
+    right: 8% !important;
+  }
+}
+
+@media(max-width : 767px) {
+  ::ng-deep #notif-modal .p-dialog {
+    width: 80vw
+  }
+
+  .goftino {
+    position: absolute;
+    right: 14%;
+  }
+}
+
+@media(min-width:765px)and (max-width:1025px) {
+  .logo {
+    width: 90px !important;
+  }
+
+  .logoInLive {
+    margin-right: 5% !important;
+    position: relative !important;
+
+  }
+}
+
+@keyframes opacity {
+
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    transform: translateY(-150%);
+  }
+
+  100% {
+    transform: translateY(1%);
+  }
+}

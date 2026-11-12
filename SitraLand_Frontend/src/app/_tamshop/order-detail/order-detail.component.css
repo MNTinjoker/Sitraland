@@ -1,0 +1,194 @@
+.main-box {
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0px 0px 40px 0px rgba(0, 0, 0, 0.05);
+}
+.font-12 {
+  font-size: 12px;
+}
+.font-12 {
+  font-size: 12px;
+}
+.order-box {
+  border-radius: 8px;
+  border: 1px solid #dcdcdc;
+  background: #fff;
+}
+
+.title-style {
+  color: #2d3748;
+  text-align: right;
+  font-size: 18px !important;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.prepare-badge {
+  border-radius: 35px;
+  background: rgba(241, 138, 0, 0.1);
+  color: #f18a00;
+  /* display: inline-flex; */
+  padding: 4px 12px 4px 18px;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px !important;
+}
+
+.customer-check-badge {
+  border-radius: 35px;
+  background: rgba(0, 40, 241, 0.1);
+  color: #0074f1;
+  /* display: inline-flex; */
+  padding: 4px 12px 4px 18px;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px !important;
+}
+
+.recieved-badge {
+  border-radius: 35px;
+  background: #e8f6ec;
+  color: #18a941;
+  /* display: inline-flex; */
+  padding: 4px 12px 4px 18px;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px !important;
+}
+
+.accepted-badge {
+  border-radius: 35px;
+  background: rgba(119, 119, 119, 0.1);
+  color: #777777;
+  /* display: inline-flex; */
+  padding: 4px 12px 4px 18px;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px !important;
+}
+
+.cancel-badge {
+  border-radius: 35px;
+  background: rgba(196, 22, 28, 0.1);
+  color: #c4161c;
+  /* display: inline-flex; */
+  padding: 4px 12px 4px 18px;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px !important;
+}
+
+.sending-badge {
+  border-radius: 35px;
+  background: rgba(241, 138, 0, 0.1);
+  color: #f18a00;
+  /* display: inline-flex; */
+  padding: 4px 12px 4px 18px;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px !important;
+}
+
+.accept-order-badge {
+  border-radius: 35px;
+  background: #e8f6ec;
+  color: #18a941;
+  /* display: inline-flex; */
+  padding: 4px 12px 4px 18px;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px !important;
+}
+
+.cancel-order-badge {
+  border-radius: 35px;
+  background: rgba(196, 22, 28, 0.1);
+  color: #c4161c;
+  /* display: inline-flex; */
+  padding: 4px 12px 4px 18px;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px !important;
+}
+
+.small-title {
+  color: #2d3748;
+  text-align: right;
+  font-size: 14px !important;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 190%;
+}
+
+.detail-title {
+  color: #636363;
+  text-align: right;
+  font-family: IRANSans(FaNum);
+  font-size: 13px !important;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 190%;
+}
+
+.order-id {
+  color: #5195fb;
+  text-align: right;
+  font-family: IRANSans(FaNum);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 190%;
+  /* 30.4px */
+  text-decoration-line: underline;
+}
+
+::ng-deep #addAddressModalId .p-dialog-mask {
+  width: 80% !important;
+}
+
+::ng-deep #addAddressModalId .p-dialog-header,
+::ng-deep #changeAddressModalId .p-dialog-header {
+  border-bottom: none !important;
+  padding: 0px !important;
+}
+
+@media (max-width: 768px) {
+  ::ng-deep #addAddressModalId .p-dialog-mask {
+    width: 100% !important;
+  }
+  ::ng-deep #unboxingModal .p-dialog {
+    width: 100% !important;
+  }
+  ::ng-deep #unboxingModal .p-dialog-mask {
+    width: 90% !important;
+  }
+
+  .small-title {
+    font-size: 13px !important;
+  }
+
+  .detail-title {
+    font-size: 12px !important;
+  }
+
+  .font-badge {
+    font-size: 11.5px !important;
+  }
+
+  .title-style {
+    font-size: 13px !important;
+  }
+
+  .text-mobile-center {
+    text-align: center;
+  }
+}

@@ -1,0 +1,57 @@
+.basket-box {
+    box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15) !important;
+    background-color: #fff;
+    padding: 1rem;
+    border-radius: 15px;
+    height: fit-content;
+  }
+  
+  .discount-number {
+    text-align: center;
+    font-size: 16px;
+    background: #C4161C;
+    border-radius: 34px;
+    color: #FFFFFF;
+  }
+  
+  .tamCoin-number {
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  .disabled-icone{
+    filter: opacity(0.5);
+    pointer-events: none;
+  }
+  
+  ::ng-deep #basketShop .p-datatable.p-datatable-gridlines .p-datatable-thead>tr>th {
+    border-width: 0px !important;
+    background-color: #F5F7FA !important;
+  }
+  
+  ::ng-deep #basketShop .p-datatable.p-datatable-gridlines .p-datatable-tbody>tr>td {
+    border-width: 1px 0px !important;
+  }
+  
+  .add-remove-box {
+    border-radius: 8px;
+    border: 1px solid #DDD;
+    background: #F9F9F9;
+    width: 80%;
+    padding: 2px;
+    margin: auto;
+  }
+  
+  
+  .btn {
+    border-radius: 8px !important;
+  }
+  
+  .disabled-add-remove-icon {
+    filter: invert(64%) sepia(0%) saturate(10%) hue-rotate(238deg) brightness(92%) contrast(84%);
+    pointer-events: none;
+  }
+  
+  .w-150{
+    width: 150px;
+  }
