@@ -1,0 +1,170 @@
+﻿
+name: Sitraland CI
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'SitraLand_Api/**'
+      - 'SitraLand_Frontend/**'
+      - '.github/workflows/**'
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-test-package:
+    name: Build, Test and Prepare Deployment
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v7
+
+      # Backend
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore Backend
+        run: dotnet restore SitraLand_Api/SitraLand_Api.sln
+
+      - name: Build Backend
+        run: dotnet build SitraLand_Api/SitraLand_Api.sln --configuration Release --no-restore
+
+      - name: Publish Backend
+        run: dotnet publish SitraLand_Api/SitraLand_Api.csproj --configuration Release --no-build --no-restore --output artifacts/deploy
+
+      # Frontend
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: '14.21.3'
+          cache: npm
+          cache-dependency-path: SitraLand_Frontend/package-lock.json
+
+      - name: Setup npm
+        run: npm install --global npm@7.24.2
+
+      - name: Install Frontend dependencies
+        working-directory: SitraLand_Frontend
+        run: npm ci --fetch-retries=5 --fetch-timeout=300000
+
+      - name: Build Angular
+        working-directory: SitraLand_Frontend
+        run: npm run build -- --configuration production
+
+      - name: Verify Angular output
+        run: test -f SitraLand_Frontend/dist/SitraLand/index.html
+
+      - name: Run Angular tests
+        working-directory: SitraLand_Frontend
+        continue-on-error: true
+        run: npm test -- --watch=false --browsers=ChromeHeadless
+
+      # Prepare deployment package
+      - name: Assemble deployment directory
+        run: |
+          mkdir -p artifacts/deploy/ClientApp/dist
+          mkdir -p artifacts/deploy/Files
+
+          cp -a SitraLand_Frontend/dist/SitraLand/. artifacts/deploy/ClientApp/dist/
+
+          touch artifacts/deploy/Files/.keep
+
+          cat > artifacts/deploy/appsettings.json <<'EOF'
+          {
+            "Logging": {
+              "LogLevel": {
+                "Default": "Information",
+                "Microsoft.AspNetCore": "Warning"
+              }
+            },
+            "AllowedHosts": "*"
+          }
+          EOF
+
+      - name: Configure Plesk ASP.NET Core module
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import xml.etree.ElementTree as ET
+
+          path = Path("artifacts/deploy/web.config")
+          content = path.read_text(encoding="utf-8-sig")
+
+          old = 'modules="AspNetCoreModuleV2"'
+          new = 'modules="AspNetCoreModule"'
+
+          if content.count(old) == 1:
+              content = content.replace(old, new, 1)
+          elif content.count(new) != 1:
+              raise SystemExit("Expected exactly one ASP.NET Core handler")
+
+          path.write_text(content, encoding="utf-8")
+          ET.parse(path)
+
+          print("web.config validated")
+          PY
+
+      - name: Validate and create deployment ZIP
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          from zipfile import ZipFile, ZIP_DEFLATED
+          import xml.etree.ElementTree as ET
+
+          root = Path("artifacts/deploy")
+          output = Path("artifacts/Sitraland-deploy.zip")
+
+          required = [
+              "SitraLand_Api.dll",
+              "web.config",
+              "appsettings.json",
+              "Files/.keep",
+              "ClientApp/dist/index.html",
+          ]
+
+          for item in required:
+              if not (root / item).is_file():
+                  raise SystemExit(f"Missing deployment file: {item}")
+
+          config = ET.parse(root / "web.config").getroot()
+          handlers = [
+              node for node in config.iter()
+              if node.tag == "add" and node.get("name") == "aspNetCore"
+          ]
+
+          if len(handlers) != 1:
+              raise SystemExit("Invalid ASP.NET Core handler configuration")
+
+          if handlers[0].get("modules") != "AspNetCoreModule":
+              raise SystemExit("Incorrect Plesk module configuration")
+
+          if not list((root / "ClientApp/dist").glob("*.js")):
+              raise SystemExit("Angular JavaScript bundles missing")
+
+          if not list((root / "ClientApp/dist").glob("*.css")):
+              raise SystemExit("Angular CSS bundles missing")
+
+          output.parent.mkdir(parents=True, exist_ok=True)
+
+          with ZipFile(output, "w", ZIP_DEFLATED) as archive:
+              for file in root.rglob("*"):
+                  if file.is_file():
+                      archive.write(file, file.relative_to(root).as_posix())
+
+          with ZipFile(output, "r") as archive:
+              names = set(archive.namelist())
+              for item in required:
+                  if item not in names:
+                      raise SystemExit(f"ZIP validation failed: {item}")
+
+          print(f"Deployment package validated: {output}")
+          print(f"Package size: {output.stat().st_size} bytes")
+          PY
