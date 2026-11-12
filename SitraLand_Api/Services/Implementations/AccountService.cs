@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SitraLand_Api.Data;
 using SitraLand_Api.Models.Response;
@@ -12,15 +11,13 @@ namespace SitraLand_Api.Services.Implementations
     public class AccountService : IAccountService
     {
         private readonly UserManager<ApiUser> _userManager;
-        private readonly IMapper _mapper;
         private readonly IAuthService _authService;
         private ApiUser _user;
         private readonly DatabaseContext _databaseContext;
 
-        public AccountService(UserManager<ApiUser> userManager, IMapper mapper, IAuthService authService, DatabaseContext databaseContext)
+        public AccountService(UserManager<ApiUser> userManager, IAuthService authService, DatabaseContext databaseContext)
         {
             _userManager = userManager;
-            _mapper = mapper;
             _authService = authService;
             _databaseContext = databaseContext;
         }
@@ -46,7 +43,7 @@ namespace SitraLand_Api.Services.Implementations
                 return response;
             }
 
-            var user = _mapper.Map<ApiUser>(model);
+            var user = new ApiUser();
             // The mobile number is the login identifier; the full name is only a display value.
             user.UserName = mobile;
             user.PhoneNumber = mobile;

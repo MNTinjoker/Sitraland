@@ -9,7 +9,7 @@ public class ProductsServiceTests
 {
     private static ProductsService CreateService(TestDatabase database)
     {
-        return new ProductsService(TestMapper.Create(), new FakeImageService(), database.Context);
+        return new ProductsService(new FakeImageService(), database.Context);
     }
 
     private static Product CreateProduct(int id, string name, int price, int count, int? categoryId = null)

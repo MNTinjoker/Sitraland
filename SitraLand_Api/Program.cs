@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using SitraLand_Api;
-using SitraLand_Api.Configurations;
 using SitraLand_Api.Data;
 using SitraLand_Api.Services.Implementations;
 using SitraLand_Api.Services.Interfaces;
@@ -36,12 +35,21 @@ builder.Services.AddSpaStaticFiles(configurations =>
 });
 
 // Only explicitly configured origins may call the API from another host.
-// Production serves the Angular bundle from the same origin, so no CORS entry is needed there.
-var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>();
-if (allowedOrigins == null || allowedOrigins.Length == 0)
+// The live site is served on www.sitraland.com, the apex domain redirects to it.
+// The configured origins are added to the defaults, so a stale configuration
+// file cannot lock the site out again.
+var defaultOrigins = new[]
 {
-    allowedOrigins = new[] { "http://sitraland.com", "https://sitraland.com", "http://localhost:4200", "https://localhost:4200" };
-}
+    "https://www.sitraland.com",
+    "http://www.sitraland.com",
+    "https://sitraland.com",
+    "http://sitraland.com",
+    "http://localhost:4200",
+    "https://localhost:4200"
+};
+
+var configuredOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? Array.Empty<string>();
+var allowedOrigins = defaultOrigins.Concat(configuredOrigins).Distinct().ToArray();
 
 builder.Services.AddCors(options =>
 {
@@ -50,9 +58,6 @@ builder.Services.AddCors(options =>
             .AllowAnyHeader()
             .AllowAnyMethod());
 });
-
-//Auto Mapper
-builder.Services.AddAutoMapper(_ => { }, typeof(MapperInitilizer).Assembly);
 
 builder.Services.ConfigureIdentity();
 builder.Services.ConfigureJWT(builder.Configuration);

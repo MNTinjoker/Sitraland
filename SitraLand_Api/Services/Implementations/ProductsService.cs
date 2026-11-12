@@ -1,5 +1,5 @@
-﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using SitraLand_Api.Configurations;
 using SitraLand_Api.Data;
 using SitraLand_Api.Models.CategoryModels;
 using SitraLand_Api.Models.ProductGallery;
@@ -15,13 +15,11 @@ namespace SitraLand_Api.Services.Implementations
         private const int MaxGalleryImagesPerRequest = 20;
         private static readonly string[] ValidImageTypes = { ".jpg", ".png", ".jpeg", ".webp" };
 
-        private readonly IMapper _mapper;
         private readonly IImageService _imageService;
         private readonly DatabaseContext _databaseContext;
 
-        public ProductsService(IMapper mapper, IImageService imageService, DatabaseContext databaseContext)
+        public ProductsService(IImageService imageService, DatabaseContext databaseContext)
         {
-            _mapper = mapper;
             _imageService = imageService;
             _databaseContext = databaseContext;
         }
@@ -125,7 +123,7 @@ namespace SitraLand_Api.Services.Implementations
             if (model.EditOrNewId == -1)
             {
                 model.ImageFolderPath = imageFilePath;
-                var product = _mapper.Map<Product>(model);
+                var product = model.ToProduct();
                 await _databaseContext.Products.AddAsync(product);
                 await _databaseContext.SaveChangesAsync();
 
@@ -145,7 +143,7 @@ namespace SitraLand_Api.Services.Implementations
                 }
 
                 model.ImageFolderPath = imageFilePath;
-                _mapper.Map(model, product);
+                model.MapTo(product);
                 await _databaseContext.SaveChangesAsync();
 
                 result.Message = "Updated With Photo Change";
@@ -257,7 +255,7 @@ namespace SitraLand_Api.Services.Implementations
 
             if (model.EditOrNewId == -1)
             {
-                var category = _mapper.Map<Category>(model);
+                var category = model.ToCategory();
                 await _databaseContext.Categories.AddAsync(category);
                 await _databaseContext.SaveChangesAsync();
 
@@ -274,7 +272,7 @@ namespace SitraLand_Api.Services.Implementations
                 return result;
             }
 
-            _mapper.Map(model, existing);
+            model.MapTo(existing);
             await _databaseContext.SaveChangesAsync();
 
             result.Message = "Updated";
