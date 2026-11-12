@@ -173,7 +173,7 @@ jobs:
       - name: Dry-run deploy to Sitraland production
         uses: SamKirkland/FTP-Deploy-Action@v4.4.0
         with:
-          server: ${{ secrets.PROD_FTP_SERVER }}
+          server: sitraland.com
           username: ${{ secrets.PROD_FTP_USERNAME }}
           password: ${{ secrets.PROD_FTP_PASSWORD }}
           port: 21
