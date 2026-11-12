@@ -35,10 +35,10 @@ export class SignupComponent implements OnInit {
       }
       let res = await this.mainService.signUp(model).toPromise();
       if (res['message'] == "User Created Successfully") {
-        localStorage.setItem('userName', this.userDetail.fullName);
-        this.router.navigate(['/home']);
+        this.utilService.showNotify('ثبت‌نام با موفقیت انجام شد', 'success');
+        this.router.navigate(['/login']);
       } else {
-        this.utilService.showNotify('خطا', "error");
+        this.utilService.showNotify(res['message'] || 'خطا', "error");
       }
     } catch (error) {
       this.utilService.showNotify("خطا", "error");

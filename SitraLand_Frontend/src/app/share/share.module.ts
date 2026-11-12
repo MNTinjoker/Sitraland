@@ -27,7 +27,6 @@ import { DialogModule } from 'primeng/dialog';
     InputSwitchModule,
     NgxDropzoneModule,
     DropdownModule,
-    TableModule,
     DialogModule
 
   ]

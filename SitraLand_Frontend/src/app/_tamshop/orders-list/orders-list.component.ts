@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { MainService } from 'src/app/services/main.service';
 import { UtilService } from 'src/app/services/util.service';
 import { environment } from 'src/environments/environment';
@@ -9,7 +11,7 @@ import { environment } from 'src/environments/environment';
   templateUrl: './orders-list.component.html',
   styleUrls: ['./orders-list.component.css']
 })
-export class OrdersListComponent implements OnInit {
+export class OrdersListComponent implements OnInit, OnDestroy {
 
   constructor(
     private router: Router,
@@ -18,33 +20,62 @@ export class OrdersListComponent implements OnInit {
   ) { }
 
   ordersList: any = [];
-  AllOrders: any = [];
   server: string = environment.url + '/images/';
+  totalRecords: number = 0;
+  loading: boolean = false;
+  selectedStatus: number = -1;
+  searchTerm: string = '';
+  private lastLazyEvent: any = { first: 0, rows: 10 };
+  private search$ = new Subject<string>();
 
-  async ngOnInit() {
-    await this.getOrders();
+  ngOnInit() {
+    this.search$
+      .pipe(debounceTime(400), distinctUntilChanged())
+      .subscribe(term => {
+        this.searchTerm = term;
+        this.lastLazyEvent = { ...this.lastLazyEvent, first: 0 };
+        this.loadOrders(this.lastLazyEvent);
+      });
+
+    this.loadOrders(this.lastLazyEvent);
   }
 
-  async getOrders() {
-    this.ordersList = [];
-    let response = await this.mainService.getAllBasket().toPromise();
-    if (response['data'] && response['data'].length > 0) {
-      this.ordersList = response['data'];
-      // (this.ordersList as []).sort((a, b) => {
-      //   let d1: any = new Date(a['fldCreateDateTime']);
-      //   let d2: any = new Date(b['fldCreateDateTime']);
-      //   return d2 - d1
-      // });
-      this.ordersList.forEach(element => {
-        element.fullName = element.name + ' ' + element.lastName;
-        element.titles = element.titles?.split(',');
-        element.product = "";
-        for (let i = 0; i < element.productId.length; i++) {
-          element.product = element.product + element.titles[i] + ' ' + '(' + element.count[i] + ')';
-        }
+  ngOnDestroy() {
+    this.search$.complete();
+  }
 
+  onSearch(value: string) {
+    this.search$.next(value || '');
+  }
+
+  async loadOrders(event: any) {
+    this.lastLazyEvent = event || this.lastLazyEvent;
+
+    const first = this.lastLazyEvent.first || 0;
+    const rows = this.lastLazyEvent.rows || 10;
+    const page = Math.floor(first / rows) + 1;
+
+    this.loading = true;
+    try {
+      let response = await this.mainService.getAllBasket(page, rows, this.selectedStatus, this.searchTerm).toPromise();
+
+      this.ordersList = response['data'] || [];
+      this.totalRecords = response['totalCount'] || 0;
+
+      this.ordersList.forEach(element => {
+        element.fullName = (element.name || '') + ' ' + (element.lastName || '');
+        element.titles = element.titles ? element.titles.split(',') : [];
+        element.product = "";
+        if (element.productId && element.count) {
+          for (let i = 0; i < element.productId.length; i++) {
+            element.product = element.product + (element.titles[i] || '') + ' ' + '(' + element.count[i] + ') ';
+          }
+        }
       });
-      this.AllOrders = await this.ordersList
+    } catch (error) {
+      this.utilService.showNotify('خطا در دریافت اطلاعات', 'error');
+    } finally {
+      this.loading = false;
     }
   }
 
@@ -53,12 +84,9 @@ export class OrdersListComponent implements OnInit {
   }
 
   filterOrders(id) {
-    this.ordersList = this.AllOrders;
-    if (id == -1) {
-      return
-    }
-    // -1 =>all     1 => now    0 => old
-    this.ordersList = this.ordersList.filter(el => el.status == id)
+    this.selectedStatus = id;
+    this.lastLazyEvent = { ...this.lastLazyEvent, first: 0 };
+    this.loadOrders(this.lastLazyEvent);
   }
 
   async sendOrderConfirm(id) {
@@ -66,9 +94,9 @@ export class OrdersListComponent implements OnInit {
       if (result.value) {
         try {
           await this.mainService.sendOrderConfirm(id).toPromise();
-          await this.getOrders();
+          await this.loadOrders(this.lastLazyEvent);
         } catch (error) {
-
+          this.utilService.showNotify('خطایی پیش آمده', 'error');
         }
 
       }

@@ -1,8 +1,8 @@
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { Component, OnInit, ViewChild } from '@angular/core';
-// import { ShopService } from 'src/app/_services/shop.service';
+import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-// import { UtilsService } from 'ng2-date-picker/common/services/utils/utils.service';
 import { Table } from 'primeng/table';
 import { MainService } from 'src/app/services/main.service';
 import { UtilService } from 'src/app/services/util.service';
@@ -12,11 +12,10 @@ import { UtilService } from 'src/app/services/util.service';
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.css']
 })
-export class ProductListComponent implements OnInit {
+export class ProductListComponent implements OnInit, OnDestroy {
   @ViewChild(('dt')) dt!: Table;
 
   constructor(
-    // private shopService: ShopService,
     private router: Router,
     private utilService: UtilService,
     private mainService: MainService,
@@ -24,35 +23,63 @@ export class ProductListComponent implements OnInit {
 
   productList: any = [];
   server: string = environment.url + '/images/';
-  userType: number = 0;
-  filterConst: any;
-  productConfigId: number = -1;
+  totalRecords: number = 0;
+  loading: boolean = false;
+  searchTerm: string = '';
+  private lastLazyEvent: any = { first: 0, rows: 10 };
+  private search$ = new Subject<string>();
 
   ngOnInit() {
-    this.getProducts();
+    this.search$
+      .pipe(debounceTime(400), distinctUntilChanged())
+      .subscribe(term => {
+        this.searchTerm = term;
+        this.lastLazyEvent = { ...this.lastLazyEvent, first: 0 };
+        this.loadProducts(this.lastLazyEvent);
+      });
+
+    this.loadProducts(this.lastLazyEvent);
   }
 
-
-  async getProducts() {
-    let data = await this.mainService.getProducts().toPromise();
-    this.productList = data['data'];
-    this.productList.forEach((element: { fldIsActiveTitle: string; isActive: any; }) => {
-      element.fldIsActiveTitle = element.isActive ? "فعال" : "غیر فعال";
-    });
+  ngOnDestroy() {
+    this.search$.complete();
   }
 
-  goToProductDetail(id: string, title: any) {
-    this.router.navigate(['/admin/product-detail/' + id], { queryParams: { data: title } });
+  onSearch(value: string) {
+    this.search$.next(value || '');
+  }
 
+  async loadProducts(event: any) {
+    this.lastLazyEvent = event || this.lastLazyEvent;
+
+    const first = this.lastLazyEvent.first || 0;
+    const rows = this.lastLazyEvent.rows || 10;
+    const page = Math.floor(first / rows) + 1;
+
+    this.loading = true;
+    try {
+      let data = await this.mainService.getProducts(
+        page,
+        rows,
+        this.searchTerm,
+        this.lastLazyEvent.sortField,
+        this.lastLazyEvent.sortOrder !== undefined ? this.lastLazyEvent.sortOrder.toString() : undefined
+      ).toPromise();
+
+      this.productList = data['data'] || [];
+      this.totalRecords = data['totalCount'] || 0;
+      this.productList.forEach((element: { fldIsActiveTitle: string; isActive: any; }) => {
+        element.fldIsActiveTitle = element.isActive ? "فعال" : "غیر فعال";
+      });
+    } catch (error) {
+      this.utilService.showNotify('خطا در دریافت اطلاعات', 'error');
+    } finally {
+      this.loading = false;
+    }
   }
 
   goToProductConfig(id: string) {
     this.router.navigate(['/admin/product-config/' + id]);
-
-  }
-
-  goToProductProperty(id: string) {
-    this.router.navigate(['/admin/product-property/' + id]);
   }
 
   deleteProduct(id: any) {
@@ -63,15 +90,13 @@ export class ProductListComponent implements OnInit {
         try {
           await this.mainService.deleteProduct(id).toPromise();
           this.utilService.showNotify('با موفقیت حذف شد', 'success')
-          this.getProducts();
+          this.loadProducts(this.lastLazyEvent);
         } catch (error) {
           this.utilService.showNotify('خطایی پیش آمده', 'error')
         }
       }
     });
   }
-
-
 
   goToConfg() {
     this.router.navigate(['admin/product-config/-1'])

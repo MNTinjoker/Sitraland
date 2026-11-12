@@ -40,7 +40,9 @@ export class BasketComponent implements OnInit {
     let data = await this.mainService.cart(this.productsId).toPromise();
     this.cartDetail = [];
     data.forEach(element => {
-      this.cartDetail.push(element[0]);
+      if (element && element[0]) {
+        this.cartDetail.push(element[0]);
+      }
     });
     for (let i = 0; i < this.cartDetail.length; i++) {
       let index = temp.orders.findIndex(x => x.id == this.cartDetail[i]["productId"]);
@@ -126,7 +128,7 @@ export class BasketComponent implements OnInit {
         let productsJson = [];
         this.cartDetail.forEach(element => {
           let temp = {
-            id: element.fldPkProduct,
+            id: element.productId,
             count: element.count,
           }
           productsJson.push(temp);

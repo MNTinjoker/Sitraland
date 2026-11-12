@@ -1,21 +1,22 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
-import { UtilService } from './services/util.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
-  constructor(private _router: Router, private utilService: UtilService
+  constructor(private _router: Router
   ) { }
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    let token = localStorage.getItem('token');
-    if (token != null) {
+    const token = localStorage.getItem('token');
+    const isAdmin = localStorage.getItem('isAdmin') === '1';
+
+    if (token && isAdmin) {
       return true;
-    } else {
-      this._router.navigate(['/home']);
-      return false;
     }
+
+    this._router.navigate(['/login']);
+    return false;
   }
 
   clear() {
@@ -28,6 +29,6 @@ export class AuthGuard implements CanActivate {
     localStorage.removeItem('regionId');
     localStorage.removeItem('mobile');
     localStorage.removeItem('token');
+    localStorage.removeItem('isAdmin');
   }
 }
-

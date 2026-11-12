@@ -74,9 +74,9 @@
       </div> -->
 
 
-      <!-- <div class="col-12 d-lg-flex">
+      <div class="col-12 d-lg-flex" *ngIf="editMode">
         <button class="btn btn-primary" (click)="showPhotoGalleryModal()">گالری تصاویر</button>
-      </div> -->
+      </div>
       <div class="col-12 d-lg-flex">
         <div class="col-lg-6 col-12 mt-4 pt-2">
           <div class="dashed_upload mt-2">
@@ -116,17 +116,19 @@
         </div>
         <div *ngIf="notShow" class="col-lg-6 col-12 mt-4 text-center">
           <ng-container>
-            <ng-container *ngIf='product.imageFolderPath &&
-                                           product.Filename.toLowerCase().endsWith("png") ||
-                                           product.Filename.toLowerCase().endsWith("jpg") ||
-                                           product.Filename.toLowerCase().endsWith("jpeg") ||
-                                           product.Filename.toLowerCase().endsWith("gif")'>
+            <ng-container *ngIf='product.Filename &&
+                                           (product.Filename.toLowerCase().endsWith("png") ||
+                                            product.Filename.toLowerCase().endsWith("jpg") ||
+                                            product.Filename.toLowerCase().endsWith("jpeg") ||
+                                            product.Filename.toLowerCase().endsWith("webp") ||
+                                            product.Filename.toLowerCase().endsWith("gif"))'>
               <img [src]='serverAddress + product.Filename' (error)="this.notShow = false" class="img-fluid" width="150"
                 (click)='open( serverAddress + product.Filename)'>
             </ng-container>
-            <ng-container *ngIf='product.Filename && product.Filename.toLowerCase().endsWith("mp4") ||
-                                               product.Filename.toLowerCase().endsWith("m4v") ||
-                                               product.Filename.toLowerCase().endsWith("m3u8")'>
+            <ng-container *ngIf='product.Filename &&
+                                               (product.Filename.toLowerCase().endsWith("mp4") ||
+                                                product.Filename.toLowerCase().endsWith("m4v") ||
+                                                product.Filename.toLowerCase().endsWith("m3u8"))'>
               <div>
                 <video controls class="video-player rounded mx-auto w-100">
                   <source [src]="serverAddress + product.Filename" type="">
@@ -159,16 +161,16 @@
       </tr>
       <tr *ngFor="let elem of productGallery; let i">
         <td *ngIf="elem.name">
-          <img *ngIf="elem.fldFkMasterProduct && !elem.isVideo" [src]='serverAddress + elem.name'
+          <img *ngIf="elem.isServer && !elem.isVideo" [src]='elem.src'
             (error)="this.notShow = false" class="img-fluid vertical-align-middle" width="150"
-            (click)='open( serverAddress + elem.name)'>
-          <img *ngIf="!elem.fldFkMasterProduct && !elem.isVideo" [src]='elem.src' (error)="this.notShow = false"
-            class="img-fluid vertical-align-middle" width="150" (click)='open( elem.src)'>
-          <img *ngIf="elem.fldFkMasterProduct && elem.isVideo" src='../../../../assets/images/video-icon.png'
+            (click)='open(elem.src)'>
+          <img *ngIf="!elem.isServer && !elem.isVideo" [src]='elem.src' (error)="this.notShow = false"
+            class="img-fluid vertical-align-middle" width="150" (click)='open(elem.src)'>
+          <img *ngIf="elem.isServer && elem.isVideo" src='../../../../assets/images/video-icon.png'
             (error)="this.notShow = false" class="img-fluid vertical-align-middle" width="150"
-            (click)='open( serverAddress + elem.name , true)'>
-          <img *ngIf="!elem.fldFkMasterProduct && elem.isVideo" src='../../../../assets/images/video-icon.png'
-            (error)="this.notShow = false" class="img-fluid vertical-align-middle" width="150" (click)='open(1 )'>
+            (click)='open(elem.src, true)'>
+          <img *ngIf="!elem.isServer && elem.isVideo" src='../../../../assets/images/video-icon.png'
+            (error)="this.notShow = false" class="img-fluid vertical-align-middle" width="150" (click)='open(1)'>
         </td>
         <td class="vertical-align-middle">{{elem.name}}</td>
         <!-- <td class="vertical-align-middle"><a (click)='deleteImageProduct(elem.id)' class='pointer text-danger'><i

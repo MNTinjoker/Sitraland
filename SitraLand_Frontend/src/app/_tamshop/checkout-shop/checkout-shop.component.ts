@@ -77,7 +77,11 @@ export class CheckoutShopComponent implements OnInit {
   async getCartDetail() {
     let products = localStorage.getItem('products');
     let temp: any = this.utilService.decryptData(products);
-    let orders = temp.orders;
+    let orders = temp && temp.orders ? temp.orders : [];
+    if (orders.length == 0) {
+      this.router.navigate(['/basket']);
+      return;
+    }
     let ids = [];
     let numbers = [];
     let newCounts = [];
@@ -93,7 +97,9 @@ export class CheckoutShopComponent implements OnInit {
     let data = await this.mainService.cart(model).toPromise();
     this.cartDetail = [];
     data.forEach(element => {
-      this.cartDetail.push(element[0]);
+      if (element && element[0]) {
+        this.cartDetail.push(element[0]);
+      }
     });
     let productNames = [];
     this.cartDetail.forEach(element => {
@@ -105,8 +111,8 @@ export class CheckoutShopComponent implements OnInit {
 
     let products2 = localStorage.getItem('productFinalList');
     let temp2: any = this.utilService.decryptData(products2);
-    let orderList = temp2.Product;
-    this.totalItems = orderList.totalProduct;
+    let orderList = temp2 ? temp2.Product : null;
+    this.totalItems = orderList ? orderList.totalProduct : this.cartDetail.length;
   }
 
 
@@ -152,15 +158,24 @@ export class CheckoutShopComponent implements OnInit {
           totalPrice: this.finalPrice
         }
         try {
-          let data = await this.mainService.saveOrder(model).toPromise();
-          this.orderTrackingId = data['message'];
+          let res = await this.mainService.saveOrder(model).toPromise();
+          if (res['code'] != 200) {
+            this.utilService.showNotify(res['message'] || 'خطا در ثبت سفارش', 'error');
+            return;
+          }
+          this.orderTrackingId = res['message'];
           localStorage.removeItem("products");
-          $(".basket-num").attr('data-content', '');
-          document.getElementsByClassName('basket-num')[0]['children'][0].classList.remove('iconboxBlinker');
+          localStorage.removeItem("productFinalList");
+          // Updating the cart badge must never hide a successfully saved order.
+          try {
+            $(".basket-num").attr('data-content', '');
+            document.getElementsByClassName('basket-num')[0]['children'][0].classList.remove('iconboxBlinker');
+          } catch (uiError) {
+          }
           this.submit = false;
           this.step = '3';
         } catch (error) {
-
+          this.utilService.showNotify('خطا در ثبت سفارش', 'error');
         }
 
       }
@@ -170,7 +185,7 @@ export class CheckoutShopComponent implements OnInit {
 
 
   gotoBasket() {
-    this.router.navigate(['/orders']);
+    this.router.navigate(['/basket']);
   }
 
   gotoTamShop() {

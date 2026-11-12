@@ -9,13 +9,14 @@
       <div class="row">
         <div class="col-12">
           <p-table #dt styleClass="p-datatable-gridlines" [autoLayout]="true" [rows]="10" [paginator]="true"
-            [value]="productList" *ngIf='productList.length > 0'>
+            [lazy]="true" [loading]="loading" [totalRecords]="totalRecords" (onLazyLoad)="loadProducts($event)"
+            [value]="productList">
             <ng-template pTemplate="header">
               <tr>
                 <th class="min-width">#</th>
                 <th class="min-width">تصویر</th>
                 <th class="widthTable">
-                  نام 
+                  نام
                 </th>
                 <th class="widthTable" pSortableColumn='count' pResizableColumn>
                   تعداد <p-sortIcon field='count'>
@@ -26,11 +27,8 @@
                   </p-sortIcon>
                 </th>
                 <th class="widthTable">
-                  توضیحات 
+                  توضیحات
                 </th>
-                <!-- <th class="min-width" pSortableColumn='extraDetails' pResizableColumn>توضیحات اضافه
-                  <p-sortIcon field='extraDetails'> </p-sortIcon>
-                </th> -->
                 <th class="widthTable" pSortableColumn='isActive' pResizableColumn>
                   فعال<p-sortIcon field='isActive'>
                   </p-sortIcon>
@@ -41,22 +39,11 @@
                 <th class="min-width"></th>
                 <th class="min-width"></th>
                 <th class="widthPrimeTh">
-                  <input pInputText type="text" (input)="dt.filter($event.target.value, 'productName', 'contains');"
-                  class="form-control">
+                  <input pInputText type="text" (input)="onSearch($event.target.value)" class="form-control">
                 </th>
-                <th class="widthPrimeTh">
-                  <input pInputText type="text" (input)="dt.filter($event.target.value, 'count', 'contains');"
-                     class="form-control">
-                </th>
-                <th class="widthPrimeTh">
-                  <input pInputText type="text" (input)="dt.filter($event.target.value, 'price', 'contains');"
-                   class="form-control">
-                </th>
-                <th class="widthPrimeTh">
-                  <input pInputText type="text" (input)="dt.filter($event.target.value, 'description', 'contains');"
-                     class="form-control">
-                </th>
-                <!-- <th class="min-width"></th> -->
+                <th class="widthPrimeTh"></th>
+                <th class="widthPrimeTh"></th>
+                <th class="widthPrimeTh"></th>
                 <th class="min-width"></th>
                 <th class="button-box"></th>
               </tr>
@@ -77,19 +64,12 @@
                   {{product.price}}
                 </td>
                 <td class="min-width">
-                  {{product.description}}
+                  {{product.productDescription}}
                 </td>
-                <!-- <td class="min-width">
-                  {{product.extraDetails}}
-                </td> -->
                 <td class="min-width">
                   {{product.fldIsActiveTitle}}
                 </td>
                 <td class="min-width button-box">
-                  <!-- <button class="btn btn-outline-success mx-05" (click)='goToProductProperty(product.fldPkProduct)'>
-                    ویژگی ها
-                  </button> -->
-
                   <button class="btn btn-outline-primary mx-05" (click)='goToProductConfig(product.productId)'>
                     ویرایش
                   </button>

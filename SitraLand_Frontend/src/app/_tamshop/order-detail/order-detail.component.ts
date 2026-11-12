@@ -41,14 +41,17 @@ export class OrderDetailComponent implements OnInit {
       let data = await this.mainService.cart(this.ordersDetail.productId).toPromise();
       this.ordersDetailList = [];
       data.forEach(element => {
-        this.ordersDetailList.push(element[0]);
+        if (element && element[0]) {
+          this.ordersDetailList.push(element[0]);
+        }
       });
     }
 
-    this.ordersDetailList.forEach((element,index) => {
-      element.fldCountProduct = this.ordersDetail['count'][index];
-      
-    });
+    if (this.ordersDetail && this.ordersDetail['count']) {
+      this.ordersDetailList.forEach((element, index) => {
+        element.fldCountProduct = this.ordersDetail['count'][index];
+      });
+    }
 
     this.totalPrice = this.ordersDetail.totalPrice;
   }

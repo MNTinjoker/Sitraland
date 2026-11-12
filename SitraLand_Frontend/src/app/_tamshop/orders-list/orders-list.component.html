@@ -18,11 +18,9 @@
         </div>
       </div>
       <div class="col-12">
-        <!-- {
-          "status": 0,
-      } -->
         <p-table #dt styleClass="p-datatable-gridlines" [autoLayout]="true" [rows]="10" [paginator]="true"
-          [value]="ordersList" *ngIf='ordersList.length > 0'>
+          [lazy]="true" [loading]="loading" [totalRecords]="totalRecords" (onLazyLoad)="loadOrders($event)"
+          [value]="ordersList">
           <ng-template pTemplate="header">
             <tr>
               <th class="min-width">شماره سفارش</th>
@@ -42,21 +40,11 @@
             </tr>
             <tr>
               <th class="widthPrimeTh">
-                <input pInputText type="text" (input)="dt.filter($event.target.value, 'basketCode', 'contains');"
-                  class="form-control">
+                <input pInputText type="text" (input)="onSearch($event.target.value)" class="form-control">
               </th>
-              <th class="widthPrimeTh">
-                <input pInputText type="text" (input)="dt.filter($event.target.value, 'fullName', 'contains');"
-                  class="form-control">
-              </th>
-              <th class="widthPrimeTh">
-                <input pInputText type="text" (input)="dt.filter($event.target.value, 'mobile', 'contains');"
-                  class="form-control">
-              </th>
-              <th class="widthPrimeTh">
-                <input pInputText type="text" (input)="dt.filter($event.target.value, 'ostan', 'contains');"
-                  class="form-control">
-              </th>
+              <th class="widthPrimeTh"></th>
+              <th class="widthPrimeTh"></th>
+              <th class="widthPrimeTh"></th>
               <th class="min-width"></th>
               <th class="min-width"></th>
             </tr>
@@ -84,3 +72,4 @@
       </div>
     </div>
   </div>
+</div>

@@ -2,13 +2,15 @@ import { FooterModule } from './footer/footer.module';
 
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NotifierModule, NotifierOptions } from "angular-notifier";
 import { NavbarModule } from './navbar/navbar.module';
 import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { LightboxModule } from 'ngx-lightbox';
+import { AuthInterceptor } from './services/auth.interceptor';
 
 
 const customNotifierOptions: NotifierOptions = {
@@ -58,7 +60,6 @@ const customNotifierOptions: NotifierOptions = {
   ],
   imports: [
     BrowserModule,
-    NoopAnimationsModule,
     BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
@@ -67,7 +68,9 @@ const customNotifierOptions: NotifierOptions = {
     LightboxModule,
     NotifierModule.withConfig(customNotifierOptions)
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

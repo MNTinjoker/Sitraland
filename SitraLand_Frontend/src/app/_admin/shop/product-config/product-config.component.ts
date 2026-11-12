@@ -197,20 +197,17 @@ export class ProductConfigComponent implements OnInit {
   }
 
   async getProduct() {
-    let data = await this.mainService.getProducts().toPromise();
-    let info = data['data'].filter((x: { productId: any; }) => x.productId == this.product.productId)[0];
+    let data = await this.mainService.getProduct(this.product.productId).toPromise();
+    let info = data['data'] ? data['data'][0] : null;
     if (info) {
       this.editMode = true
       this.product.title = info['productName'];
       this.product.price = info['price'];
       this.product.count = info['count'];
-      // this.product.categorySelected = info['categoryId'] ? info['categoryId'].split(',') : [];
       this.product.categorySelected = info['categoryId'];
       this.product.isActive = info['isActive'];
       this.product.description = info['productDescription'];
       this.product.extraDetail = info['extraDetails'];
-      this.product.sellerSelected = info['fldFkSellerCo'];
-      this.product.isActive = info['fldIsActive'];
       this.product.Filename = info['imageFolderPath'];
       this.notShow = true;
     }
@@ -218,20 +215,14 @@ export class ProductConfigComponent implements OnInit {
 
   async getProductImage() {
     try {
-      let data = await this.mainService.getProductImage(this.product.productId).toPromise();
-      let res = data['data'];
-      if (res.length > 0) {
-        // let doc : HTMLElement = document.querySelector('.selectedProduct');
-      }
-      res.forEach((element: { name: string; fldPictureUrl: any; id: any; fldPkPictureProduct: any; type: string; isVideo: boolean; }) => {
-        element.name = element.fldPictureUrl;
-        element.id = element.fldPkPictureProduct;
-        element.type = element.name.split('.')[1];
-        if (['mp4', 'm4v', 'avi', 'm4a', 'wmv'].includes(element.type.split('/')[0])) {
-          element.isVideo = true;
-        }
-      });
-      this.productGallery = [...res];
+      let data = await this.mainService.getProductGallery(this.product.productId).toPromise();
+      let paths: string[] = data['data'] || [];
+      this.productGallery = paths.map((path: string) => ({
+        name: path,
+        src: this.serverAddress + path,
+        isServer: true,
+        isVideo: /\.(mp4|m4v|m3u8)$/i.test(path)
+      }));
     } catch (error) {
       // this.utilService.showNotify('خطا در دریافت اطلاعات', 'error')
 
@@ -247,8 +238,7 @@ export class ProductConfigComponent implements OnInit {
     this.customGalleryModel.forEach((element: { name: any; base64: any; }, index: number) => {
       let listItem: any = {};
       listItem['imageName'] = element.name;
-      listItem['base64'] = element.base64;
-      listItem['index'] = index + 1;
+      listItem['image'] = element.base64;
       imageList.push(listItem);
     });
 
@@ -257,12 +247,16 @@ export class ProductConfigComponent implements OnInit {
       imageList: imageList
     }
     try {
-      let res = await this.mainService.saveProductImage(model).toPromise();
-      this.getProductImage();
-      this.customGalleryModel = [];
-      // this.utilService.showNotify('با موفقیت ذخیره شد', 'success')
+      let res = await this.mainService.saveProductGallery(model).toPromise();
+      if (res['data'] == 1) {
+        this.customGalleryModel = [];
+        await this.getProductImage();
+        this.utilService.showNotify('با موفقیت ذخیره شد', 'success')
+      } else {
+        this.utilService.showNotify(res['message'] || 'خطا در ذخیره اطلاعات', 'error')
+      }
     } catch (error) {
-      // this.utilService.showNotify('خطا در ذخیره اطلاعات', 'error')
+      this.utilService.showNotify('خطا در ذخیره اطلاعات', 'error')
 
     }
   }

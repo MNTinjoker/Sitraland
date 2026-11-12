@@ -5,7 +5,6 @@ import { ProductDetailComponent } from './product-detail.component';
 import { ShareModule } from 'src/app/share/share.module';
 import { FormsModule } from '@angular/forms';
 import { CarouselModule } from 'ngx-owl-carousel-o';
-import { GalleriaModule } from 'primeng/galleria';
 import { ProductCarouselModule } from '../home/product-carousel/product-carousel.module';
 
 @NgModule({
@@ -18,7 +17,6 @@ import { ProductCarouselModule } from '../home/product-carousel/product-carousel
     FormsModule,
     ShareModule,
     CarouselModule,
-    GalleriaModule,
     ProductCarouselModule
   ]
 })

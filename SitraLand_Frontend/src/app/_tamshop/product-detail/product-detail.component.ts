@@ -1,9 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import swal from "sweetalert2";
 import { Router } from '@angular/router';
-import { Lightbox, LightboxConfig } from 'ngx-lightbox';
-import { OwlOptions } from 'ngx-owl-carousel-o';
+import { Lightbox } from 'ngx-lightbox';
 import { UtilService } from 'src/app/services/util.service';
 import { MainService } from 'src/app/services/main.service';
 
@@ -20,108 +19,64 @@ export class ProductDetailComponent implements OnInit {
     private _lightbox: Lightbox,
     private mainService: MainService
   ) { }
-  productImages = [{ url: 'assets/images/produit1.jpg' },
-  { url: 'assets/images/produit2.jpg' },
-  { url: 'assets/images/produit3.jpg' }]
 
   server: string = environment.url + '/images/';
-  selectedImage: string = '';
-  imageSize = 430;
   productId: number = 0;
-  productDetail: any = [];
+  productDetail: any = null;
   loader: boolean = true;
-  propertyList: any = [];
-  model: any[] = [];
   propertyOption: any;
   propertyString: string = '';
-  firstItem = [];
-  imageGallery: any = [];
-  isShowAddToCart: boolean = true;
+  galleryImages: string[] = [];
+  mainImage: string = '';
   txtPropertyList: any = [];
   textList: any = [];
   public album: any = [];
-  productCarouselOption: OwlOptions = { navText: ['<i class="fa fa-chevron-left"></i>', '<i class="fa fa-chevron-right"></i>'], items: 1, dots: false, nav: true };
   productThumbCarouselOption: any = { navText: ['<i class="fa fa-chevron-left"></i>', '<i class="fa fa-chevron-right"></i>'], items: 3, dots: false, nav: false };
-  responsiveOptions: any[] = [
-    {
-      breakpoint: '1024px',
-      numVisible: 5
-    },
-    {
-      breakpoint: '768px',
-      numVisible: 3
-    },
-    {
-      breakpoint: '560px',
-      numVisible: 1
-    }
-  ];
-  // settings = {
-  //   counter: false,
-  //   plugins: [lgZoom]
-  // };
-  // onBeforeSlide = (detail: BeforeSlideDetail): void => {
-  //   const { index, prevIndex } = detail;
-  //   console.log(index, prevIndex);
-  // };
-
-  showGalleryBox: boolean = false;
-  @ViewChild('owlPr', { static: false }) owlCar: any;
-  categoryId:any;
+  categoryId: any;
 
   async ngOnInit() {
     this.productId = +window.location.pathname.split('/')[2];
     await this.getDetails();
-    // await this.getProperties();
-    // await this.getProductGallery();
+    await this.getProductGallery();
     this.propertyOption = {
       multiple: false,
       tags: false,
     }
   }
+
   async getDetails() {
     let data = await this.mainService.getProduct(this.productId).toPromise();
-    this.productDetail = data['data'][0];
-    this.categoryId = this.productDetail['categoryId'];
+    this.productDetail = data['data'] ? data['data'][0] : null;
+    this.categoryId = this.productDetail ? this.productDetail['categoryId'] : null;
 
     this.loader = false;
   }
 
-  // async getProperties() {
-  //   let res: any = await this.shopService.getProductProperty(this.mProductId).toPromise();
-  //   if (res && res.data.length > 0) {
-  //     res.data.forEach(element => {
-  //       let splitList = element.fldFkPropertyValue.split(',');
-  //       let splitTitleList = element.fldPropertyValueTitle.split(',');
-  //       element.propertyValueList = [{ id: 0, title: '' }]
-  //       splitList.forEach((elem, id) => {
-  //         element.propertyValueList.push({ id: elem, title: splitTitleList[id] })
-  //       });
-  //     });
+  async getProductGallery() {
+    this.galleryImages = [];
+    if (this.productDetail && this.productDetail.imageFolderPath) {
+      this.galleryImages.push(this.productDetail.imageFolderPath);
+    }
 
-  //     res.data.forEach(element => {
-  //       element.propertyValueList.forEach(elem => {
-  //         elem.id = elem.id,
-  //           elem.text = elem.title
-  //       });
-  //     });
-  //   }
+    try {
+      let res = await this.mainService.getProductGallery(this.productId).toPromise();
+      (res['data'] || []).forEach((path: string) => {
+        if (path && this.galleryImages.indexOf(path) === -1) {
+          this.galleryImages.push(path);
+        }
+      });
+    } catch (error) {
+      this.utilService.showNotify('خطا در دریافت گالری تصاویر', 'error');
+    }
 
-  //   this.propertyList = res.data;
-  //   this.propertyList.forEach(element => {
-  //     this.firstItem.push({ id: element.propertyValueList[0].id, cat: element.fldFkProperty })
-  //   });
-  //   let arrayList = [];
-  //   this.firstItem.forEach(item => arrayList.push(item.id))
-  //   this.propertyString = arrayList.join(',');
-  //   this.checkShowAddtoCart();
-  // }
+    this.mainImage = this.galleryImages.length > 0 ? this.galleryImages[0] : '';
+  }
 
   async addToCart() {
     let id = this.productId;
     try {
       let orders = localStorage.getItem('products');
-      let products:any = {
+      let products: any = {
         orders: []
       }
 
@@ -140,7 +95,7 @@ export class ProductDetailComponent implements OnInit {
         products.orders.push({
           id,
           Number: number,
-          newCount : this.productDetail.count - number,
+          newCount: this.productDetail.count - number,
           propertyValue: this.propertyString,
           purchaseLimit: this.productDetail.fldPurchaseLimit,
           category: this.productDetail.category
@@ -180,67 +135,6 @@ export class ProductDetailComponent implements OnInit {
     }
   }
 
-  // async selectedProperty(e, element) {
-  //   this.firstItem.forEach((item) => {
-
-  //     if (item.cat == element.fldFkProperty) {
-  //       item.id = e
-  //     }
-  //   })
-  //   let arrayList = [];
-  //   this.firstItem.forEach((item) => arrayList.push(item.id));
-  //   this.propertyString = arrayList.join(',');
-  //   this.checkShowAddtoCart();
-  // }
-
-  // async getProductGallery() {
-  //   let list = []
-  //   list.push({ index: 0, url: this.productDetail.fldProductImageUrl });
-  //   try {
-  //     let res: any = await this.shopService.getProductImage(this.mProductId).toPromise();
-  //     list = [...list, ...res.data];
-  //     list.forEach((element, index) => {
-  //       if (element.fldPictureUrl) {
-  //         element.url = element.fldPictureUrl;
-  //         element.index = element.fldPkPictureProduct;
-  //         element.type = element.fldPictureUrl.split('.')[1];
-  //       }
-  //       element.imageIndex = index;
-  //     });
-  //     this.imageGallery = [...list]
-  //   } catch (error) {
-  //     this.utilService.showNotify('خطا در دریافت اطلاعات', 'error')
-  //   }
-  // }
-
-  // checkShowAddtoCart() {
-  //   this.txtPropertyList = [];
-  //   let propertyIdList = this.propertyString.split(',');
-  //   let idArray = [];
-  //   propertyIdList.forEach(item => {
-  //     if (item == '0') {
-  //       idArray.push(false)
-  //     } else {
-  //       idArray.push(true)
-  //     }
-  //   })
-  //   this.isShowAddToCart = idArray.includes(false) ? false : true;
-  //   if (this.isShowAddToCart) {
-  //     propertyIdList.forEach(el => {
-  //       this.propertyList.forEach(element => {
-  //         let splitList = element.fldFkPropertyValue.split(',');
-  //         let splitTitleList = element.fldPropertyValueTitle.split(',');
-  //         splitList.forEach((elem, id) => {
-  //           if (el == elem) {
-  //             this.txtPropertyList.push({ title: element.fldTitleProperty, value: splitTitleList[id] })
-  //           }
-  //         });
-  //       });
-  //     })
-
-  //   }
-  // }
-
   getPropertyText() {
     let textList = [
       '<div class="text-right">',
@@ -266,29 +160,23 @@ export class ProductDetailComponent implements OnInit {
 
   open(src): void {
     this.album = [];
-    // this.imageGallery.forEach(element => {
-    //   let type;
-    //   if (element.url?.toLowerCase().endsWith("mp4") ||
-    //     element.url?.toLowerCase().endsWith("m4v") ||
-    //     element.url?.toLowerCase().endsWith("m3u8")) {
-    //     type = 'video';
-    //     return
-    //   }
-    //   else {
-    //     type = 'image';
-    //   }
-    //   let album = {
-    //     type: type,
-    //     src: this.server + "shop/" + element.url
-    //   }
-    //   this.album.push(album);
-    // });
-       let album = {
-        type: 'image',
-        src: src
+    let startIndex = 0;
+
+    this.galleryImages.forEach((image, index) => {
+      if (image === src) {
+        startIndex = index;
       }
-      this.album.push(album);
-    this._lightbox.open(this.album, 0, { showZoom: true, showImageNumberLabel: true, alwaysShowNavOnTouchDevices: true, centerVertically: false });
+      this.album.push({
+        type: 'image',
+        src: this.server + image
+      });
+    });
+
+    if (this.album.length === 0) {
+      return;
+    }
+
+    this._lightbox.open(this.album, startIndex, { showZoom: true, showImageNumberLabel: true, alwaysShowNavOnTouchDevices: true, centerVertically: false });
   }
 
 
@@ -297,20 +185,6 @@ export class ProductDetailComponent implements OnInit {
   }
 
   changeimage(image: string) {
-    this.selectedImage = image;
+    this.mainImage = image;
   }
-
-  // displayGalleryBox(id) {
-  //   this.showGalleryBox = true;
-  //   this.productCarouselOption.startPosition = id;
-  //   let close = document.createElement('i');
-  //   close.className = 'fa fa-times pointer text-light h2 mb-0 close-btn';
-  //   setTimeout(() => {
-  //     let element: any = document.getElementById('modalGalleryBox');
-  //     element.getElementsByClassName('gallery-body')[0]['id'] = 'closeBtn';
-  //     // element.getElementsByClassName('owl-nav')[0]['id'] = 'closeBtn';
-  //     document.getElementById('closeBtn').appendChild(close);
-  //     close.addEventListener("click", () => { this.showGalleryBox = false });
-  //   }, 1000);
-  // }
 }
