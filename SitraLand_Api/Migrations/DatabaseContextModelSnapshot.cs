@@ -17,7 +17,7 @@ namespace SitraLand_Api.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.6")
+                .HasAnnotation("ProductVersion", "10.0.15")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -299,16 +299,16 @@ namespace SitraLand_Api.Migrations
 
                     b.HasKey("BasketId");
 
-                    b.ToTable("Baskets");
+                    b.ToTable("Baskets", (string)null);
                 });
 
             modelBuilder.Entity("SitraLand_Api.Data.Category", b =>
                 {
-                    b.Property<int?>("CategoryId")
+                    b.Property<int>("CategoryId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("CategoryId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CategoryId"));
 
                     b.Property<string>("CategoryTitle")
                         .IsRequired()
@@ -316,7 +316,7 @@ namespace SitraLand_Api.Migrations
 
                     b.HasKey("CategoryId");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("SitraLand_Api.Data.Product", b =>
@@ -361,7 +361,7 @@ namespace SitraLand_Api.Migrations
 
                     b.HasKey("ProductId");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("SitraLand_Api.Data.ProductGallery", b =>
@@ -382,7 +382,7 @@ namespace SitraLand_Api.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductGallerys");
+                    b.ToTable("ProductGallerys", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

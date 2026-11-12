@@ -51,7 +51,7 @@ builder.Services.AddCors(options =>
 });
 
 //Auto Mapper
-builder.Services.AddAutoMapper(typeof(MapperInitilizer));
+builder.Services.AddAutoMapper(_ => { }, typeof(MapperInitilizer).Assembly);
 
 builder.Services.ConfigureIdentity();
 builder.Services.ConfigureJWT(builder.Configuration);
