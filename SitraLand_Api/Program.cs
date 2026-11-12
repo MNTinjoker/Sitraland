@@ -5,6 +5,7 @@ using SitraLand_Api.Configurations;
 using SitraLand_Api.Data;
 using SitraLand_Api.Services.Implementations;
 using SitraLand_Api.Services.Interfaces;
+using static System.Net.WebRequestMethods;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,7 +40,7 @@ builder.Services.AddSpaStaticFiles(configurations =>
 var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>();
 if (allowedOrigins == null || allowedOrigins.Length == 0)
 {
-    allowedOrigins = new[] { "http://localhost:4200", "https://localhost:4200" };
+    allowedOrigins = new[] { "http://sitraland.com", "https://sitraland.com", "http://localhost:4200", "https://localhost:4200" };
 }
 
 builder.Services.AddCors(options =>
@@ -51,7 +52,7 @@ builder.Services.AddCors(options =>
 });
 
 //Auto Mapper
-builder.Services.AddAutoMapper(typeof(MapperInitilizer));
+builder.Services.AddAutoMapper(_ => { }, typeof(MapperInitilizer).Assembly);
 
 builder.Services.ConfigureIdentity();
 builder.Services.ConfigureJWT(builder.Configuration);

@@ -7,7 +7,9 @@ internal static class TestMapper
 {
     public static IMapper Create()
     {
-        var configuration = new MapperConfiguration(cfg => cfg.AddProfile<MapperInitilizer>());
+        var configuration = new MapperConfiguration(
+            cfg => cfg.AddProfile<MapperInitilizer>(),
+            Microsoft.Extensions.Logging.Abstractions.NullLoggerFactory.Instance);
 
         return configuration.CreateMapper();
     }
