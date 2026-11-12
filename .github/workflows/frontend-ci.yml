@@ -48,13 +48,15 @@ jobs:
       - name: Build Angular production
         run: npm run build -- --configuration production
 
-      - name: Run Angular tests
-        run: npm test -- --watch=false --browsers=ChromeHeadless
-
-      - name: Upload frontend artifact
+ - name: Upload frontend artifact
         uses: actions/upload-artifact@v7
         with:
           name: sitraland-frontend
           path: SitraLand_Frontend/dist/SitraLand/
           if-no-files-found: error
           retention-days: 14
+
+      - name: Run Angular tests
+        run: npm test -- --watch=false --browsers=ChromeHeadless
+
+     
