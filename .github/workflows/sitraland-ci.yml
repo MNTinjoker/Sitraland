@@ -168,3 +168,29 @@ jobs:
           print(f"Deployment package validated: {output}")
           print(f"Package size: {output.stat().st_size} bytes")
           PY
+
+
+      - name: Dry-run deploy to Plesk test site
+        uses: SamKirkland/FTP-Deploy-Action@v4.4.0
+        with:
+          server: ${{ secrets.TEST_FTP_SERVER }}
+          username: ${{ secrets.TEST_FTP_USERNAME }}
+          password: ${{ secrets.TEST_FTP_PASSWORD }}
+          port: 21
+          protocol: ftps
+          security: strict
+          local-dir: artifacts/deploy/
+          server-dir: ./
+          dry-run: true
+          dangerous-clean-slate: false
+          log-level: standard
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            web.config
+            **/web.config
+            App_Data/**
+            **/App_Data/**
+            Files/**
+            **/Files/**
