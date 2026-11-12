@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using SitraLand_Api.Data;
 using SitraLand_Api.Models.UserModels;
@@ -68,10 +69,21 @@ namespace SitraLand_Api.Services.Implementations
             return new SigningCredentials(secret, SecurityAlgorithms.HmacSha256);
         }
 
-        public async Task<bool> ValidateUser(LoginUserDTO model)
+        public async Task<ApiUser?> ValidateUser(LoginUserDTO model)
         {
             _user = await _userManager.FindByNameAsync(model.UserName);
-            return (_user != null && await _userManager.CheckPasswordAsync(_user, model.Password));
+
+            // Users created before the sign-up fix were stored with their full name as the
+            // user name, so fall back to the phone number for those accounts.
+            if (_user == null)
+            {
+                var mobile = model.UserName?.Trim();
+                _user = await _userManager.Users.FirstOrDefaultAsync(u => u.PhoneNumber == mobile);
+            }
+
+            return _user != null && await _userManager.CheckPasswordAsync(_user, model.Password)
+                ? _user
+                : null;
         }
     }
 }

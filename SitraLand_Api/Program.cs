@@ -17,7 +17,6 @@ builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IProductsService, ProductsService>();
 builder.Services.AddScoped<IImageService, ImageService>();
 builder.Services.AddScoped<IBasketService, BasketService>();
-builder.Services.AddScoped<ISmsService, SmsService>();
 
 builder.Services.AddControllers().AddNewtonsoftJson();
 
@@ -26,7 +25,6 @@ builder.Services.AddMemoryCache();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddResponseCaching();
 
-builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -36,18 +34,25 @@ builder.Services.AddSpaStaticFiles(configurations =>
     configurations.RootPath = "ClientApp/dist";
 });
 
-builder.Services.AddCors(o =>
+// Only explicitly configured origins may call the API from another host.
+// Production serves the Angular bundle from the same origin, so no CORS entry is needed there.
+var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>();
+if (allowedOrigins == null || allowedOrigins.Length == 0)
 {
-    o.AddPolicy("AllowAll", x =>
-    x.AllowAnyOrigin()
-    .AllowAnyHeader()
-    .AllowAnyMethod());
+    allowedOrigins = new[] { "http://localhost:4200", "https://localhost:4200" };
+}
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("Frontend", policy =>
+        policy.WithOrigins(allowedOrigins)
+            .AllowAnyHeader()
+            .AllowAnyMethod());
 });
 
 //Auto Mapper
 builder.Services.AddAutoMapper(typeof(MapperInitilizer));
 
-builder.Services.AddAuthentication();
 builder.Services.ConfigureIdentity();
 builder.Services.ConfigureJWT(builder.Configuration);
 builder.Services.ConfigureSwagger();
@@ -71,7 +76,17 @@ app.UseStaticFiles(new StaticFileOptions()
 
 if (!app.Environment.IsDevelopment())
     app.UseSpaStaticFiles();
-app.MapWhen(x => x.Request.Path.Value?.StartsWith("/api") == false, builder =>
+
+app.UseRouting();
+
+app.UseCors("Frontend");
+
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.MapControllers();
+
+app.MapWhen(x => x.Request.Path.Value?.StartsWith("/api", StringComparison.OrdinalIgnoreCase) == false, builder =>
 {
     builder.UseSpa(spa =>
     {
@@ -86,13 +101,5 @@ app.MapWhen(x => x.Request.Path.Value?.StartsWith("/api") == false, builder =>
         //}
     });
 });
-
-app.UseCors("AllowAll");
-
-app.UseAuthentication();
-app.UseRouting();
-app.UseAuthorization();
-
-app.MapControllers();
 
 app.Run();

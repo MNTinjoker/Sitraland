@@ -29,129 +29,139 @@ namespace SitraLand_Api.Services.Implementations
         {
             var response = new ResponseGlobal();
 
-            try
+            if (model == null || string.IsNullOrWhiteSpace(model.Mobile) || string.IsNullOrWhiteSpace(model.Password))
             {
-                if (model != null)
-                {
-                    var user = _mapper.Map<ApiUser>(model);
-                    user.UserName = model.FullName;
-                    user.PhoneNumber = model.Mobile;
-
-                    var result = await _userManager.CreateAsync(user, model.Password);
-
-                    if (result.Succeeded)
-                    {
-                        _user = await _userManager.FindByNameAsync(user.UserName);
-                        await _userManager.AddToRoleAsync(_user, "User");
-                        response.Message = "User Created Successfully";
-                        response.Code = 0;
-                    }
-                    else
-                    {
-                        response.Data = result.Errors;
-                    }
-                }
-                else
-                {
-                    response.Message = "Model User Is Not Valid";
-                    response.Code = 1;
-                }
+                response.Message = "Model User Is Not Valid";
+                response.Code = (int)HttpStatusCode.BadRequest;
                 return response;
             }
-            catch (Exception ex)
+
+            var mobile = model.Mobile.Trim();
+
+            if (await _userManager.FindByNameAsync(mobile) != null ||
+                await _userManager.Users.AnyAsync(u => u.PhoneNumber == mobile))
             {
-                throw new Exception(ex.Message);
+                response.Message = "This mobile number is already registered";
+                response.Code = (int)HttpStatusCode.Conflict;
+                return response;
             }
+
+            var user = _mapper.Map<ApiUser>(model);
+            // The mobile number is the login identifier; the full name is only a display value.
+            user.UserName = mobile;
+            user.PhoneNumber = mobile;
+
+            var result = await _userManager.CreateAsync(user, model.Password);
+
+            if (!result.Succeeded)
+            {
+                response.Message = "Could not create user";
+                response.Data = result.Errors;
+                return response;
+            }
+
+            _user = await _userManager.FindByNameAsync(user.UserName);
+            await _userManager.AddToRoleAsync(_user, "User");
+
+            response.Message = "User Created Successfully";
+            response.Code = (int)HttpStatusCode.OK;
+            return response;
         }
 
         public async Task<ResponseGlobal> Login(LoginUserDTO model)
         {
             var result = new ResponseGlobal();
 
-            try
+            _user = await _authService.ValidateUser(model);
+            if (_user == null)
             {
-                if (!await _authService.ValidateUser(model))
-                {
-                    result.Message = "Dont Have Access";
-                    return result;
-                }
-
-                _user = await _userManager.FindByNameAsync(model.UserName);
-                var roles = await _userManager.GetRolesAsync(_user);
-                string role = roles[0];
-                result.Data = await _authService.CreateToken();
-                result.Message = role;
+                result.Message = "Dont Have Access";
+                result.Code = (int)HttpStatusCode.Unauthorized;
                 return result;
             }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
+
+            var roles = await _userManager.GetRolesAsync(_user);
+            var role = roles.FirstOrDefault() ?? "User";
+
+            result.Data = await _authService.CreateToken();
+            result.Message = role;
+            result.Code = (int)HttpStatusCode.OK;
+            return result;
         }
 
         public async Task<ResponseGlobal> AddRoleToUser(AddRoleToUserModel model)
         {
             var result = new ResponseGlobal();
 
-            try
+            _user = await FindUserByLoginAsync(model.UserName);
+            if (_user == null)
             {
-                _user = await _userManager.FindByNameAsync(model.UserName);
-                if (_user == null)
-                {
-                    result.Message = "User Not Exists Or Mobile Wrong";
-                }
-
-                var roles = await _userManager.RemoveFromRoleAsync(_user, "Admin");
-                var removeUserRole = await _userManager.RemoveFromRoleAsync(_user, "User");
-
-                await _userManager.AddToRoleAsync(_user, model.Role);
-                result.Message = "Success";
+                result.Message = "User Not Exists Or Mobile Wrong";
+                result.Code = (int)HttpStatusCode.NotFound;
                 return result;
             }
-            catch (Exception ex)
+
+            var roles = await _userManager.GetRolesAsync(_user);
+            if (roles.Count > 0)
             {
-                throw new Exception(ex.Message);
+                var removeResult = await _userManager.RemoveFromRolesAsync(_user, roles);
+                if (!removeResult.Succeeded)
+                {
+                    result.Message = "Could not update user roles";
+                    return result;
+                }
             }
+
+            var addResult = await _userManager.AddToRoleAsync(_user, model.Role);
+            if (!addResult.Succeeded)
+            {
+                result.Message = "Could not update user roles";
+                return result;
+            }
+
+            result.Message = "Success";
+            result.Code = (int)HttpStatusCode.OK;
+            return result;
         }
 
         public async Task<ResponseGlobal> GetRoleBasedUsers(string role)
         {
             var result = new ResponseGlobal();
 
-            try
+            var users = await _userManager.GetUsersInRoleAsync(role);
+            var userWithRole = users.Select(u => new
             {
-                var users = await _userManager.GetUsersInRoleAsync(role);
-                var userWithRole = users.Select(u => new
-                {
-                    u.UserName,
-                    u.PhoneNumber
-                }).ToList();
+                u.UserName,
+                u.PhoneNumber
+            }).ToList();
 
-                result.Message = "success";
-                result.Code = (int)HttpStatusCode.OK;
-                result.Data = userWithRole;
-                return result;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
+            result.Message = "success";
+            result.Code = (int)HttpStatusCode.OK;
+            result.Data = userWithRole;
+            return result;
         }
 
         public async Task<ResponseGlobal> GetRoles()
         {
             var result = new ResponseGlobal();
 
-            try
+            var roles = await _databaseContext.Roles.AsNoTracking().ToListAsync();
+            result.Message = "success";
+            result.Code = (int)HttpStatusCode.OK;
+            result.Data = roles;
+            return result;
+        }
+
+        private async Task<ApiUser?> FindUserByLoginAsync(string userNameOrMobile)
+        {
+            var login = userNameOrMobile?.Trim();
+            if (string.IsNullOrEmpty(login))
             {
-                var roles = await _databaseContext.Roles.AsNoTracking().ToListAsync();
-                result.Data = roles;
-                return result;
+                return null;
             }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
+
+            return await _userManager.FindByNameAsync(login) ??
+                   await _userManager.Users.FirstOrDefaultAsync(u => u.PhoneNumber == login);
         }
     }
 }

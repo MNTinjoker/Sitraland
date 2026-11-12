@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SitraLand_Api.Models.UserModels;
 using SitraLand_Api.Services.Interfaces;
 
@@ -32,6 +33,7 @@ namespace SitraLand_Api.Controllers
         }
 
         [HttpPost("addRoleToUser")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AddRoleToUser(AddRoleToUserModel model)
         {
             var result = await _accountService.AddRoleToUser(model);
@@ -40,6 +42,7 @@ namespace SitraLand_Api.Controllers
         }
 
         [HttpGet("GetRoleBasedUsers/{role}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetRoleBasedUsers(string role)
         {
             var result = await _accountService.GetRoleBasedUsers(role);
@@ -48,6 +51,7 @@ namespace SitraLand_Api.Controllers
         }
 
         [HttpGet("getRoles")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetRoles()
         {
             var result = await _accountService.GetRoles();

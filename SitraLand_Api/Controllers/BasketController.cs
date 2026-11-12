@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SitraLand_Api.Models.BasketModels;
 using SitraLand_Api.Services.Interfaces;
 
@@ -9,12 +10,10 @@ namespace SitraLand_Api.Controllers
     public class BasketController : ControllerBase
     {
         private readonly IBasketService _basketService;
-        private readonly ISmsService _smsService;
 
-        public BasketController(IBasketService basketService, ISmsService smsService)
+        public BasketController(IBasketService basketService)
         {
             _basketService = basketService;
-            _smsService = smsService;
         }
 
         [HttpPost("saveBasket")]
@@ -26,9 +25,10 @@ namespace SitraLand_Api.Controllers
         }
 
         [HttpGet("getAllBasket")]
-        public async Task<IActionResult> GetAllBasket()
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetAllBasket(int page = 1, int pageSize = 10, int? status = null, string? search = null)
         {
-            var result = await _basketService.GetAllBasket();
+            var result = await _basketService.GetAllBasket(page, pageSize, status, search);
 
             return Ok(result);
         }
@@ -50,6 +50,7 @@ namespace SitraLand_Api.Controllers
         }
 
         [HttpPost("updateBasket/{basketId}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateBasket(int basketId, UpdateBasketDTO model)
         {
             var result = await _basketService.UpdateBasket(basketId, model);
@@ -57,26 +58,20 @@ namespace SitraLand_Api.Controllers
             return Ok(result);
         }
 
-        [HttpGet("deleteBasket/{basketId}")]
-        public async Task<IActionResult> DeleteProduct(int basketId)
+        [HttpDelete("deleteBasket/{basketId}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> DeleteBasket(int basketId)
         {
             var result = await _basketService.DeleteBasket(basketId);
 
             return Ok(result);
         }
 
-        [HttpGet("sendOrderConfirm/{basketCode}")]
+        [HttpPost("sendOrderConfirm/{basketCode}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> SendOrderConfirm(string basketCode)
         {
             var result = await _basketService.SendOrderConfirm(basketCode);
-
-            return Ok(result);
-        }
-
-        [HttpGet("sendSmsTest")]
-        public async Task<IActionResult> SendSmsTest()
-        {
-            var result = await _smsService.SendSms();
 
             return Ok(result);
         }

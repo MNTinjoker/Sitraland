@@ -364,6 +364,27 @@ namespace SitraLand_Api.Migrations
                     b.ToTable("Products");
                 });
 
+            modelBuilder.Entity("SitraLand_Api.Data.ProductGallery", b =>
+                {
+                    b.Property<int>("ProductGalleryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductGalleryId"));
+
+                    b.Property<string>("ImageFolderPath")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProductGalleryId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductGallerys");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
