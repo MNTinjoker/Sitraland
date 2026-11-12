@@ -7,6 +7,7 @@ on:
       - main
     paths:
       - 'SitraLand_Api/**'
+      - 'SitraLand_Api.Tests/**'
       - 'SitraLand_Frontend/**'
       - '.github/workflows/**'
 
@@ -36,6 +37,9 @@ jobs:
 
       - name: Build Backend
         run: dotnet build SitraLand_Api/SitraLand_Api.sln --configuration Release --no-restore
+
+      - name: Run Backend tests
+        run: dotnet test SitraLand_Api/SitraLand_Api.sln --configuration Release --no-build --logger "console;verbosity=normal"
 
       - name: Publish Backend
         run: dotnet publish SitraLand_Api/SitraLand_Api.csproj --configuration Release --no-build --no-restore --output artifacts/deploy
