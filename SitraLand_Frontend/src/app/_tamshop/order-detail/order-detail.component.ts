@@ -1,13 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { environment } from 'src/environments/environment';
-import { Lightbox } from 'ngx-lightbox';
+import { LightboxService } from 'src/app/share/lightbox.service';
 import { UtilService } from 'src/app/services/util.service';
 import { MainService } from 'src/app/services/main.service';
 
 @Component({
+  standalone: false,
   selector: 'app-order-detail',
   templateUrl: './order-detail.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./order-detail.component.css']
 })
 export class OrderDetailComponent implements OnInit {
@@ -16,7 +18,7 @@ export class OrderDetailComponent implements OnInit {
     private router: Router,
     private activeRoute: ActivatedRoute,
     private utilService: UtilService,
-    private _lightbox: Lightbox,
+    private _lightbox: LightboxService,
     private mainService: MainService
   ) { }
 

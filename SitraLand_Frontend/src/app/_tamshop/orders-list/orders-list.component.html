@@ -7,21 +7,21 @@
       <div class="filter-button-group my-4 col-md-10 col-12">
         <div class="row">
           <div class="text-center">
-            <button class="btn btn-outline-secondary btn-block" (click)="filterOrders(-1)">همه</button>
+            <button class="btn btn-outline-secondary w-100" (click)="filterOrders(-1)">همه</button>
           </div>
           <div class="text-center mx-3">
-            <button class="btn btn-outline-danger btn-block" (click)="filterOrders(0)">سفارشات ارسال نشده</button>
+            <button class="btn btn-outline-danger w-100" (click)="filterOrders(0)">سفارشات ارسال نشده</button>
           </div>
           <div class="text-center">
-            <button class="btn btn-outline-warning btn-block" (click)="filterOrders(1)">سفارشات ارسال شده</button>
+            <button class="btn btn-outline-warning w-100" (click)="filterOrders(1)">سفارشات ارسال شده</button>
           </div>
         </div>
       </div>
       <div class="col-12">
-        <p-table #dt styleClass="p-datatable-gridlines" [autoLayout]="true" [rows]="10" [paginator]="true"
+        <p-table #dt [showGridlines]="true" [rows]="10" [paginator]="true"
           [lazy]="true" [loading]="loading" [totalRecords]="totalRecords" (onLazyLoad)="loadOrders($event)"
           [value]="ordersList">
-          <ng-template pTemplate="header">
+          <ng-template #header>
             <tr>
               <th class="min-width">شماره سفارش</th>
               <th class="widthTable">
@@ -49,7 +49,7 @@
               <th class="min-width"></th>
             </tr>
           </ng-template>
-          <ng-template pTemplate="body" let-order let-i="rowIndex">
+          <ng-template #body>
             <tr>
               <td class="min-width">{{order.basketCode}}</td>
               <td class="min-width">{{order.fullName}}</td>

@@ -1,9 +1,11 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
+  standalone: false,
   selector: 'app-footer',
   templateUrl: './footer.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./footer.component.css']
 })
 export class FooterComponent implements OnInit {
@@ -18,7 +20,7 @@ export class FooterComponent implements OnInit {
   onceCliiick: any;
   @Output() getIdofPage = new EventEmitter();
   ngOnInit() {
-    let aboutPage = this.activeRoute.snapshot.queryParams.get('returnUrl');
+    let aboutPage = this.activeRoute.snapshot.queryParamMap.get('returnUrl');
 
 
     // this.overlays = [

@@ -10,17 +10,17 @@
                      shadow card mx-auto">
           <div
             class="p-2 flip-mainCard-front flip-front-main-header round  d-flex justify-content-around align-items-center flex-column">
-            <div class="text-right">
-              <p class="text-white font-22 bold text-right">تام‌لندی‌ها</p>
-              <p class="text-white font-16 bold text-right">تام‌شاپ، امتیاز تام‌لندی بودن!</p>
+            <div class="text-end">
+              <p class="text-white font-22 bold text-end">تام‌لندی‌ها</p>
+              <p class="text-white font-16 bold text-end">تام‌شاپ، امتیاز تام‌لندی بودن!</p>
             </div>
             <img src="../../../assets/images/glass_trophy 2.png" alt="" width="115" height="124">
           </div>
           <div
             class="p-2 flip-mainCard-back flip-back-main-header round d-flex justify-content-around align-items-center flex-column">
-            <div class="text-right pr-3"> -->
-<!-- <p class="text-white font-22 bold text-right">تام‌لندی ها</p> -->
-<!-- <p class="text-white font-16 bold text-right">تام‌شاپ، امتیاز تام‌لندی بودن!</p> -->
+            <div class="text-end pe-3"> -->
+<!-- <p class="text-white font-22 bold text-end">تام‌لندی ها</p> -->
+<!-- <p class="text-white font-16 bold text-end">تام‌شاپ، امتیاز تام‌لندی بودن!</p> -->
 <!-- <p class="text-white font-13 ">
                 تام‌شاپ، امتیاز ویژه‌ای برای شما تام‌لندی‌هاست که می‌تونید با استفاده از تام‌کوین‌هایی که جمع کردین، کلی
                 محصول جذاب و متنوع سفارش بدین.
@@ -72,7 +72,7 @@
           <div class="">
             <p-carousel dir="ltr" id="onlyTamCoinProduct" [value]="onlyTamCoinProduct" [numVisible]="3" [numScroll]="1"
               [circular]="true" autoplayInterval="3000" [responsiveOptions]="responsiveCarouselOptions">
-              <ng-template let-product pTemplate="item">
+              <ng-template #item let-product>
 
                 <div class="carousel-box custom-carousel-box d-flex flex-column justify-content-between"
                   [ngClass]="{'lock-product ': !product.fldActiveDispaly}">
@@ -87,7 +87,7 @@
                     <p class="name-owl-carousel-o mt-3">{{product.fldProductTitle}}</p>
                     <div class="d-flex align-items-center">
                       <span class="coinTitle font-10">تام‌کوین</span> <span
-                        class="pl-1 font-16 bold pr-2">{{product.fldAmountCoin}} </span>
+                        class="ps-1 font-16 bold pe-2">{{product.fldAmountCoin}} </span>
                       <img src="../../../assets/images/coin.png" class="discount-coin-img" width="24" alt="">
                     </div>
                   </div>
@@ -116,7 +116,7 @@
           <p class="bold font-18">محصولات تام‌شاپ</p>
           <p-carousel dir="ltr" id="allProduct" [value]="allItemList" [numVisible]="4" [numScroll]="1"
             autoplayInterval="3000" [circular]="true" [responsiveOptions]="responsiveCarouselOptions">
-            <ng-template let-product pTemplate="item">
+            <ng-template #item let-product>
               <p *ngIf="!product.fldActiveDispaly " class="lock-text lock-text-slider lock-slider-text">در سطح تام استار
                 شما نمی باشد
               </p>
@@ -136,7 +136,7 @@
   </div>
 </div> -->
 <div class="appUserContainer">
-  <div class="text-right">
+  <div class="text-end">
     <div class="col-lg-12 mb-3">
       <div class="col-lg-12 container-banner shadow p-0">
         <img src="../../../assets/images/banner.jpg" class="w-100 container-banner" alt="">

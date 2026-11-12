@@ -1,5 +1,5 @@
 import { Router } from '@angular/router';
-import { Component, OnInit, Injectable } from '@angular/core';
+import { Component, OnInit, Injectable, ChangeDetectionStrategy } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MainService } from 'src/app/services/main.service';
 import { UtilService } from 'src/app/services/util.service';
@@ -7,8 +7,10 @@ import { UtilService } from 'src/app/services/util.service';
 declare const $: any;
 
 @Component({
+  standalone: false,
   selector: 'app-user-managment',
   templateUrl: './user-managment.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./user-managment.component.css']
 })
 export class UserManagmentComponent implements OnInit {

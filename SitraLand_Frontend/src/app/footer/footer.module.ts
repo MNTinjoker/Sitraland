@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { ShareModule } from '../share/share.module';
 import { FooterRoutingModule } from './footer-routing.module';
 import { FooterComponent } from './footer.component';
-import { GMapModule } from 'primeng/gmap';
 
 
 
@@ -15,7 +14,6 @@ import { GMapModule } from 'primeng/gmap';
     CommonModule,
     FooterRoutingModule,
     ShareModule,
-    GMapModule,
 
   ],
   exports: [FooterComponent]

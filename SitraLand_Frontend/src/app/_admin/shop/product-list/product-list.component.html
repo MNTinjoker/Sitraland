@@ -1,17 +1,17 @@
 <div class="appContainer bg-white">
-  <div class="text-right">
+  <div class="text-end">
     <div class="container-fluid">
-      <div class="form-group col-12">
+      <div class="mb-3 col-12">
         <button (click)="goToConfg()" class="btn btn-primary">
           <i class="fa fa-plus"></i> محصول
         </button>
       </div>
       <div class="row">
         <div class="col-12">
-          <p-table #dt styleClass="p-datatable-gridlines" [autoLayout]="true" [rows]="10" [paginator]="true"
+          <p-table #dt [showGridlines]="true" [rows]="10" [paginator]="true"
             [lazy]="true" [loading]="loading" [totalRecords]="totalRecords" (onLazyLoad)="loadProducts($event)"
             [value]="productList">
-            <ng-template pTemplate="header">
+            <ng-template #header>
               <tr>
                 <th class="min-width">#</th>
                 <th class="min-width">تصویر</th>
@@ -48,7 +48,7 @@
                 <th class="button-box"></th>
               </tr>
             </ng-template>
-            <ng-template pTemplate="body" let-product let-i="rowIndex">
+            <ng-template #body>
               <tr>
                 <td class="min-width">{{i+1}}</td>
                 <td class="min-width">

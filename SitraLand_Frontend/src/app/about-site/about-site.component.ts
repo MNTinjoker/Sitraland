@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
+  standalone: false,
   selector: 'app-about-site',
   templateUrl: './about-site.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./about-site.component.css']
 })
 export class AboutSiteComponent implements OnInit {

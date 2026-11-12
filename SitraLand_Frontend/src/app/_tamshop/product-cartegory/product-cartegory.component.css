@@ -44,6 +44,11 @@
   margin-top: 0.3rem;
 }
 
+/* Replaces the "p-input-icon-left" wrapper of the previous PrimeNG version. */
+.search-box {
+  position: relative;
+}
+
 .input-search {
   border-radius: 8px !important;
   border: 1px solid #D9D9D9 !important;

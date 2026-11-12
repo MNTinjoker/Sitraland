@@ -1,16 +1,15 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { ProductConfigComponent } from './product-config.component';
+import { ProductConfigModule } from './product-config.module';
+import { configureTestBed } from 'src/testing/test-helpers';
 
 describe('ProductConfigComponent', () => {
   let component: ProductConfigComponent;
   let fixture: ComponentFixture<ProductConfigComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ ProductConfigComponent ]
-    })
-    .compileComponents();
+    configureTestBed(ProductConfigComponent, ProductConfigModule);
+    await TestBed.compileComponents();
   });
 
   beforeEach(() => {

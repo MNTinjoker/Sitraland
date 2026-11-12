@@ -7,11 +7,33 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NotifierModule, NotifierOptions } from "angular-notifier";
 import { NavbarModule } from './navbar/navbar.module';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { LightboxModule } from 'ngx-lightbox';
+import { LightboxComponent } from './share/lightbox.component';
 import { AuthInterceptor } from './services/auth.interceptor';
+import { providePrimeNG } from 'primeng/config';
+import { definePreset } from '@primeuix/themes';
+import Aura from '@primeuix/themes/aura';
 
+
+// The blue palette keeps the primary color of the previous PrimeNG "bootstrap4-light-blue" theme.
+const SitraLandPreset = definePreset(Aura, {
+  semantic: {
+    primary: {
+      50: '#eff6ff',
+      100: '#d1e9fe',
+      200: '#a6d4fe',
+      300: '#7cb8fd',
+      400: '#4da2fb',
+      500: '#2689f8',
+      600: '#1573dd',
+      700: '#1257a4',
+      800: '#174b82',
+      900: '#19456d',
+      950: '#0d2b50'
+    }
+  }
+});
 
 const customNotifierOptions: NotifierOptions = {
   position: {
@@ -56,19 +78,24 @@ const customNotifierOptions: NotifierOptions = {
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    LightboxComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
-    HttpClientModule,
     NavbarModule,
     FooterModule,
-    LightboxModule,
     NotifierModule.withConfig(customNotifierOptions)
   ],
   providers: [
+    provideHttpClient(withInterceptorsFromDi()),
+    providePrimeNG({
+      theme: {
+        preset: SitraLandPreset
+      }
+    }),
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]

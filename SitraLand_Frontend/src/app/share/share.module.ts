@@ -3,9 +3,8 @@ import { CommonModule } from '@angular/common';
 import { NumberSplitPipe, ShamsiDatePipe, inputNumberSplitPipe } from './custom.pipe';
 import { TableModule } from 'primeng/table';
 import { NgxDropzoneModule } from 'ngx-dropzone';
-import { DropdownModule } from 'primeng/dropdown';
+import { SelectModule } from 'primeng/select';
 import { RadioButtonModule } from 'primeng/radiobutton';
-import { InputSwitchModule } from 'primeng/inputswitch';
 import { DialogModule } from 'primeng/dialog';
 
 @NgModule({
@@ -24,9 +23,8 @@ import { DialogModule } from 'primeng/dialog';
     inputNumberSplitPipe,
     TableModule,
     RadioButtonModule,
-    InputSwitchModule,
     NgxDropzoneModule,
-    DropdownModule,
+    SelectModule,
     DialogModule
 
   ]

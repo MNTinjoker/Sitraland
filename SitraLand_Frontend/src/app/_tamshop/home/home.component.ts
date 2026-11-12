@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription, timer } from 'rxjs';
 import { MainService } from 'src/app/services/main.service';
@@ -6,9 +6,11 @@ import { environment } from 'src/environments/environment';
 import { trigger, state, transition, style, animate } from '@angular/animations';
 
 @Component({
+  standalone: false,
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   animations: [
     trigger('fadeInOut', [
       state('void', style({

@@ -1,8 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import * as moment from 'jalali-moment';
+import moment from 'jalali-moment';
 
 
-@Pipe({ name: 'NumberSplit' })
+@Pipe({ name: 'NumberSplit', standalone: false })
 export class NumberSplitPipe implements PipeTransform {
   transform(value: any) {
     if (!value)
@@ -11,7 +11,7 @@ export class NumberSplitPipe implements PipeTransform {
   }
 }
 
-@Pipe({ name: 'inputNumberSplit' })
+@Pipe({ name: 'inputNumberSplit', standalone: false })
 export class inputNumberSplitPipe implements PipeTransform {
   transform(value: any) {
     if (!value)
@@ -21,7 +21,7 @@ export class inputNumberSplitPipe implements PipeTransform {
 }
 
 
-@Pipe({ name: 'CustomTime' })
+@Pipe({ name: 'CustomTime', standalone: false })
 export class CustomTimePipe implements PipeTransform {
   transform(value: any) {
     if (!value)
@@ -35,7 +35,7 @@ export class CustomTimePipe implements PipeTransform {
   }
 }
 
-@Pipe({ name: 'ShamsiDate' })
+@Pipe({ name: 'ShamsiDate', standalone: false })
 export class ShamsiDatePipe implements PipeTransform {
   transform(value: any) {
     if (!value) {

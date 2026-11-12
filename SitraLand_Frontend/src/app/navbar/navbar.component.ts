@@ -1,4 +1,4 @@
-import { HostListener, Component, OnInit, AfterViewInit } from '@angular/core';
+import { HostListener, Component, OnInit, AfterViewInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router, Event, NavigationEnd, NavigationStart, NavigationError } from '@angular/router';
 import { UtilService } from '../services/util.service';
 // import { UtilService } from '../../_services/util.service';
@@ -29,8 +29,10 @@ export const AdminMenu: imenu[] = [
 declare var $: any;
 
 @Component({
+  standalone: false,
   selector: "app-navbar",
   templateUrl: "./navbar.component.html",
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ["./navbar.component.css"],
 })
 export class NavbarComponent implements OnInit {

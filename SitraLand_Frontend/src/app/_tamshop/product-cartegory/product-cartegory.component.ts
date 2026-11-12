@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { SelectItem } from 'primeng/api';
@@ -6,8 +6,10 @@ import { UtilService } from 'src/app/services/util.service';
 import { MainService } from 'src/app/services/main.service';
 
 @Component({
+  standalone: false,
   selector: 'app-product-cartegory',
   templateUrl: './product-cartegory.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./product-cartegory.component.css']
 })
 export class ProductCartegoryComponent implements OnInit {

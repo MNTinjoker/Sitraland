@@ -1,14 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import * as moment from 'jalali-moment';
+import moment from 'jalali-moment';
 import { MainService } from 'src/app/services/main.service';
 import { UtilService } from 'src/app/services/util.service';
 import { environment } from 'src/environments/environment';
 declare const $: any
 
 @Component({
+  standalone: false,
   selector: 'app-checkout-shop',
   templateUrl: './checkout-shop.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./checkout-shop.component.css']
 })
 export class CheckoutShopComponent implements OnInit {

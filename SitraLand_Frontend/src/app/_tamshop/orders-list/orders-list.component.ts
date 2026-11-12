@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
@@ -7,8 +7,10 @@ import { UtilService } from 'src/app/services/util.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
+  standalone: false,
   selector: 'app-orders-list',
   templateUrl: './orders-list.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./orders-list.component.css']
 })
 export class OrdersListComponent implements OnInit, OnDestroy {

@@ -1,14 +1,14 @@
 <div class="appContainer">
   <div class="container-fluid px-5">
-    <div class="form-group text-center border-bottom">
+    <div class="mb-3 text-center border-bottom">
       <h4 class="text-dark text-center py-3">{{title}}</h4>
     </div>
-    <div class="row form-row text-right">
+    <div class="row text-end">
       <div class="col-lg-4 col-md-4 col-12 mb-4">
         <label for="title">نام محصول</label>
         <input type="text" class="form-control" id="title" name="title" [(ngModel)]="product.title">
       </div>
-      <div class="col-md-4 col-12 form-group mb-5">
+      <div class="col-md-4 col-12 mb-3 mb-5">
         <!-- <span class="text-danger">*</span> -->
         <label class="" for="price"> قیمت محصول</label>
         <input #price='ngModel' class="form-control" id="price" name="price" [(ngModel)]="product.price"
@@ -46,10 +46,10 @@
         </ng-select2>
       </div> -->
       <div class="col-lg-4 col-md-4 col-12 mb-4">
-        <div class="custom-control custom-checkbox mt-4 pt-1 mr-3">
-          <input type="checkbox" class="custom-control-input" name="isActive" id="isActive"
+        <div class="form-check mt-4 pt-1 me-3">
+          <input type="checkbox" class="form-check-input" name="isActive" id="isActive"
             [(ngModel)]="product.isActive">
-          <label for="isActive" class="custom-control-label pt-1"> فروش ویژه</label>
+          <label for="isActive" class="form-check-label pt-1"> فروش ویژه</label>
         </div>
       </div>
 
@@ -61,7 +61,8 @@
 
       <div class="col-12 mb-4">
         <label> مشخصات</label>
-        <ckeditor [editor]="Editor" [(ngModel)]="product.extraDetail" name="courseDesc"></ckeditor>
+        <ckeditor [editor]="Editor" [config]="editorConfig" [(ngModel)]="product.extraDetail"
+          name="courseDesc"></ckeditor>
 <!-- 
         <textarea class="extraDetail" name="text" [(ngModel)]="product.extraDetail">
         </textarea> -->
@@ -180,7 +181,7 @@
         </td>
       </tr>
     </table>
-    <div class="col-12 form-group mb-5">
+    <div class="col-12 mb-3 mb-5">
       <div class="custom-dropzone fileUploader selectedProduct" ngx-dropzone
         [accept]="'image/* ,video/mp4,video/x-m4v,video/*'" (change)="onSelect($event)" id="targetProduct"
         [multiple]="true">
@@ -190,7 +191,7 @@
           </div>
         </ngx-dropzone-label>
       </div>
-      <div class="text-left">
+      <div class="text-start">
         <button class="mt-4 btn btn-primary" (click)="saveProductImage()">ذخیره گالری</button>
       </div>
     </div>

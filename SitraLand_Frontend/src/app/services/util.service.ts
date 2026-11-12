@@ -4,11 +4,11 @@ import swal from "sweetalert2";
 import { environment } from '../../environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MainService } from './main.service';
-import * as moment from 'jalali-moment';
+import moment from 'jalali-moment';
+import * as CryptoJSModule from 'crypto-js';
 import { Location } from '@angular/common';
 
 declare const $: any;
-declare var require: any
 
 
 @Injectable({
@@ -17,7 +17,7 @@ declare var require: any
 
 export class UtilService {
   url = environment.url;
-  CryptoJS = require("crypto-js");
+  CryptoJS = CryptoJSModule;
 
 
   encryptSecretKey = "allmenmustdie"
@@ -117,7 +117,7 @@ export class UtilService {
   sweetAlert(config) {
     let alert: any = (swal as any).mixin({
       customClass: {
-        confirmButton: "btn btn-success ml-1",
+        confirmButton: "btn btn-success ms-1",
         cancelButton: "btn btn-danger",
       },
       buttonsStyling: false,

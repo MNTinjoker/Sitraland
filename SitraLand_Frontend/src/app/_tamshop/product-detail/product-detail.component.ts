@@ -1,22 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import swal from "sweetalert2";
 import { Router } from '@angular/router';
-import { Lightbox } from 'ngx-lightbox';
+import { LightboxService } from 'src/app/share/lightbox.service';
 import { UtilService } from 'src/app/services/util.service';
 import { MainService } from 'src/app/services/main.service';
 
 
 @Component({
+  standalone: false,
   selector: 'app-product-detail',
   templateUrl: './product-detail.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./product-detail.component.css']
 })
 export class ProductDetailComponent implements OnInit {
   constructor(
     private utilService: UtilService,
     private router: Router,
-    private _lightbox: Lightbox,
+    private _lightbox: LightboxService,
     private mainService: MainService
   ) { }
 
@@ -137,7 +139,7 @@ export class ProductDetailComponent implements OnInit {
 
   getPropertyText() {
     let textList = [
-      '<div class="text-right">',
+      '<div class="text-end">',
       '<p  style="font-size:12px" class="sweetP">جزئیات سفارش به شرح زیر است</p>',
       `<p style="font-size:12px" > کالا : <span style="font-weight:bold" > ${this.productDetail.productName} </span></p >`,
       `<p style="font-size:12px" > به تعداد: <span  style="font-weight:bold">۱ عدد </span></p >`,

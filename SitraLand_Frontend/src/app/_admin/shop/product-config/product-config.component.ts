@@ -1,25 +1,53 @@
 
 import { Router, ActivatedRoute } from '@angular/router';
-import { Component, OnInit } from '@angular/core';
-import { Lightbox } from 'ngx-lightbox';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { LightboxService } from 'src/app/share/lightbox.service';
 import { MainService } from 'src/app/services/main.service';
 import { environment } from 'src/environments/environment';
 import { UtilService } from 'src/app/services/util.service';
-import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import {
+  Alignment,
+  BlockQuote,
+  Bold,
+  ClassicEditor,
+  Code,
+  EditorConfig,
+  Essentials,
+  Font,
+  FontFamily,
+  FontSize,
+  Heading,
+  HorizontalLine,
+  Image,
+  ImageToolbar,
+  Indent,
+  Italic,
+  Link,
+  List,
+  Paragraph,
+  RemoveFormat,
+  Strikethrough,
+  Table,
+  TableToolbar,
+  TodoList,
+  Underline
+} from 'ckeditor5';
 
 
 export const ValidFormat = ['jpg', 'jpeg', 'png'];
 
 @Component({
+  standalone: false,
   selector: 'app-product-config',
   templateUrl: './product-config.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./product-config.component.css']
 })
 export class ProductConfigComponent implements OnInit {
   files: any = [];
   constructor
     (
-      private _lightbox: Lightbox,
+      private _lightbox: LightboxService,
       private mainService: MainService,
       private router: Router,
       private activeRoute: ActivatedRoute,
@@ -52,6 +80,49 @@ export class ProductConfigComponent implements OnInit {
   editMode: boolean = false;
   productModel: any = {};
   public Editor = ClassicEditor;
+
+  // CKEditor 5 v49 no longer ships pre-built bundles, the editor is composed from its plugins.
+  public editorConfig: EditorConfig = {
+    licenseKey: 'GPL',
+    plugins: [
+      Essentials,
+      Paragraph,
+      Heading,
+      Bold,
+      Italic,
+      Underline,
+      Strikethrough,
+      Code,
+      BlockQuote,
+      RemoveFormat,
+      Link,
+      List,
+      TodoList,
+      Table,
+      TableToolbar,
+      Image,
+      ImageToolbar,
+      Font,
+      FontFamily,
+      FontSize,
+      Alignment,
+      Indent,
+      HorizontalLine
+    ],
+    toolbar: [
+      'undo', 'redo', '|',
+      'bold', 'italic', 'underline', 'strike', 'code', '|',
+      'removeFormat', '|',
+      'font', 'fontSize', '|',
+      'link', 'unlink', '|',
+      'bulletedList', 'numberedList', 'todoList', '|',
+      'outdent', 'indent', '|',
+      'blockQuote', '|',
+      'insertTable', '|',
+      'image', '|',
+      'horizontalLine'
+    ]
+  };
 
   ngOnInit() {
     this.serverAddress = environment.url + '/images/';

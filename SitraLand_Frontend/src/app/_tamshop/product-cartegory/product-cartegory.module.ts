@@ -6,7 +6,7 @@ import { ProductCartegoryComponent } from './product-cartegory.component';
 import { DataViewModule } from 'primeng/dataview';
 import { ShareModule } from 'src/app/share/share.module';
 import { FormsModule } from '@angular/forms';
-import { DropdownModule } from 'primeng/dropdown';
+import { SelectModule } from 'primeng/select';
 
 @NgModule({
   declarations: [
@@ -17,7 +17,7 @@ import { DropdownModule } from 'primeng/dropdown';
     ProductCartegoryRoutingModule,
     ShareModule,
     FormsModule,
-    DropdownModule,
+    SelectModule,
     DataViewModule
   ]
 })

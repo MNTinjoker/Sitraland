@@ -13,7 +13,7 @@
     </p>
     <p-carousel dir="ltr" id="allProduct" [value]="allItemList" [numVisible]="3" [numScroll]="1" [circular]="true"
         [responsiveOptions]="responsiveCarouselOptions">
-        <ng-template let-product pTemplate="item">
+        <ng-template #item let-product>
             <div class="border-1 surface-border border-round m-2 text-center py-0 px-3 w-100 h-100">
                 <div class="mb-3 border round p-2 itemofcarousel" (click)="goToProductDetail(product.productId)">
                     <p *ngIf="product.count==0 " class="lock-text lock-text-slider lock-category-text">

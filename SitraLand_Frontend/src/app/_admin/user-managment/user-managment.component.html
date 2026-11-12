@@ -1,24 +1,24 @@
 <div class="appContainer bg-white">
-  <div class="text-right">
+  <div class="text-end">
     <div class="row mt-3 p-3 ">
       <div class="col-12 col-md-12">
-        <div class="form-group">
+        <div class="mb-3">
           <h4 class="text-dark text-center"> مدیریت کاربران </h4>
           <hr>
         </div>
       </div>
       <div *ngIf="editMode" class="container-fluid mt-2">
         <div class="row mt-3 p-3 ">
-          <div class="form-group col-md-4">
+          <div class="mb-3 col-md-4">
             <label> نام کابری </label>
             <input type="text" name="firstname" class="form-control" [(ngModel)]='model.name' disabled="">
           </div>
-          <div class="form-group col-md-4">
+          <div class="mb-3 col-md-4">
             <label>موبایل</label>
             <input type="text" class="form-control" [(ngModel)]='model.phoneNumber' OnlyNumber="true" disabled
               autocomplete="nope" maxlength="11">
           </div>
-          <div class="form-group col-md-4">
+          <div class="mb-3 col-md-4">
             <label>دسترسی</label>
             <select class="form-control" [(ngModel)]='model.Role'>
               <option *ngFor='let role of roles' [value]='role.name'>{{role.normalizedName}}
@@ -27,10 +27,10 @@
           </div>
 
           <div class="col-12">
-            <div class="form-group">
+            <div class="mb-3">
               <button *ngIf='!submit' class="btn btn-danger" (click)="saveUser()">ذخیره</button>
               <button *ngIf='submit' class="btn btn-primary"><i class="fa fa-spin fa-spinner"></i></button>
-              <button *ngIf='editMode' class="btn btn-danger mr-2" (click)="clear()">لغو</button>
+              <button *ngIf='editMode' class="btn btn-danger me-2" (click)="clear()">لغو</button>
             </div>
           </div>
         </div>
@@ -46,11 +46,11 @@
               <svg class="svgClassTest">
               </svg>
             </div>
-            <p-table #dt id="myTable" styleClass="p-datatable-gridlines" [value]="users" [autoLayout]="true"
+            <p-table #dt id="myTable" [showGridlines]="true" [value]="users"
               [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
               currentPageReportTemplate="نمایش {first} تا {last} " [rowsPerPageOptions]="[10,25,50]"
               *ngIf="users && !showPreLoader">
-              <ng-template pTemplate="header">
+              <ng-template #header>
                 <tr>
                   <th>نام کابری</th>
                   <th> شماره همراه</th>
@@ -68,7 +68,7 @@
                   <th></th>
                 </tr>
               </ng-template>
-              <ng-template pTemplate="body" let-user>
+              <ng-template #body>
                 <tr>
                   <td class="px-2">
                     <div class="py-2 widthClassPrime">

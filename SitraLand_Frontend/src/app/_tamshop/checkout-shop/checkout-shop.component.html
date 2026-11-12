@@ -30,7 +30,7 @@
       </div>
     </div>
     <div class="row mt-3">
-      <div *ngIf="step == '1'" class="col-12 mt-2 ml-3 p-4 border-box shadow ">
+      <div *ngIf="step == '1'" class="col-12 mt-2 ms-3 p-4 border-box shadow ">
         <h6>
           آدرس تحویل سفارش
         </h6>
@@ -72,7 +72,7 @@
           </div>
         </div>
       </div>
-      <div *ngIf="step == '2'" class="col-12 mt-2 ml-3 p-2 border-box shadow">
+      <div *ngIf="step == '2'" class="col-12 mt-2 ms-3 p-2 border-box shadow">
         <h6>
           خلاصه سفارش
         </h6>
@@ -84,7 +84,7 @@
           <div class="col-md-6 col-12 pt-1 border-box-left">
             <span class="text-black font-Weight-500" alt="">
               سبد خرید: </span>
-            <div class="row mr-2" *ngFor="let item of cartDetail">
+            <div class="row me-2" *ngFor="let item of cartDetail">
               <div class="row my-2 w-100">
                 <div class="col-4">
                   <img width="50" [src]="server + item.imageFolderPath" alt="">
@@ -116,7 +116,7 @@
               <div class="d-flex flex-row justify-content-between">
                 <p class="mb-0"> مبلغ نهایی :</p>
                 <div class="d-flex justify-content-center">
-                  <p class="mb-0 h6 ml-1 tamCoin-number">{{finalPrice | inputNumberSplit}} <small>ریال</small> </p>
+                  <p class="mb-0 h6 ms-1 tamCoin-number">{{finalPrice | inputNumberSplit}} <small>ریال</small> </p>
                 </div>
               </div>
               <span class="text-black font-Weight-500 mt-3" alt="">
@@ -137,16 +137,16 @@
         </p>
         <p class="btn btn-outline-danger pointer" (click)="gotoTamShop()">بازگشت به صفحه اصلی </p>
       </div>
-      <div class="col-12 mt-2 ml-3 p-1 my-4">
+      <div class="col-12 mt-2 ms-3 p-1 my-4">
         <div class="pb-2"></div>
         <div class="d-flex justify-content-between" *ngIf="step == '1'">
-          <button class="btn btn-outline-danger font-12 text-left pointer" (click)="gotoBasket()">بازگشت به سبد
+          <button class="btn btn-outline-danger font-12 text-start pointer" (click)="gotoBasket()">بازگشت به سبد
             خرید</button>
           <button class="btn btn-success px-4 " (click)="confirmAddressModal()">تایید
             آدرس تحویل</button>
         </div>
         <div class="d-flex justify-content-between" *ngIf="step == '2'">
-          <button class="btn btn-outline-danger font-12 text-left pointer" (click)="backToFirstStep()"> بازگشت به صفحه
+          <button class="btn btn-outline-danger font-12 text-start pointer" (click)="backToFirstStep()"> بازگشت به صفحه
             آدرس تحویل
           </button>
           <button class="btn btn-success button-radius" (click)="finalApproval()">

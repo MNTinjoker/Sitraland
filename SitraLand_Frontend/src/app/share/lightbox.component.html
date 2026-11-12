@@ -1,0 +1,20 @@
+<div class="lb-backdrop" *ngIf="lightbox.visible()" (click)="close()"></div>
+
+<div class="lb-overlay" *ngIf="lightbox.visible()" [class.lb-zoomed]="zoomed">
+  <button type="button" class="lb-close" (click)="close()" aria-label="بستن">&times;</button>
+
+  <img class="lb-image" [src]="lightbox.current?.src" [alt]="lightbox.current?.caption || ''">
+
+  <button type="button" class="lb-prev" *ngIf="lightbox.album().length > 1" (click)="previous($event)"
+    aria-label="قبلی">&#8249;</button>
+  <button type="button" class="lb-next" *ngIf="lightbox.album().length > 1" (click)="next($event)"
+    aria-label="بعدی">&#8250;</button>
+
+  <div class="lb-footer">
+    <span class="lb-number" *ngIf="showImageNumber()">{{lightbox.currentIndex() + 1}} / {{lightbox.album().length}}</span>
+    <button type="button" class="lb-zoom" *ngIf="showZoom()" (click)="toggleZoom()"
+      [title]="zoomed ? 'کوچک نمایش' : 'بزرگ نمایش'">
+      <i class="fa" [class.fa-search-plus]="!zoomed" [class.fa-search-minus]="zoomed"></i>
+    </button>
+  </div>
+</div>

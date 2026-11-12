@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
@@ -8,8 +8,10 @@ import { MainService } from 'src/app/services/main.service';
 import { UtilService } from 'src/app/services/util.service';
 
 @Component({
+  standalone: false,
   selector: 'app-product-list',
   templateUrl: './product-list.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./product-list.component.css']
 })
 export class ProductListComponent implements OnInit, OnDestroy {

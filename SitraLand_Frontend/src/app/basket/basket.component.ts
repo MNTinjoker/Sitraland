@@ -1,12 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { UtilService } from '../services/util.service';
 import { Router } from '@angular/router';
 import { MainService } from 'src/app/services/main.service';
 
 @Component({
+  standalone: false,
   selector: 'app-basket',
   templateUrl: './basket.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./basket.component.css']
 })
 export class BasketComponent implements OnInit {

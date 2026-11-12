@@ -5,17 +5,17 @@
       <h5 class="title-vod  mt-5 pt-4">{{title}}</h5>
     </div>
     <div>
-      <p-dataView #dv [value]="productList" [paginator]="true" [rows]="16" [sortField]="sortField"
+      <p-dataview #dv [value]="productList" [paginator]="true" [rows]="16" [sortField]="sortField"
         [sortOrder]="sortOrder" filterBy="productName" [layout]="layoutGird" emptyMessage="فعلا محصولی موجود نیست">
-        <ng-template pTemplate="header">
+        <ng-template #header>
           <div class="d-lg-flex justify-content-between ">
             <!-- <span (click)="onSortChange()"  -->
-            <!-- class=" col-lg-1  col-12 px-0 mb-2 p-input-icon-left sort-text p-mb-2 p-mb-md-0"> -->
+            <!-- class=" col-lg-1  col-12 px-0 mb-2 search-box sort-text mb-2 mb-md-0"> -->
             <!-- <i *ngIf="sortBar" class="fa fa-sort-amount-asc sort-icon" aria-hidden="true"></i>
               <i *ngIf="!sortBar" class="fa fa-sort-amount-desc sort-icon" aria-hidden="true"></i>
               مرتب سازی: -->
-            <!-- <p-dropdown [options]="sortOptions" [(ngModel)]="sortKey" placeholder="مرتب‌سازی"
-                (onChange)="onSortChange()" styleClass="mb-2 md:mb-0"></p-dropdown>
+            <!-- <p-select [options]="sortOptions" [(ngModel)]="sortKey" placeholder="مرتب‌سازی"
+                (onChange)="onSortChange()" styleClass="mb-2 md:mb-0"></p-select>
             </span> -->
             <ul id='categoryHomeList' class="d-lg-flex px-0 mb-3 mt-1"
               [ngClass]="{'customCategoryHomeList': isCustomStyle}">
@@ -23,15 +23,16 @@
                 <p class="mb-0">{{item.categoryTitle}}</p>
               </li>
             </ul>
-            <span class="p-input-icon-left col-lg-4 col-12 px-0">
+            <span class="search-box col-lg-4 col-12 px-0">
               <input pInputText type="text" placeholder='دنبال چه محصولی میگردی؟'
                 (input)="dv.filter($event.target.value)" class="input-search form-control">
               <img src="../../assets/images/search-normal.svg" wdith="30" class="searchImg" alt="">
             </span>
           </div>
         </ng-template>
-        <ng-template let-item pTemplate="gridItem">
-          <div [ngClass]="{'border-box-right': item.index%4==0}" (click)="goToProductDetail(item.productId)"
+        <ng-template #grid let-items>
+          <div *ngFor="let item of items" [ngClass]="{'border-box-right': item.index%4==0}"
+            (click)="goToProductDetail(item.productId)"
             class="col-lg-3 col-12 text-center p-3 border-box position-relative">
             <p *ngIf="item.count==0 " class="lock-text lock-text-slider lock-category-text">
               اتمام موجودی
@@ -46,10 +47,10 @@
               class="product-btns justify-content-between align-items-end w-100">
               <!-- <div class="d-flex align-items-center"
                 [ngClass]="{'justify-content-end': item.fldAmountCoin ==0 , 'justify-content-between' :item.fldAmountCoin !=0}">
-                <div *ngIf="item.fldAmountCoin !=0" class="d-flex align-items-center flex-row-reverse pr-2">
+                <div *ngIf="item.fldAmountCoin !=0" class="d-flex align-items-center flex-row-reverse pe-2">
                   <span class="coinTitle font-10">تام‌کوین</span> <span
-                    class="pl-1 font-16 bold pr-1">{{item.fldAmountCoin}}</span>
-                  <span class="coinTitle font-10 pr-2">تا سقف</span>
+                    class="ps-1 font-16 bold pe-1">{{item.fldAmountCoin}}</span>
+                  <span class="coinTitle font-10 pe-2">تا سقف</span>
                   <img src="../../../assets/images/coin.png" class="discount-coin-img" width="24" alt="">
                 </div> -->
               <!-- <img (click)="addToCart(item.fldPkDetailProduct)" src="../../../assets/images/buyIcon.png"
@@ -68,7 +69,7 @@
             </div>
           </div>
         </ng-template>
-      </p-dataView>
+      </p-dataview>
     </div>
   </div>
 </div>
