@@ -41,6 +41,8 @@ export class ProductCartegoryComponent implements OnInit, OnDestroy {
   firstRecord: number = 0;
   private lastLazyEvent: any = { first: 0, rows: 16 };
   private search$ = new Subject<string>();
+  // Ignores late responses, so an older search can not overwrite a newer result.
+  private loadRequestId = 0;
 
   async ngOnInit(): Promise<void> {
     this.sortOptions = [
@@ -98,13 +100,29 @@ export class ProductCartegoryComponent implements OnInit, OnDestroy {
     // The paginator of the data view follows the page that is shown.
     this.firstRecord = first;
 
-    this.mainService.getCategory(this.cartegoryId, page, rows, this.searchTerm).subscribe(res => {
-      this.productList = res['data'] ?? [];
-      this.productList.forEach((product: any, index: number) => {
-        product.index = index + 1;
-      });
-      this.totalRecords = res['totalCount'] ?? 0;
-      this.changeDetectorRef.markForCheck();
+    const requestId = ++this.loadRequestId;
+
+    this.mainService.getCategory(this.cartegoryId, page, rows, this.searchTerm).subscribe({
+      next: (res) => {
+        if (requestId !== this.loadRequestId) {
+          return;
+        }
+
+        this.productList = res['data'] ?? [];
+        this.productList.forEach((product: any, index: number) => {
+          product.index = index + 1;
+        });
+        this.totalRecords = res['totalCount'] ?? 0;
+        this.changeDetectorRef.markForCheck();
+      },
+      error: () => {
+        if (requestId !== this.loadRequestId) {
+          return;
+        }
+
+        this.utilService.showNotify('خطا در دریافت اطلاعات', 'error');
+        this.changeDetectorRef.markForCheck();
+      }
     });
   }
 
