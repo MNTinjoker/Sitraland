@@ -4,6 +4,7 @@ import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { SelectItem } from 'primeng/api';
+import { CartService } from 'src/app/services/cart.service';
 import { UtilService } from 'src/app/services/util.service';
 import { MainService } from 'src/app/services/main.service';
 
@@ -21,6 +22,7 @@ export class ProductCartegoryComponent implements OnInit, OnDestroy {
     private mainService: MainService,
     private router: Router,
     private utilService: UtilService,
+    private cartService: CartService,
     private activeRoute: ActivatedRoute
   ) { }
   cartegoryId: number = 2;
@@ -148,34 +150,17 @@ export class ProductCartegoryComponent implements OnInit, OnDestroy {
     this.router.navigate(['/product-detail/' + id ]);
   }
 
-  async addToCart(id, event?: Event) {
+  addToCart(id, event?: Event) {
     // The button is inside the card, the card must not open the product.
     if (event) {
       event.stopPropagation();
     }
 
     try {
-      let orders = localStorage.getItem('products');
-      let products: any = {
-        orders: []
-      }
-
-      if (orders) {
-        products = this.utilService.decryptData(orders);
-      }
-      let inCart = products.orders.findIndex(x => x.id == id);
-      if (inCart != -1) {
-        products.orders[inCart]['Number'] = products.orders[inCart]['Number'] + 1;
-      }
-      else {
-        let number = 1;
-        products.orders.push({ id, Number: number });
-      }
-      localStorage.setItem('products', this.utilService.encryptData(products));
+      this.cartService.addProduct(id, 1);
       this.utilService.showNotify(`محصول به سبد خریدت اضافه شد `, 'success');
-      this.utilService.checkBasketNumber(null);
-
     } catch (error) {
+      this.utilService.showNotify('خطا در افزودن به سبد خرید', 'error');
     }
   }
 

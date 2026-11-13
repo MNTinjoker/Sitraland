@@ -1,5 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { environment } from 'src/environments/environment';
+import { CartService } from '../services/cart.service';
 import { UtilService } from '../services/util.service';
 import { Router } from '@angular/router';
 import { MainService } from 'src/app/services/main.service';
@@ -16,6 +17,7 @@ export class BasketComponent implements OnInit {
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
     private utilService: UtilService,
+    private cartService: CartService,
     private router: Router,
     private mainService: MainService
   ) { }
@@ -31,15 +33,14 @@ export class BasketComponent implements OnInit {
   productsId: any = [];
 
   ngOnInit(): void {
-    localStorage.getItem('products') ? this.mode = 1 : this.mode = 2;
+    this.mode = this.cartService.getCount() > 0 ? 1 : 2;
     this.getCartDetail();
   }
 
   async getCartDetail() {
-    let products = localStorage.getItem('products');
-    let temp: any = products ? this.utilService.decryptData(products) : null;
+    const orders = this.cartService.getOrders();
 
-    if (!temp || !temp.orders) {
+    if (!orders.length) {
       // A visitor without a basket gets the empty basket, not an error.
       this.mode = 2;
       this.cartDetail = [];
@@ -47,30 +48,43 @@ export class BasketComponent implements OnInit {
       return;
     }
 
-    let orders = temp.orders;
     await this.getProductsId(orders);
     this.changeDetectorRef.markForCheck();
-    let data = await this.mainService.cart(this.productsId).toPromise();
-    this.cartDetail = [];
-    data.forEach(element => {
-      if (element && element[0]) {
-        this.cartDetail.push(element[0]);
-      }
-    });
-    for (let i = 0; i < this.cartDetail.length; i++) {
-      let index = temp.orders.findIndex(x => x.id == this.cartDetail[i]["productId"]);
-      this.cartDetail[i]["fldPurchaseLimit"] = this.cartDetail[i]["count"];
-      this.cartDetail[i]["count"] = temp.orders[index]['Number'];
-      // this.cartDetail[i]["propertyValue"] = temp.orders[index]['propertyValue'];
-    }
 
-    this.calculatePrice();
+    try {
+      let data = await this.mainService.cart(this.productsId).toPromise();
+      this.cartDetail = [];
+      if (Array.isArray(data)) {
+        data.forEach((element: any) => {
+          if (element && element[0]) {
+            this.cartDetail.push(element[0]);
+          }
+        });
+      }
+
+      for (let i = 0; i < this.cartDetail.length; i++) {
+        let index = orders.findIndex((x: any) => x.id == this.cartDetail[i]["productId"]);
+        if (index === -1) {
+          continue;
+        }
+        this.cartDetail[i]["fldPurchaseLimit"] = this.cartDetail[i]["count"];
+        this.cartDetail[i]["count"] = orders[index]['Number'];
+      }
+
+      if (this.cartDetail.length === 0) {
+        this.mode = 2;
+      } else {
+        this.mode = 1;
+      }
+
+      this.calculatePrice();
+    } catch (error) {
+      this.utilService.showNotify('خطا در دریافت اطلاعات سبد خرید', 'error');
+    }
   }
 
   removeBasket(id) {
-    const products = localStorage.getItem('products');
-    const temp: any = products ? this.utilService.decryptData(products) : null;
-    const orders = Array.isArray(temp?.orders) ? temp.orders : [];
+    const orders = this.cartService.getOrders();
     const localIndex = orders.findIndex((x: any) => x.id == id);
     if (localIndex !== -1) {
       orders.splice(localIndex, 1);
@@ -82,15 +96,13 @@ export class BasketComponent implements OnInit {
       this.cartDetail.splice(productIndex, 1);
     }
 
-    if (orders.length === 0) {
-      localStorage.removeItem('products');
+    this.cartService.setOrders(orders);
+
+    if (orders.length === 0 || this.cartDetail.length === 0) {
       this.cartDetail = [];
       this.mode = 2;
-    } else {
-      localStorage.setItem('products', this.utilService.encryptData({ orders: orders }));
     }
 
-    this.utilService.checkBasketNumber(null);
     this.calculatePrice();
   }
 
@@ -111,9 +123,7 @@ export class BasketComponent implements OnInit {
       return;
     }
 
-    const products = localStorage.getItem('products');
-    const temp: any = products ? this.utilService.decryptData(products) : null;
-    const orders = Array.isArray(temp?.orders) ? temp.orders : [];
+    const orders = this.cartService.getOrders();
     const orderIndex = orders.findIndex((x: any) => x.id == id);
     if (orderIndex === -1) {
       return;
@@ -126,14 +136,13 @@ export class BasketComponent implements OnInit {
       orders[orderIndex]['newCount'] = (Number(orders[orderIndex]['newCount']) || 0) - delta;
     }
 
-    localStorage.setItem('products', this.utilService.encryptData({ orders: orders }));
+    this.cartService.setOrders(orders);
     this.calculatePrice();
   }
 
   removeAllProduct() {
-    localStorage.removeItem('products');
+    this.cartService.clear();
     this.cartDetail = [];
-    this.utilService.checkBasketNumber(null);
     this.totalPrice = 0;
     this.totalProduct = 0;
     this.mode = 2;

@@ -1,8 +1,10 @@
-import { ChangeDetectorRef, Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import swal from "sweetalert2";
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { LightboxService } from 'src/app/share/lightbox.service';
+import { CartService } from 'src/app/services/cart.service';
 import { UtilService } from 'src/app/services/util.service';
 import { MainService } from 'src/app/services/main.service';
 
@@ -14,11 +16,13 @@ import { MainService } from 'src/app/services/main.service';
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./product-detail.component.css']
 })
-export class ProductDetailComponent implements OnInit {
+export class ProductDetailComponent implements OnInit, OnDestroy {
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
     private utilService: UtilService,
+    private cartService: CartService,
     private router: Router,
+    private activeRoute: ActivatedRoute,
     private _lightbox: LightboxService,
     private mainService: MainService
   ) { }
@@ -27,6 +31,7 @@ export class ProductDetailComponent implements OnInit {
   productId: number = 0;
   productDetail: any = null;
   loader: boolean = true;
+  notFound: boolean = false;
   propertyOption: any;
   propertyString: string = '';
   galleryImages: string[] = [];
@@ -36,25 +41,59 @@ export class ProductDetailComponent implements OnInit {
   public album: any = [];
   productThumbCarouselOption: any = { navText: ['<i class="fa fa-chevron-left"></i>', '<i class="fa fa-chevron-right"></i>'], items: 3, dots: false, nav: false };
   categoryId: any;
+  private routeSub?: Subscription;
 
-  async ngOnInit() {
-    this.productId = +window.location.pathname.split('/')[2];
-    await this.getDetails();
-    this.changeDetectorRef.markForCheck();
-    await this.getProductGallery();
-    this.changeDetectorRef.markForCheck();
+  ngOnInit() {
     this.propertyOption = {
       multiple: false,
       tags: false,
-    }
+    };
+
+    this.routeSub = this.activeRoute.paramMap.subscribe(async params => {
+      const id = +(params.get('id') || 0);
+      if (!id) {
+        this.productDetail = null;
+        this.notFound = true;
+        this.loader = false;
+        this.changeDetectorRef.markForCheck();
+        return;
+      }
+
+      this.productId = id;
+      await this.loadProduct();
+    });
   }
 
-  async getDetails() {
-    let data = await this.mainService.getProduct(this.productId).toPromise();
-    this.productDetail = data['data'] ? data['data'][0] : null;
-    this.categoryId = this.productDetail ? this.productDetail['categoryId'] : null;
+  ngOnDestroy(): void {
+    this.routeSub?.unsubscribe();
+  }
 
-    this.loader = false;
+  private async loadProduct() {
+    this.loader = true;
+    this.notFound = false;
+    this.productDetail = null;
+    this.galleryImages = [];
+    this.mainImage = '';
+    this.changeDetectorRef.markForCheck();
+
+    try {
+      const data = await this.mainService.getProduct(this.productId).toPromise();
+      this.productDetail = data?.['data'] ? data['data'][0] : null;
+      this.categoryId = this.productDetail ? this.productDetail['categoryId'] : null;
+
+      if (!this.productDetail) {
+        this.notFound = true;
+        return;
+      }
+
+      await this.getProductGallery();
+    } catch (error) {
+      this.utilService.showNotify('خطا در دریافت اطلاعات محصول', 'error');
+      this.notFound = true;
+    } finally {
+      this.loader = false;
+      this.changeDetectorRef.markForCheck();
+    }
   }
 
   async getProductGallery() {
@@ -65,51 +104,44 @@ export class ProductDetailComponent implements OnInit {
 
     try {
       let res = await this.mainService.getProductGallery(this.productId).toPromise();
-      (res['data'] || []).forEach((path: string) => {
+      (res?.['data'] || []).forEach((path: string) => {
         if (path && this.galleryImages.indexOf(path) === -1) {
           this.galleryImages.push(path);
         }
       });
     } catch (error) {
-      this.utilService.showNotify('خطا در دریافت گالری تصاویر', 'error');
+      // The gallery is optional; the main product image is still shown.
     }
 
     this.mainImage = this.galleryImages.length > 0 ? this.galleryImages[0] : '';
   }
 
-  async addToCart() {
-    let id = this.productId;
+  addToCart() {
+    if (!this.productDetail || this.productDetail.count < 1) {
+      return;
+    }
+
     try {
-      let orders = localStorage.getItem('products');
-      let products: any = {
-        orders: []
-      }
-
-      if (orders) {
-        products = this.utilService.decryptData(orders);
-      }
-
-      this.productDetail.addInCart = true;
-      let inCart = products.orders.findIndex(x => x.id == id);
-      if (inCart != -1) {
-        products.orders[inCart]['Number'] = products.orders[inCart]['Number'] + 1;
-        products.orders[inCart]['newCount'] = products.orders[inCart]['newCount'] - 1;
-      }
-      else {
-        let number = 1;
-        products.orders.push({
-          id,
-          Number: number,
-          newCount: this.productDetail.count - number,
+      const orders = this.cartService.getOrders();
+      const index = orders.findIndex((x: any) => x.id == this.productId);
+      if (index !== -1) {
+        orders[index]['Number'] = (Number(orders[index]['Number']) || 0) + 1;
+        if (orders[index]['newCount'] != null) {
+          orders[index]['newCount'] = (Number(orders[index]['newCount']) || 0) - 1;
+        }
+      } else {
+        orders.push({
+          id: this.productId,
+          Number: 1,
+          newCount: (Number(this.productDetail.count) || 1) - 1,
           propertyValue: this.propertyString,
           purchaseLimit: this.productDetail.fldPurchaseLimit,
           category: this.productDetail.category
         });
       }
 
-      localStorage.setItem('products', this.utilService.encryptData(products));
+      this.cartService.setOrders(orders);
       this.utilService.showNotify(`محصول به سبد خریدت اضافه شد `, 'success');
-      this.utilService.checkBasketNumber(null);
 
       if (this.productDetail.category != '13') {
         const swalWithBootstrapButtons: any = (swal as any).mixin({
@@ -124,19 +156,17 @@ export class ProductDetailComponent implements OnInit {
           html: this.getPropertyText(),
           type: "success",
           showCancelButton: true,
-          confirmButtonText: "اضافه کردن به سفارش",
-          cancelButtonText: "پرداخت و نهایی کردن خرید",
+          confirmButtonText: "ادامه خرید",
+          cancelButtonText: "رفتن به سبد خرید",
           reverseButtons: false,
-        })
-          .then(async (result) => {
-            if (result.value) {
-
-            } else {
-              this.router.navigate(['/basket'])
-            }
-          });
+        }).then((result: any) => {
+          if (result && !result.value) {
+            this.router.navigate(['/basket']);
+          }
+        });
       }
     } catch (error) {
+      this.utilService.showNotify('خطا در افزودن به سبد خرید', 'error');
     }
   }
 

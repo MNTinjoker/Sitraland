@@ -1,5 +1,7 @@
-import { ChangeDetectorRef, HostListener, Component, OnInit, AfterViewInit, ChangeDetectionStrategy } from '@angular/core';
-import { Router, Event, NavigationEnd, NavigationStart, NavigationError } from '@angular/router';
+import { ChangeDetectorRef, HostListener, Component, OnDestroy, OnInit, AfterViewInit, ChangeDetectionStrategy } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { CartService } from '../services/cart.service';
 import { UtilService } from '../services/util.service';
 // import { UtilService } from '../../_services/util.service';
 // import { CookieService } from 'ngx-cookie-service';
@@ -35,7 +37,7 @@ declare var $: any;
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ["./navbar.component.css"],
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent implements OnInit, OnDestroy {
   isAdmin = false;
   logo: string = '';
   innerWidth = window.innerWidth;
@@ -78,6 +80,7 @@ export class NavbarComponent implements OnInit {
   // };
   userName = 'مهمان'
   cartCount = 0
+  private cartSub?: Subscription;
 
 
   @HostListener("window:resize", ["$event.target"])
@@ -105,50 +108,33 @@ export class NavbarComponent implements OnInit {
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
     private router: Router,
-    private utilService: UtilService
+    private utilService: UtilService,
+    private cartService: CartService
   ) {
     this.router.events.subscribe((e) => {
-      // if (window.location.pathname.indexOf('admin') !== -1) {
+      // Keep the user/admin menu state in sync with the current page.
       this.chcekUser();
       this.seeUserMenu();
-      this.getCartCount();
       this.changeDetectorRef.markForCheck();
     });
   }
 
 
-  async ngOnInit() {
-    // if (window.location.pathname.indexOf('admin') !== -1) {
-    //   this.isAdmin = true;
-    // }
-
-
+  ngOnInit() {
     this.chcekUser();
     this.checkScreen();
     this.sidebarList = AdminMenu;
     this.seeUserMenu();
-    this.getCartCount();
 
+    // The cart badge is shared, so it updates without a page navigation.
+    this.cartSub = this.cartService.count$.subscribe(count => {
+      this.cartCount = count;
+      this.changeDetectorRef.markForCheck();
+    });
   }
 
-  async getCartCount() {
-    let products = localStorage.getItem('products');
-
-    if (!products) {
-      this.cartCount = 0;
-      return;
-    }
-
-    let temp: any = this.utilService.decryptData(products);
-
-    if (!temp || !Array.isArray(temp.orders)) {
-      this.cartCount = 0;
-      return;
-    }
-
-    let cartCount = temp.orders.length;
-    this.cartCount = cartCount;
-    this.utilService.checkBasketNumber(cartCount);
+  ngOnDestroy(): void {
+    this.cartSub?.unsubscribe();
   }
 
   hamburgerClick2() {
@@ -163,7 +149,13 @@ export class NavbarComponent implements OnInit {
   searchTerm: string = '';
 
   search(term: string) {
-    this.router.navigate(['/product-cartegory'], { queryParams: { search: term } });
+    const value = (term ?? '').trim();
+    this.searchTerm = value;
+    if (!value) {
+      this.router.navigate(['/product-cartegory']);
+      return;
+    }
+    this.router.navigate(['/product-cartegory'], { queryParams: { search: value } });
   }
 
   goToAdminPage() {

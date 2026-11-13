@@ -1,10 +1,10 @@
 import { ChangeDetectorRef, Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import moment from 'jalali-moment';
+import { CartService } from 'src/app/services/cart.service';
 import { MainService } from 'src/app/services/main.service';
 import { UtilService } from 'src/app/services/util.service';
 import { environment } from 'src/environments/environment';
-declare const $: any
 
 @Component({
   standalone: false,
@@ -20,6 +20,7 @@ export class CheckoutShopComponent implements OnInit {
     private router: Router,
     private activeRoute: ActivatedRoute,
     private utilService: UtilService,
+    private cartService: CartService,
     private mainService: MainService,
   ) { }
   server: string = environment.url + '/images/';
@@ -33,8 +34,8 @@ export class CheckoutShopComponent implements OnInit {
   cartDetail: any = [];
   submit = false;
   showConfirmAddress: boolean = false;
-  finalPrice: number;
-  defaultFinalPrice: number;
+  finalPrice: number = 0;
+  defaultFinalPrice: number = 0;
   orderDescription: string;
   receiverName: string;
   buttonTxt: string = 'ثبت سفارش';
@@ -47,8 +48,6 @@ export class CheckoutShopComponent implements OnInit {
   async ngOnInit() {
     await this.getCartDetail();
     this.changeDetectorRef.markForCheck();
-    this.finalPrice = +sessionStorage.getItem('finalprice');
-    this.defaultFinalPrice = +sessionStorage.getItem('finalprice');
   }
 
 
@@ -79,44 +78,60 @@ export class CheckoutShopComponent implements OnInit {
   }
 
   async getCartDetail() {
-    let products = localStorage.getItem('products');
-    let temp: any = this.utilService.decryptData(products);
-    let orders = temp && temp.orders ? temp.orders : [];
-    if (orders.length == 0) {
+    const orders = this.cartService.getOrders();
+    if (!orders.length) {
       this.router.navigate(['/basket']);
       return;
     }
-    let ids = [];
-    let numbers = [];
-    let newCounts = [];
-    orders.forEach(async (element) => {
-      ids.push(element.id);
-      numbers.push(element.Number);
-      newCounts.push(element.newCount);
-    });
-    let model = ids;
-    this.userInfo.productId = ids;
-    this.userInfo.count = numbers;
-    this.userInfo.lastCount = newCounts;
-    let data = await this.mainService.cart(model).toPromise();
-    this.cartDetail = [];
-    data.forEach(element => {
-      if (element && element[0]) {
-        this.cartDetail.push(element[0]);
+
+    const ids = orders.map((o: any) => o.id);
+
+    try {
+      const data = await this.mainService.cart(ids).toPromise();
+      this.cartDetail = [];
+      if (Array.isArray(data)) {
+        data.forEach((element: any) => {
+          if (element && element[0]) {
+            this.cartDetail.push(element[0]);
+          }
+        });
       }
-    });
-    let productNames = [];
-    this.cartDetail.forEach(element => {
-      productNames.push(element.productName);
 
-    });
-    this.userInfo.productNames = productNames.join(',');
+      const orderedIds: any[] = [];
+      const numbers: any[] = [];
+      const newCounts: any[] = [];
+      const names: string[] = [];
+      let total = 0;
+      let items = 0;
 
+      this.cartDetail.forEach((product: any) => {
+        const order = orders.find((o: any) => o.id == product.productId);
+        const count = Number(order?.Number) || 1;
+        product.orderCount = count;
+        orderedIds.push(product.productId);
+        numbers.push(count);
+        newCounts.push(order?.newCount);
+        names.push(product.productName);
+        total += (Number(product.price) || 0) * count;
+        items += count;
+      });
 
-    let products2 = localStorage.getItem('productFinalList');
-    let temp2: any = this.utilService.decryptData(products2);
-    let orderList = temp2 ? temp2.Product : null;
-    this.totalItems = orderList ? orderList.totalProduct : this.cartDetail.length;
+      if (!this.cartDetail.length) {
+        this.router.navigate(['/basket']);
+        return;
+      }
+
+      this.userInfo.productId = orderedIds;
+      this.userInfo.count = numbers;
+      this.userInfo.lastCount = newCounts;
+      this.userInfo.productNames = names.join(',');
+      this.totalItems = items;
+      this.finalPrice = total;
+      this.defaultFinalPrice = total;
+    } catch (error) {
+      this.utilService.showNotify('خطا در دریافت اطلاعات سبد خرید', 'error');
+      this.router.navigate(['/basket']);
+    }
   }
 
 
@@ -127,6 +142,20 @@ export class CheckoutShopComponent implements OnInit {
       this.utilService.showNotify('لطفا تمامی موارد را وارد کنید', "error");
       return;
     }
+
+    const mobile = String(this.userInfo.mobile || '').trim();
+    const nationalCode = String(this.userInfo.nationalCode || '').trim();
+    if (!/^09\d{9}$/.test(mobile)) {
+      this.utilService.showNotify('شماره موبایل معتبر نیست', "error");
+      return;
+    }
+    if (!/^\d{10}$/.test(nationalCode)) {
+      this.utilService.showNotify('کد ملی معتبر نیست', "error");
+      return;
+    }
+
+    this.userInfo.mobile = mobile;
+    this.userInfo.nationalCode = nationalCode;
     this.receiverName = this.userInfo.name + ' ' + this.userInfo.lastName;
     this.showConfirmAddress = true;
   }
@@ -139,52 +168,63 @@ export class CheckoutShopComponent implements OnInit {
 
 
   async finalApproval() {
-    this.utilService.sweetAlert({
-      title: "از تکمیل سفارشت مطمئنی؟",
-      text: '',
-    }).then(async (data) => {
-      if (data.value) {
-        let model = {
-          name: this.userInfo.name,
-          lastName: this.userInfo.lastName,
-          address: this.userInfo.address,
-          nationalCode: this.userInfo.nationalCode,
-          count: this.userInfo.count,
-          productId: this.userInfo.productId,
-          mobile: this.userInfo.mobile,
-          status: 0,
-          basketCode: null,
-          tozihat: this.userInfo.orderDescription,
-          ostan: this.userInfo.State,
-          titles: this.userInfo.productNames,
-          lastCount: this.userInfo.lastCount,
-          basketDate: moment().format('jYYYY/jMM/jDD'),
-          totalPrice: this.finalPrice
-        }
-        try {
-          let res = await this.mainService.saveOrder(model).toPromise();
-          if (res['code'] != 200) {
-            this.utilService.showNotify(res['message'] || 'خطا در ثبت سفارش', 'error');
-            return;
-          }
-          this.orderTrackingId = res['message'];
-          localStorage.removeItem("products");
-          localStorage.removeItem("productFinalList");
-          // Updating the cart badge must never hide a successfully saved order.
-          try {
-            $(".basket-num").attr('data-content', '');
-            document.getElementsByClassName('basket-num')[0]['children'][0].classList.remove('iconboxBlinker');
-          } catch (uiError) {
-          }
-          this.submit = false;
-          this.step = '3';
-        } catch (error) {
-          this.utilService.showNotify('خطا در ثبت سفارش', 'error');
-        }
+    if (this.submit) {
+      return;
+    }
 
+    if (!Array.isArray(this.userInfo.productId) || this.userInfo.productId.length === 0 || !(this.finalPrice > 0)) {
+      this.utilService.showNotify('سبد خرید نامعتبر است، لطفا دوباره بررسی کنید', 'error');
+      return;
+    }
+
+    const confirm = await this.utilService.sweetAlert({
+      title: "از تکمیل سفارشت مطمئنی؟",
+      message: '',
+    });
+    if (!confirm || !confirm.value) {
+      return;
+    }
+
+    this.submit = true;
+    this.buttonTxt = 'در حال ثبت...';
+    this.changeDetectorRef.markForCheck();
+
+    const model = {
+      name: this.userInfo.name,
+      lastName: this.userInfo.lastName,
+      address: this.userInfo.address,
+      nationalCode: this.userInfo.nationalCode,
+      count: this.userInfo.count,
+      productId: this.userInfo.productId,
+      mobile: this.userInfo.mobile,
+      status: 0,
+      basketCode: null,
+      tozihat: this.userInfo.orderDescription,
+      ostan: this.userInfo.State,
+      titles: this.userInfo.productNames,
+      lastCount: this.userInfo.lastCount,
+      basketDate: moment().format('jYYYY/jMM/jDD'),
+      totalPrice: this.finalPrice
+    };
+
+    try {
+      const res = await this.mainService.saveOrder(model).toPromise();
+      if (!res || res['code'] != 200) {
+        this.utilService.showNotify(res?.['message'] || 'خطا در ثبت سفارش', 'error');
+        return;
       }
-    }).then(data => {
-    })
+
+      this.orderTrackingId = res['message'];
+      this.cartService.clear();
+      localStorage.removeItem("productFinalList");
+      this.step = '3';
+    } catch (error) {
+      this.utilService.showNotify('خطا در ثبت سفارش، دوباره تلاش کنید', 'error');
+    } finally {
+      this.submit = false;
+      this.buttonTxt = 'ثبت سفارش';
+      this.changeDetectorRef.markForCheck();
+    }
   }
 
 

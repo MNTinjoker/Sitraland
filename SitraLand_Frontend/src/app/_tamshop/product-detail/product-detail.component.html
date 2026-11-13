@@ -6,6 +6,10 @@
           <!-- <i class="fa fa-spin fa-spinner fa-2x"></i> -->
         </div>
       </div>
+      <div class="text-center py-5" *ngIf="!loader && notFound">
+        <h5 class="title-vod mb-3">محصول پیدا نشد</h5>
+        <a class="btn btn-outline-danger" routerLink="/home">بازگشت به صفحه اصلی</a>
+      </div>
       <div class="row mt-3 mb-5" *ngIf="!loader && productDetail">
         <div class="col-12 mb-3">
           <div class="product-box row text-end">
