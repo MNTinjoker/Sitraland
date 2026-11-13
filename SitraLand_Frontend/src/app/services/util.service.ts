@@ -94,13 +94,19 @@ export class UtilService {
   }
 
   checkBlinker(items, count) {
-    let len = items.orders.length > 0 ? items.orders.length : count;
+    let len = (items?.orders?.length ?? 0) > 0 ? items.orders.length : count;
+    $(".basket-num").attr('data-content', len > 0 ? len : '');
+
+    // The basket number is only on some pages, so it can be missing.
+    const basketIcon = document.getElementsByClassName('basket-num')[0]?.children[0];
+    if (!basketIcon) {
+      return;
+    }
+
     if (len > 0) {
-      $(".basket-num").attr('data-content', len);
-      document.getElementsByClassName('basket-num')[0]['children'][0].classList.add('iconboxBlinker');
+      basketIcon.classList.add('iconboxBlinker');
     } else {
-      $(".basket-num").attr('data-content', '');
-      document.getElementsByClassName('basket-num')[0]['children'][0].classList.remove('iconboxBlinker');
+      basketIcon.classList.remove('iconboxBlinker');
     }
   }
 

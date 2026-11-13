@@ -220,9 +220,12 @@ namespace SitraLand_Api.Services.Implementations
             return result;
         }
 
-        public async Task<ResponseGlobal> GetCategory(int categoryId)
+        public async Task<ResponseGlobal> GetCategory(int categoryId, int page = 1, int pageSize = 16, string? search = null)
         {
             var result = new ResponseGlobal();
+
+            page = page < 1 ? 1 : page;
+            pageSize = pageSize is < 1 or > 100 ? 16 : pageSize;
 
             var query = _databaseContext.Products.AsNoTracking();
             if (categoryId != -1)
@@ -230,21 +233,37 @@ namespace SitraLand_Api.Services.Implementations
                 query = query.Where(p => p.CategoryId == categoryId);
             }
 
-            var products = await query.Select(p => new
+            if (!string.IsNullOrWhiteSpace(search))
             {
-                p.Count,
-                p.ProductDescription,
-                p.ExtraDetails,
-                p.ProductId,
-                p.ImageFolderPath,
-                p.IsActive,
-                p.ProductName,
-                p.Price,
-                p.CategoryId
-            }).ToListAsync();
+                var term = search.Trim();
+                query = query.Where(p => p.ProductName.Contains(term) || p.ProductDescription.Contains(term));
+            }
+
+            var totalCount = await query.CountAsync();
+
+            // Only the fields the list needs, the description of the editor is heavy
+            // and is loaded on the product page alone.
+            var products = await query
+                .OrderByDescending(p => p.Count)
+                .ThenByDescending(p => p.ProductId)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .Select(p => new
+                {
+                    p.Count,
+                    p.ProductDescription,
+                    p.ProductId,
+                    p.ImageFolderPath,
+                    p.IsActive,
+                    p.ProductName,
+                    p.Price,
+                    p.CategoryId
+                })
+                .ToListAsync();
 
             result.Message = "success";
             result.Code = (int)HttpStatusCode.OK;
+            result.TotalCount = totalCount;
             result.Data = products;
             return result;
         }

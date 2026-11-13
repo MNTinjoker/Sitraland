@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription, timer } from 'rxjs';
 import { MainService } from 'src/app/services/main.service';
@@ -22,6 +22,7 @@ import { trigger, state, transition, style, animate } from '@angular/animations'
 export class homeComponent implements OnInit {
 
   constructor(
+    private changeDetectorRef: ChangeDetectorRef,
     private mainService: MainService,
     private router: Router,
   ) { }
@@ -85,8 +86,33 @@ export class homeComponent implements OnInit {
   //     ]
   categoryId = -1;
 
-  async ngOnInit() {
+  // The categories are read from the database, the ids are never hardcoded.
+    private static readonly categoryImages: { [key: string]: string } = {
+    'موتور': 'engine.svg',
+    'گیربکس': 'gearbox.svg',
+    'بدنه': 'body.svg',
+    'برقی': 'electronic.svg'
+  };
+  categories: any[] = [];
 
+  /** The image of a category, the title in the database can have a suffix. */
+
+  private categoryImage(title?: string): string | undefined {
+
+    const key = Object.keys(homeComponent.categoryImages).find(name => title?.includes(name));
+
+    return key ? homeComponent.categoryImages[key] : undefined;
+
+  }
+
+  async ngOnInit() {
+    const data = await this.mainService.getCategories().toPromise();
+
+    this.categories = (data['data'] ?? []).map(category => ({
+      id: category.categoryId,
+      title: category.categoryTitle,
+      src: '../../../assets/images/' + (this.categoryImage(category.categoryTitle) ?? 'more.svg')
+    }));
   }
 
   //     let res = await this.getCategoryProducts(-1, -1);

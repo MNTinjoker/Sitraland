@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
@@ -16,6 +16,7 @@ import { environment } from 'src/environments/environment';
 export class OrdersListComponent implements OnInit, OnDestroy {
 
   constructor(
+    private changeDetectorRef: ChangeDetectorRef,
     private router: Router,
     private mainService: MainService,
     private utilService: UtilService
@@ -27,13 +28,14 @@ export class OrdersListComponent implements OnInit, OnDestroy {
   loading: boolean = false;
   selectedStatus: number = -1;
   searchTerm: string = '';
-  private lastLazyEvent: any = { first: 0, rows: 10 };
+  lastLazyEvent: any = { first: 0, rows: 10 };
   private search$ = new Subject<string>();
 
   ngOnInit() {
     this.search$
       .pipe(debounceTime(400), distinctUntilChanged())
       .subscribe(term => {
+      this.changeDetectorRef.markForCheck();
         this.searchTerm = term;
         this.lastLazyEvent = { ...this.lastLazyEvent, first: 0 };
         this.loadOrders(this.lastLazyEvent);
@@ -97,6 +99,7 @@ export class OrdersListComponent implements OnInit, OnDestroy {
         try {
           await this.mainService.sendOrderConfirm(id).toPromise();
           await this.loadOrders(this.lastLazyEvent);
+          this.changeDetectorRef.markForCheck();
         } catch (error) {
           this.utilService.showNotify('خطایی پیش آمده', 'error');
         }

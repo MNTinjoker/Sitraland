@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SitraLand_Api.Configurations.Entities;
 
@@ -23,6 +23,14 @@ namespace SitraLand_Api.Data
             builder.Entity<ProductGallery>(entity =>
             {
                 entity.HasIndex(g => g.ProductId);
+            });
+
+            // The category list and the "only available products" filter are the
+            // most used queries of the shop, they need an index.
+            builder.Entity<Product>(entity =>
+            {
+                entity.HasIndex(p => p.CategoryId);
+                entity.HasIndex(p => p.IsActive);
             });
         }
     }

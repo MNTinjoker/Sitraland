@@ -1,6 +1,6 @@
 import { FooterModule } from './footer/footer.module';
 
-import { NgModule } from '@angular/core';
+import { NgModule, provideZoneChangeDetection } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
@@ -90,6 +90,9 @@ const customNotifierOptions: NotifierOptions = {
     NotifierModule.withConfig(customNotifierOptions)
   ],
   providers: [
+    // Angular 22 is zoneless by default, the components of this application load their
+    // data into plain fields, so the classic zone based change detection is used.
+    provideZoneChangeDetection(),
     provideHttpClient(withInterceptorsFromDi()),
     providePrimeNG({
       theme: {

@@ -8,7 +8,7 @@
       </div>
       <div class="row">
         <div class="col-12">
-          <p-table #dt [showGridlines]="true" [rows]="10" [paginator]="true"
+          <p-table #dt [showGridlines]="true" [first]="lastLazyEvent.first" [rows]="10" [paginator]="true"
             [lazy]="true" [loading]="loading" [totalRecords]="totalRecords" (onLazyLoad)="loadProducts($event)"
             [value]="productList">
             <ng-template #header>
@@ -48,9 +48,9 @@
                 <th class="button-box"></th>
               </tr>
             </ng-template>
-            <ng-template #body>
+            <ng-template #body let-product let-rowIndex="rowIndex">
               <tr>
-                <td class="min-width">{{i+1}}</td>
+                <td class="min-width">{{rowIndex + 1}}</td>
                 <td class="min-width">
                   <img width="50" [src]="server + product.imageFolderPath" alt="">
                 </td>

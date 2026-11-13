@@ -6,9 +6,15 @@
         <span class="line-hamurger my-1"></span>
         <span class="line-hamurger"></span>
       </div>
+      <div class="navbar-search d-flex align-items-center">
+        <input #searchInput type="search" class="form-control" placeholder="دنبال چه محصولی میگردی؟" (keyup.enter)="search(searchInput.value)">
+        <button class="btn btn-primary ms-2" type="button" (click)="search(searchInput.value)" aria-label="search">
+          <i class="fa fa-search"></i>
+        </button>
+      </div>
       <div id="logoInNavbar" class="col-lg-4 text-end pe-0">
         <a>
-          <img class="logo-navbar" src="../../assets/images/navbar-logo.png" class="me-2 logoS" alt="SitraLand">
+          <img class="logo-navbar me-2 logoS" src="../../assets/images/navbar-logo.webp" alt="SitraLand">
         </a>
       </div>
       <div class="d-flex align-items-center">

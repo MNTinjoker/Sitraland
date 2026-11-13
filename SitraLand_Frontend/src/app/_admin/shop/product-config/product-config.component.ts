@@ -1,6 +1,6 @@
 
 import { Router, ActivatedRoute } from '@angular/router';
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { LightboxService } from 'src/app/share/lightbox.service';
 import { MainService } from 'src/app/services/main.service';
 import { environment } from 'src/environments/environment';
@@ -47,6 +47,7 @@ export class ProductConfigComponent implements OnInit {
   files: any = [];
   constructor
     (
+      private changeDetectorRef: ChangeDetectorRef,
       private _lightbox: LightboxService,
       private mainService: MainService,
       private router: Router,
@@ -322,6 +323,7 @@ export class ProductConfigComponent implements OnInit {
       if (res['data'] == 1) {
         this.customGalleryModel = [];
         await this.getProductImage();
+        this.changeDetectorRef.markForCheck();
         this.utilService.showNotify('با موفقیت ذخیره شد', 'success')
       } else {
         this.utilService.showNotify(res['message'] || 'خطا در ذخیره اطلاعات', 'error')

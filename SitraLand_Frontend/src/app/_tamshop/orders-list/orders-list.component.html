@@ -18,7 +18,7 @@
         </div>
       </div>
       <div class="col-12">
-        <p-table #dt [showGridlines]="true" [rows]="10" [paginator]="true"
+        <p-table #dt [showGridlines]="true" [first]="lastLazyEvent.first" [rows]="10" [paginator]="true"
           [lazy]="true" [loading]="loading" [totalRecords]="totalRecords" (onLazyLoad)="loadOrders($event)"
           [value]="ordersList">
           <ng-template #header>
@@ -49,7 +49,7 @@
               <th class="min-width"></th>
             </tr>
           </ng-template>
-          <ng-template #body>
+          <ng-template #body let-order>
             <tr>
               <td class="min-width">{{order.basketCode}}</td>
               <td class="min-width">{{order.fullName}}</td>

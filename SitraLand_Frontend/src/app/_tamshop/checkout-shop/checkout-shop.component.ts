@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import moment from 'jalali-moment';
 import { MainService } from 'src/app/services/main.service';
@@ -16,6 +16,7 @@ declare const $: any
 export class CheckoutShopComponent implements OnInit {
 
   constructor(
+    private changeDetectorRef: ChangeDetectorRef,
     private router: Router,
     private activeRoute: ActivatedRoute,
     private utilService: UtilService,
@@ -45,6 +46,7 @@ export class CheckoutShopComponent implements OnInit {
 
   async ngOnInit() {
     await this.getCartDetail();
+    this.changeDetectorRef.markForCheck();
     this.finalPrice = +sessionStorage.getItem('finalprice');
     this.defaultFinalPrice = +sessionStorage.getItem('finalprice');
   }

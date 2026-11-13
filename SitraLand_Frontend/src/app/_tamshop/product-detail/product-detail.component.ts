@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import swal from "sweetalert2";
 import { Router } from '@angular/router';
@@ -16,6 +16,7 @@ import { MainService } from 'src/app/services/main.service';
 })
 export class ProductDetailComponent implements OnInit {
   constructor(
+    private changeDetectorRef: ChangeDetectorRef,
     private utilService: UtilService,
     private router: Router,
     private _lightbox: LightboxService,
@@ -39,7 +40,9 @@ export class ProductDetailComponent implements OnInit {
   async ngOnInit() {
     this.productId = +window.location.pathname.split('/')[2];
     await this.getDetails();
+    this.changeDetectorRef.markForCheck();
     await this.getProductGallery();
+    this.changeDetectorRef.markForCheck();
     this.propertyOption = {
       multiple: false,
       tags: false,

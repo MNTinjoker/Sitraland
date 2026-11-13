@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectionStrategy, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { MainService } from 'src/app/services/main.service';
 import { environment } from 'src/environments/environment';
@@ -37,7 +37,7 @@ export class ProductCarouselComponent implements OnInit {
 
 
   allItemList: any = [];
-  hasProduct: boolean = false;
+  hasProduct = signal(false);
 
   allItemListEngine: any = [];
   hasProductEngine: boolean = false;
@@ -49,7 +49,8 @@ export class ProductCarouselComponent implements OnInit {
   @Input() categoryId;
 
   async ngOnInit() {
-    this.getCategoryProducts(this.categoryId);
+    // The view has to be refreshed after the products are loaded.
+    await this.getCategoryProducts(this.categoryId);
     this.statuseText = this.categoryId;
   }
   async getCategoryProducts(id) {
@@ -58,7 +59,7 @@ export class ProductCarouselComponent implements OnInit {
       this.allItemList = [];
       this.allItemList = data["data"];
       if (this.allItemList['length'] > 0) {
-        this.hasProduct = true;
+        this.hasProduct.set(true);
       }
     } catch (error) {
     }

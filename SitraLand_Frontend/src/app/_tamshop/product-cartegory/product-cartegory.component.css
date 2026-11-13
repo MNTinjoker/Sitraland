@@ -21,19 +21,24 @@
   padding-top: 15px;
 }
 
+/* PrimeNG 21 does not use the "p-grid" wrapper anymore, the products of the
+   grid are direct children of the content area. */
+::ng-deep .p-dataview .p-dataview-content {
+  display: flex;
+  flex-wrap: wrap;
+  padding-top: 15px;
+  background: #FFFFFF;
+  color: #212529;
+  padding-left: 0;
+  padding-right: 0;
+  /* border-radius: 8px; */
+  font-family: 'yekan-medium';
+}
+
 ::ng-deep .p-dataview .p-dataview-header {
   margin-top: 18px;
   background: transparent;
   border: none;
-  font-family: 'yekan-medium';
-}
-
-
-::ng-deep .p-dataview .p-dataview-content {
-  background: #FFFFFF;
-  color: #212529;
-  padding: 0;
-  /* border-radius: 8px; */
   font-family: 'yekan-medium';
 }
 

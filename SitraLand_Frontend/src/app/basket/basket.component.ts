@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { UtilService } from '../services/util.service';
 import { Router } from '@angular/router';
@@ -14,6 +14,7 @@ import { MainService } from 'src/app/services/main.service';
 export class BasketComponent implements OnInit {
 
   constructor(
+    private changeDetectorRef: ChangeDetectorRef,
     private utilService: UtilService,
     private router: Router,
     private mainService: MainService
@@ -36,9 +37,19 @@ export class BasketComponent implements OnInit {
 
   async getCartDetail() {
     let products = localStorage.getItem('products');
-    let temp: any = this.utilService.decryptData(products);
+    let temp: any = products ? this.utilService.decryptData(products) : null;
+
+    if (!temp || !temp.orders) {
+      // A visitor without a basket gets the empty basket, not an error.
+      this.mode = 2;
+      this.cartDetail = [];
+      this.calculatePrice();
+      return;
+    }
+
     let orders = temp.orders;
     await this.getProductsId(orders);
+    this.changeDetectorRef.markForCheck();
     let data = await this.mainService.cart(this.productsId).toPromise();
     this.cartDetail = [];
     data.forEach(element => {
@@ -146,6 +157,7 @@ export class BasketComponent implements OnInit {
           products: productsJson
         }
         await this.finalSaveOrder(model);
+        this.changeDetectorRef.markForCheck();
       }
     })
   }

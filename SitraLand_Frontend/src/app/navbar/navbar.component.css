@@ -868,3 +868,23 @@ footer {
     transform: translateY(1%);
   }
 }
+.navbar-search {
+  flex: 1 1 auto;
+  max-width: 340px;
+  min-width: 0;
+}
+
+.navbar-search input {
+  min-width: 0;
+  font-size: 0.85rem;
+  padding: 0.35rem 0.6rem;
+}
+
+@media (max-width: 576px) {
+  .navbar-search {
+    order: 3;
+    flex-basis: 100%;
+    max-width: none;
+    margin-top: 0.5rem;
+  }
+}

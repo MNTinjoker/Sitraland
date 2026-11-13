@@ -84,9 +84,15 @@ export class MainService {
     return this.http.delete<any>(uri, this.jsonHeaders);
   }
 
-  getCategory(categoryId: any) {
+  getCategory(categoryId: any, page: number = 1, pageSize: number = 16, search?: string) {
     const uri = this.url + "/api/products/getCategory/" + categoryId;
-    return this.http.get<any>(uri, this.jsonHeaders);
+    let params = new HttpParams()
+      .set('page', page)
+      .set('pageSize', pageSize);
+    if (search) {
+      params = params.set('search', search);
+    }
+    return this.http.get<any>(uri, { params, ...this.jsonHeaders });
   }
 
   getProduct(productId: any) {

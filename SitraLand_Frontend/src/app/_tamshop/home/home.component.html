@@ -139,34 +139,18 @@
   <div class="text-end">
     <div class="col-lg-12 mb-3">
       <div class="col-lg-12 container-banner shadow p-0">
-        <img src="../../../assets/images/banner.jpg" class="w-100 container-banner" alt="">
+        <img src="../../../assets/images/banner.webp" class="w-100 container-banner" alt="">
       </div>
 
       <p class="title-text mt-3">دسته بندی ها</p>
 
       <div class="container-category shadow col-lg-12 mt-3">
-        <div class="option-category" (click)="goToProductCartegory(2)">
-          <img class="img-category p-1" src="../../../assets/images/engine.svg" alt="">
-          <p class="mt-2">موتور</p>
+        <div class="option-category" *ngFor="let category of categories" (click)="goToProductCartegory(category.id)">
+          <img class="img-category p-1" [src]="category.src" alt="">
+          <p class="mt-2">{{category.title}}</p>
         </div>
-        <div class="option-category" (click)="goToProductCartegory(3)">
-          <img class="img-category p-1" src="../../../assets/images/gearbox.svg" alt="">
-          <p class="mt-2">گیربکس</p>
-        </div>
-        <div class="option-category" (click)="goToProductCartegory(5)">
-          <img class="img-category p-1" src="../../../assets/images/electronic.svg" alt="">
-          <p>برقی</p>
-        </div>
-        <div class="option-category" (click)="goToProductCartegory(4)">
-          <img class="img-category p-1" src="../../../assets/images/body.svg" alt="">
-          <p class="mt-2">بدنه</p>
-        </div>
-        <div class="option-category" (click)="goToProductCartegory(6)">
-          <img class="img-category p-1" src="../../../assets/images/more.svg" alt="">
-          <p class="mt-2">سایر</p>
+      <app-product-carousel [categoryId]="categoryId"></app-product-carousel>
         </div>
       </div>
-      <app-product-carousel [categoryId]="categoryId"></app-product-carousel>
     </div>
   </div>
-</div>

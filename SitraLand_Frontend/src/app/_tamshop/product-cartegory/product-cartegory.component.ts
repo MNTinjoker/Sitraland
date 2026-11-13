@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ChangeDetectionStrategy, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { SelectItem } from 'primeng/api';
@@ -15,51 +15,24 @@ import { MainService } from 'src/app/services/main.service';
 export class ProductCartegoryComponent implements OnInit {
 
   constructor(
+    private changeDetectorRef: ChangeDetectorRef,
     private mainService: MainService,
     private router: Router,
     private utilService: UtilService,
     private activeRoute: ActivatedRoute
   ) { }
   cartegoryId: number = 2;
-  bgImage: string = "";
-  bgList = [
-    {
-      src: '',
-      id: -1,
-      title: ' همه کالاها'
-    },
-    {
-      src: '../../../assets/images/engine.svg',
-      id: 2,
-      title: ' موتوری'
-    },
-    {
-      src: '../../../assets/images/gearbox.svg',
-      id: 3,
-      title: ' گیربکس'
-    },
-    {
-      src: '../../../assets/images/body.svg',
-      id: 4,
-      title: ' بدنه'
-    },
-    {
-      src: '../../../assets/images/electronic.svg',
-      id: 5,
-      title: 'برقی'
-    },
-    {
-      src: '../../../assets/images/more.svg',
-      id: 6,
-      title: ' سایر'
-    }, 
-    {
-      src: '../../../assets/images/more.svg',
-      id: 7,
-      title: ' تخفیف'
-    },
-  ];
-  title: string = "";
+  bgImage = signal("");
+  // The background image of every category. The ids are read from the database,
+  // so the categories are never hardcoded here.
+    private static readonly categoryImages: { [key: string]: string } = {
+    'موتور': 'engine.svg',
+    'گیربکس': 'gearbox.svg',
+    'بدنه': 'body.svg',
+    'برقی': 'electronic.svg'
+  };
+  bgList: any[] = [];
+  title = signal("");
   productList: any = [];
   layoutGird = "grid";
   categoryHomeList: any = [];
@@ -71,9 +44,19 @@ export class ProductCartegoryComponent implements OnInit {
   sortOptions!: SelectItem[];
   sortKey: string = '';
   isCustomStyle = false;
+  totalRecords: number = 0;
+  searchTerm: string = '';
+  private lastLazyEvent: any = { first: 0, rows: 16 };
+
+  /** The image of a category, the title in the database can have a suffix. */
+  private categoryImage(title?: string): string | undefined {
+    const key = Object.keys(ProductCartegoryComponent.categoryImages).find(name => title?.includes(name));
+
+    return key ? ProductCartegoryComponent.categoryImages[key] : undefined;
+  }
 
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.sortOptions = [
       { label: ' الفبا نزولی', value: '!fldProductTitle' },
       { label: 'الفبا صعودی', value: 'fldProductTitle' },
@@ -81,24 +64,56 @@ export class ProductCartegoryComponent implements OnInit {
     let urlId = +this.activeRoute.snapshot.paramMap.get('id') || -1;
     this.cartegoryId = urlId;
     this.isCustomStyle = false;
-    let cartegorySelected = this.bgList.filter(x => x.id == urlId)[0];
-    this.title = cartegorySelected['title'];
-    this.bgImage = cartegorySelected['src'];
-    this.getCategoriess();
+    this.searchTerm = this.activeRoute.snapshot.queryParamMap.get('search') ?? '';
+    await this.getCategoriess();
   }
 
   async getCategoriess() {
     let data = await this.mainService.getCategories().toPromise();
-    this.categoryHomeList = data['data'];
-    let all = {
-      categoryTitle: ' همه کالاها',
-      categoryId: -1
-    }
-    this.categoryHomeList.unshift(all);
-    setTimeout(() => {
-      this.getCategoryProducts(this.cartegoryId);
-    }, 1000);
+    const categories = data['data'] ?? [];
 
+    this.categoryHomeList = [
+      { categoryTitle: ' همه کالاها', categoryId: -1 },
+      ...categories
+    ];
+
+    this.bgList = this.categoryHomeList.map(category => ({
+      id: category.categoryId,
+      title: category.categoryTitle,
+      src: '../../../assets/images/' + (this.categoryImage(category.categoryTitle) ?? 'more.svg')
+    }));
+
+    this.applySelectedCategory(this.cartegoryId);
+    this.changeDetectorRef.markForCheck();
+  }
+
+  private applySelectedCategory(categoryId: number): void {
+    const selected = this.bgList.find(category => category.id == categoryId) ?? this.bgList[0];
+
+    this.title.set(selected?.title ?? '');
+    this.bgImage.set(selected?.src ?? '');
+  }
+
+  loadProducts(event: any): void {
+    this.lastLazyEvent = event ?? this.lastLazyEvent;
+
+    const first = this.lastLazyEvent.first || 0;
+    const rows = this.lastLazyEvent.rows || 16;
+    const page = Math.floor(first / rows) + 1;
+
+    this.mainService.getCategory(this.cartegoryId, page, rows, this.searchTerm).subscribe(res => {
+      this.productList = res['data'] ?? [];
+      this.productList.forEach((product: any, index: number) => {
+        product.index = index + 1;
+      });
+      this.totalRecords = res['totalCount'] ?? 0;
+      this.changeDetectorRef.markForCheck();
+    });
+  }
+
+  onSearch(term: string): void {
+    this.searchTerm = term ?? '';
+    this.loadProducts({ first: 0, rows: 16 });
   }
 
 
@@ -145,21 +160,11 @@ export class ProductCartegoryComponent implements OnInit {
     }
   }
 
-  async getCategoryProducts(id) {
+  selectCategory(id) {
+    this.cartegoryId = id;
+    this.applySelectedCategory(id);
     this.setActiveClassHome(id);
-    let cartegorySelected = this.bgList.filter(x => x.id == id)[0];
-    this.title = cartegorySelected['title'];
-    this.bgImage = cartegorySelected['src'];
-    try {
-      let data = await this.mainService.getCategory(id).toPromise();
-      this.productList = [];
-      this.productList = data["data"];
-      this.productList.forEach((e, index) => {
-        e.index = index + 1;
-      });
-      this.productList = this.productList.sort((a, b) => b.count - a.count)
-    } catch (error) {
-    }
+    this.loadProducts({ first: 0, rows: 16 });
   }
 
   setActiveClassHome(id) {

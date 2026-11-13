@@ -14,20 +14,14 @@
 
  @font-face {
    font-family: 'myFont';
-   src: url('assets/fonts/IRANSans.eot') format('eot'),
-     url('assets/fonts/IRANSans.ttf') format('truetype'),
-     url('assets/fonts/IRANSans.woff') format('woff'),
-     url('assets/fonts/IRANSans.woff2') format('woff2');
+    src: url('assets/fonts/IRANSans.woff2') format('woff2');
    font-style: normal;
    font-weight: normal;
  }
 
  @font-face {
    font-family: 'yekan-medium';
-   src: url('assets/fonts/IRANSans.eot') format('eot'),
-     url('assets/fonts/IRANSans.ttf') format('truetype'),
-     url('assets/fonts/IRANSans.woff') format('woff'),
-     url('assets/fonts/IRANSans.woff2') format('woff2');
+    src: url('assets/fonts/IRANSans.woff2') format('woff2');
    font-style: normal;
    font-weight: normal;
  }
@@ -379,3 +373,10 @@
    font-size: small;
 
  }
+
+/* The stock badge of the product cards. */
+.stock-badge {
+  font-size: 0.72rem;
+  font-weight: normal;
+  padding: 0.3rem 0.55rem;
+}

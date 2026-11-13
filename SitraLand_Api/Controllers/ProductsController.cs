@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SitraLand_Api.Models.CategoryModels;
 using SitraLand_Api.Models.ProductGallery;
@@ -65,9 +65,9 @@ namespace SitraLand_Api.Controllers
         }
 
         [HttpGet("getCategory/{categoryId}")]
-        public async Task<IActionResult> GetCategory(int categoryId)
-        {
-            var result = await _productsService.GetCategory(categoryId);
+        public async Task<IActionResult> GetCategory(int categoryId, int page = 1, int pageSize = 16, string? search = null)
+{
+    var result = await _productsService.GetCategory(categoryId, page, pageSize, search);
 
             return Ok(result);
         }

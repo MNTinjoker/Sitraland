@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using SitraLand_Api;
@@ -20,10 +21,22 @@ builder.Services.AddScoped<IBasketService, BasketService>();
 
 builder.Services.AddControllers().AddNewtonsoftJson();
 
-builder.Services.AddMemoryCache();
-
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddResponseCaching();
+
+// The customers are on slow mobile networks, every response is sent compressed.
+builder.Services.AddResponseCompression(options =>
+{
+    options.EnableForHttps = true;
+    options.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(new[]
+    {
+        "application/json",
+        "application/javascript",
+        "text/javascript",
+        "application/octet-stream",
+        "image/svg+xml"
+    });
+});
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -73,15 +86,50 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseStaticFiles(new StaticFileOptions()
+
+// The compression has to run before the static files, otherwise the Angular
+// bundle and the product images are sent uncompressed.
+app.UseResponseCompression();
+
+var productImagesFolder = Path.Combine(app.Environment.ContentRootPath, @"Files");
+
+if (Directory.Exists(productImagesFolder))
 {
-    FileProvider = new PhysicalFileProvider(
-        Path.Combine(Directory.GetCurrentDirectory(), @"Files")),
-    RequestPath = new PathString("/Images")
-});
+    app.UseStaticFiles(new StaticFileOptions()
+    {
+        FileProvider = new PhysicalFileProvider(productImagesFolder),
+        RequestPath = new PathString("/Images"),
+        OnPrepareResponse = context =>
+        {
+            // The product images do not change under the same name, so the browser
+            // and the mobile networks do not have to download them again.
+            context.Context.Response.Headers.CacheControl = "public, max-age=604800";
+        }
+    });
+}
 
 if (!app.Environment.IsDevelopment())
-    app.UseSpaStaticFiles();
+{
+    // The bundle files are named with a content hash, so the browser can keep
+    // them for a year. The index.html must always be revalidated, otherwise
+    // the visitors would keep an old version of the application.
+    var spaDist = Path.Combine(app.Environment.ContentRootPath, "ClientApp", "dist");
+
+    if (Directory.Exists(spaDist))
+    {
+        app.UseStaticFiles(new StaticFileOptions
+        {
+            FileProvider = new PhysicalFileProvider(spaDist),
+            OnPrepareResponse = context =>
+            {
+                var fileName = Path.GetFileName(context.File.Name);
+                context.Context.Response.Headers.CacheControl = fileName == "index.html"
+                    ? "no-cache"
+                    : "public, max-age=31536000, immutable";
+            }
+        });
+    }
+}
 
 app.UseRouting();
 

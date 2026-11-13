@@ -1,4 +1,4 @@
-﻿using SitraLand_Api.Models.CategoryModels;
+using SitraLand_Api.Models.CategoryModels;
 using SitraLand_Api.Models.ProductGallery;
 using SitraLand_Api.Models.ProductsModels;
 using SitraLand_Api.Models.Response;
@@ -12,7 +12,7 @@ namespace SitraLand_Api.Services.Interfaces
         Task<ResponseGlobal> SaveProduct(SaveProductsDTO model);
         Task<ResponseGlobal> DeleteProduct(int productId);
         Task<ResponseGlobal> GetCategories();
-        Task<ResponseGlobal> GetCategory(int categoryId);
+        Task<ResponseGlobal> GetCategory(int categoryId, int page = 1, int pageSize = 16, string? search = null);
         Task<ResponseGlobal> SaveCategory(SaveCategoryDTO model);
         Task<ResponseGlobal> DeleteCategory(int categoryId);
         Task<ResponseGlobal> SaveProductGallery(SaveProductGalleryDTO model);

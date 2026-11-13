@@ -1,5 +1,5 @@
 import { Router } from '@angular/router';
-import { Component, OnInit, Injectable, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, Injectable, ChangeDetectionStrategy } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MainService } from 'src/app/services/main.service';
 import { UtilService } from 'src/app/services/util.service';
@@ -23,6 +23,7 @@ export class UserManagmentComponent implements OnInit {
   editMode: boolean = false;
   model: any = [];
   constructor(
+    private changeDetectorRef: ChangeDetectorRef,
     private mainService: MainService,
     private utilService: UtilService,
     private router: Router) { }

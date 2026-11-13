@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
@@ -18,6 +18,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
   @ViewChild(('dt')) dt!: Table;
 
   constructor(
+    private changeDetectorRef: ChangeDetectorRef,
     private router: Router,
     private utilService: UtilService,
     private mainService: MainService,
@@ -28,13 +29,14 @@ export class ProductListComponent implements OnInit, OnDestroy {
   totalRecords: number = 0;
   loading: boolean = false;
   searchTerm: string = '';
-  private lastLazyEvent: any = { first: 0, rows: 10 };
+  lastLazyEvent: any = { first: 0, rows: 10 };
   private search$ = new Subject<string>();
 
   ngOnInit() {
     this.search$
       .pipe(debounceTime(400), distinctUntilChanged())
       .subscribe(term => {
+      this.changeDetectorRef.markForCheck();
         this.searchTerm = term;
         this.lastLazyEvent = { ...this.lastLazyEvent, first: 0 };
         this.loadProducts(this.lastLazyEvent);

@@ -17,7 +17,7 @@
                             <p (click)="removeAllProduct()" class="text-danger mb-0 pt-1 pointer">حذف همه از سبد
                                 خرید</p>
                         </div>
-                        <p-table #dt id="basketShop" [showGridlines]="true" [rows]="10"
+                        <p-table #dt id="basketShop" [showGridlines]="true" [first]="0" [rows]="10"
                             [paginator]="true" [value]="cartDetail">
                             <ng-template #header>
                                 <tr>
@@ -29,7 +29,7 @@
                                     <th class="min-width w-150"> </th>
                                 </tr>
                             </ng-template>
-                            <ng-template #body>
+                            <ng-template #body let-product>
                                 <tr>
                                     <td class="min-width">
                                         <img width="50" [src]="server + product.imageFolderPath" alt="">

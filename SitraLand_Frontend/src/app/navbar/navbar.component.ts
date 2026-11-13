@@ -1,4 +1,4 @@
-import { HostListener, Component, OnInit, AfterViewInit, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectorRef, HostListener, Component, OnInit, AfterViewInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router, Event, NavigationEnd, NavigationStart, NavigationError } from '@angular/router';
 import { UtilService } from '../services/util.service';
 // import { UtilService } from '../../_services/util.service';
@@ -93,7 +93,8 @@ export class NavbarComponent implements OnInit {
       sidebarAdmin?.classList.add("hideSidebar");
       sidebarOperator?.classList.add("hideSidebar");
       hamburger1?.classList.remove("d-none");
-      hamburger1?.classList.add("d-block hamburger ");
+      hamburger1?.classList.add("d-block");
+    hamburger1?.classList.add("hamburger");
       document.body.classList.remove("overflow-hidden");
     } else {
       this.hamburgerClick();
@@ -101,6 +102,7 @@ export class NavbarComponent implements OnInit {
   }
 
   constructor(
+    private changeDetectorRef: ChangeDetectorRef,
     private router: Router,
     private utilService: UtilService
   ) {
@@ -108,7 +110,7 @@ export class NavbarComponent implements OnInit {
       // if (window.location.pathname.indexOf('admin') !== -1) {
       this.chcekUser();
       this.seeUserMenu();
-
+      this.changeDetectorRef.markForCheck();
     });
   }
 
@@ -144,6 +146,12 @@ export class NavbarComponent implements OnInit {
     sidebar?.classList.toggle("hideSidebar");
     sidebarAdmin?.classList.toggle("hideSidebar");
     sidebarOperator?.classList.toggle("hideSidebar");
+  }
+
+  searchTerm: string = '';
+
+  search(term: string) {
+    this.router.navigate(['/product-cartegory'], { queryParams: { search: term } });
   }
 
   goToAdminPage() {

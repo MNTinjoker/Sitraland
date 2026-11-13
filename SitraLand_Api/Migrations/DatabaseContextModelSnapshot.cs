@@ -52,12 +52,14 @@ namespace SitraLand_Api.Migrations
                         new
                         {
                             Id = "1",
+                            ConcurrencyStamp = "1",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
                             Id = "2",
+                            ConcurrencyStamp = "2",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
@@ -253,11 +255,11 @@ namespace SitraLand_Api.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Count")
+                    b.PrimitiveCollection<string>("Count")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("LastCount")
+                    b.PrimitiveCollection<string>("LastCount")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -280,7 +282,7 @@ namespace SitraLand_Api.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ProductId")
+                    b.PrimitiveCollection<string>("ProductId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -299,7 +301,7 @@ namespace SitraLand_Api.Migrations
 
                     b.HasKey("BasketId");
 
-                    b.ToTable("Baskets", (string)null);
+                    b.ToTable("Baskets");
                 });
 
             modelBuilder.Entity("SitraLand_Api.Data.Category", b =>
@@ -316,7 +318,7 @@ namespace SitraLand_Api.Migrations
 
                     b.HasKey("CategoryId");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("SitraLand_Api.Data.Product", b =>
@@ -361,7 +363,11 @@ namespace SitraLand_Api.Migrations
 
                     b.HasKey("ProductId");
 
-                    b.ToTable("Products", (string)null);
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("IsActive");
+
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("SitraLand_Api.Data.ProductGallery", b =>
@@ -372,7 +378,7 @@ namespace SitraLand_Api.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductGalleryId"));
 
-                    b.Property<string>("ImageFolderPath")
+                    b.PrimitiveCollection<string>("ImageFolderPath")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ProductId")
@@ -382,7 +388,7 @@ namespace SitraLand_Api.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductGallerys", (string)null);
+                    b.ToTable("ProductGallerys");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -12,12 +12,14 @@ namespace SitraLand_Api.Configurations.Entities
                 new IdentityRole
                 {
                     Id = "1",
+                    ConcurrencyStamp = "1",
                     Name = "User",
                     NormalizedName = "USER"
                 },
                 new IdentityRole
                 {
                     Id = "2",
+                    ConcurrencyStamp = "2",
                     Name = "Admin",
                     NormalizedName = "ADMIN"
                 });
