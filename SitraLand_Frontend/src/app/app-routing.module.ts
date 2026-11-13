@@ -41,7 +41,7 @@ const routes: Routes = [
   { path: 'footer', loadChildren: () => import('./footer/footer.module').then(m => m.FooterModule) },
   { path: 'basket', loadChildren: () => import('./basket/basket.module').then(m => m.BasketModule) },
   { path: 'checkout-shop', loadChildren: () => import('./_tamshop/checkout-shop/checkout-shop.module').then(m => m.CheckoutShopModule) },
-  { path: 'order-detail/:id', loadChildren: () => import('./_tamshop/order-detail/order-detail.module').then(m => m.OrderDetailModule) },
+  { path: 'order-detail/:id', loadChildren: () => import('./_tamshop/order-detail/order-detail.module').then(m => m.OrderDetailModule), canActivate: [AuthGuard] },
   {
     path: 'admin/orders-report', loadChildren: () => import('./_tamshop/orders-list/orders-list.module').then(m => m.OrdersListModule),
     canActivate: [AuthGuard]

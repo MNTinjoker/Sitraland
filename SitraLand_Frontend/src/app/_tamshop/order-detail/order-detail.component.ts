@@ -36,30 +36,36 @@ export class OrderDetailComponent implements OnInit {
   }
 
   async getOrderDetails() {
-    this.ordersDetail = [];
-    let response = await this.mainService.getBasket(this.orderId).toPromise();
-    if (response['data']) {
-      this.ordersDetail = response['data'];
-      let data = await this.mainService.cart(this.ordersDetail.productId).toPromise();
-      this.ordersDetailList = [];
-      data.forEach(element => {
-        if (element && element[0]) {
-          this.ordersDetailList.push(element[0]);
+    try {
+      this.ordersDetail = [];
+      const response = await this.mainService.getBasket(this.orderId).toPromise();
+      if (response && response['data']) {
+        this.ordersDetail = response['data'];
+        const data = await this.mainService.cart(this.ordersDetail.productId).toPromise();
+        this.ordersDetailList = [];
+        if (Array.isArray(data)) {
+          data.forEach((element: any) => {
+            if (element && element[0]) {
+              this.ordersDetailList.push(element[0]);
+            }
+          });
         }
-      });
-    }
+      }
 
-    if (this.ordersDetail && this.ordersDetail['count']) {
-      this.ordersDetailList.forEach((element, index) => {
-        element.fldCountProduct = this.ordersDetail['count'][index];
-      });
-    }
+      if (this.ordersDetail && Array.isArray(this.ordersDetail['count'])) {
+        this.ordersDetailList.forEach((element: any, index: number) => {
+          element.fldCountProduct = this.ordersDetail['count'][index];
+        });
+      }
 
-    this.totalPrice = this.ordersDetail.totalPrice;
+      this.totalPrice = this.ordersDetail?.totalPrice;
+    } catch (error) {
+      this.utilService.showNotify('خطا در دریافت اطلاعات سفارش', 'error');
+    }
   }
 
   gotoOrderList() {
-    this.router.navigate(['/orders-list']);
+    this.router.navigate(['/admin/orders-report']);
   }
 
 }

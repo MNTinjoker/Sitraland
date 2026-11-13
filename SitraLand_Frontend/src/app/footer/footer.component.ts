@@ -35,11 +35,9 @@ export class FooterComponent implements OnInit {
     // ];
   }
   goToAboutPage(id) {
-    this.router.navigate(['/about-site/' + id]);
+    // Navigate inside the single page app; a full reload would drop the user's state.
+    this.router.navigate(['/about-site', id]);
     this.getIdofPage.emit(id);
-    setTimeout(() => {
-      window.location.reload();
-    }, 100);
   }
 
 }

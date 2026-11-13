@@ -68,39 +68,64 @@ export class BasketComponent implements OnInit {
   }
 
   removeBasket(id) {
-    let products = localStorage.getItem('products');
-    let temp: any = this.utilService.decryptData(products);
-    let orders = temp.orders
-    let localIndex = orders.findIndex(x => x.id == id);
-    orders.splice(localIndex, 1);
-    this.getProductsId(orders)
-    let productIndex = this.cartDetail.findIndex(x => x.productId == id);
-    this.cartDetail.splice(productIndex, 1);
-    localStorage.setItem('products', this.utilService.encryptData({ orders: orders }));
-    this.utilService.checkBasketNumber(null);
-    if (this.cartDetail.length == 0) {
-      localStorage.removeItem('products');
-      this.mode = 2;
+    const products = localStorage.getItem('products');
+    const temp: any = products ? this.utilService.decryptData(products) : null;
+    const orders = Array.isArray(temp?.orders) ? temp.orders : [];
+    const localIndex = orders.findIndex((x: any) => x.id == id);
+    if (localIndex !== -1) {
+      orders.splice(localIndex, 1);
     }
+
+    this.getProductsId(orders);
+    const productIndex = this.cartDetail.findIndex((x: any) => x.productId == id);
+    if (productIndex !== -1) {
+      this.cartDetail.splice(productIndex, 1);
+    }
+
+    if (orders.length === 0) {
+      localStorage.removeItem('products');
+      this.cartDetail = [];
+      this.mode = 2;
+    } else {
+      localStorage.setItem('products', this.utilService.encryptData({ orders: orders }));
+    }
+
+    this.utilService.checkBasketNumber(null);
+    this.calculatePrice();
   }
 
   eventProduct(id, event) {
-    let index = this.cartDetail.findIndex(x => x.productId == id);
-    let products = localStorage.getItem('products');
-    let temp: any = this.utilService.decryptData(products);
-    let orders = temp.orders
-    let orderIndex = orders.findIndex(x => x.id == id);
-    if (event == 1) {
-      this.cartDetail[index]['count'] = this.cartDetail[index]['count'] + 1;
-      orders[orderIndex]['Number'] = orders[orderIndex]['Number'] + 1;
-      orders[orderIndex]['newCount'] = orders[orderIndex]['newCount'] - 1;
+    const index = this.cartDetail.findIndex((x: any) => x.productId == id);
+    if (index === -1) {
+      return;
     }
-    else {
-      this.cartDetail[index]['count'] = this.cartDetail[index]['count'] - 1;
-      orders[orderIndex]['Number'] = orders[orderIndex]['Number'] - 1;
-      orders[orderIndex]['newCount'] = orders[orderIndex]['newCount'] + 1;
 
+    const product = this.cartDetail[index];
+    const limit = Number(product.fldPurchaseLimit) || Number(product.count) || 1;
+    const current = Number(product.count) || 1;
+
+    if (event == 1 && current >= limit) {
+      return;
     }
+    if (event != 1 && current <= 1) {
+      return;
+    }
+
+    const products = localStorage.getItem('products');
+    const temp: any = products ? this.utilService.decryptData(products) : null;
+    const orders = Array.isArray(temp?.orders) ? temp.orders : [];
+    const orderIndex = orders.findIndex((x: any) => x.id == id);
+    if (orderIndex === -1) {
+      return;
+    }
+
+    const delta = event == 1 ? 1 : -1;
+    product.count = current + delta;
+    orders[orderIndex]['Number'] = (Number(orders[orderIndex]['Number']) || current) + delta;
+    if (orders[orderIndex]['newCount'] != null) {
+      orders[orderIndex]['newCount'] = (Number(orders[orderIndex]['newCount']) || 0) - delta;
+    }
+
     localStorage.setItem('products', this.utilService.encryptData({ orders: orders }));
     this.calculatePrice();
   }
