@@ -20,6 +20,10 @@ export class AuthGuard implements CanActivate {
   }
 
   clear() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('userName');
+    localStorage.removeItem('isAdmin');
+    // Legacy keys kept for cleanup of older sessions.
     localStorage.removeItem('secret');
     localStorage.removeItem('schoolId');
     localStorage.removeItem('operator');
@@ -28,7 +32,5 @@ export class AuthGuard implements CanActivate {
     localStorage.removeItem('username');
     localStorage.removeItem('regionId');
     localStorage.removeItem('mobile');
-    localStorage.removeItem('token');
-    localStorage.removeItem('isAdmin');
   }
 }

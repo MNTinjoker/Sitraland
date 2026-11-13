@@ -46,8 +46,8 @@ export class LoginComponent implements OnInit {
         userName: mobile,
         password: this.userDetail.password
       };
-      const res = await this.mainService.login(model).toPromise();
-      if (res && res['data'] != null) {
+      const res: any = await this.mainService.login(model).toPromise();
+      if (res && res['data'] != null && res['code'] == 200) {
         localStorage.setItem('token', res['data']);
         localStorage.setItem('userName', mobile);
         localStorage.setItem('isAdmin', res['message'] == "Admin" ? '1' : '0');
@@ -56,10 +56,12 @@ export class LoginComponent implements OnInit {
         const safeReturnUrl = returnUrl && returnUrl.startsWith('/') ? returnUrl : '/home';
         this.router.navigateByUrl(safeReturnUrl);
       } else {
-        this.utilService.showNotify(res?.['message'] || 'نام کاربری یا رمز عبور نادرست است', "error");
+        const msg = res?.['message'];
+        this.utilService.showNotify(msg && msg !== 'Dont Have Access' ? msg : 'نام کاربری یا رمز عبور نادرست است', "error");
       }
-    } catch (error) {
-      this.utilService.showNotify('خطا در ورود، دوباره تلاش کنید', "error");
+    } catch (error: any) {
+      const msg = error?.error?.message;
+      this.utilService.showNotify(msg && msg !== 'Dont Have Access' ? msg : 'نام کاربری یا رمز عبور نادرست است', "error");
     } finally {
       this.submitting = false;
     }

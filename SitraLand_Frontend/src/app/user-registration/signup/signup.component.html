@@ -44,6 +44,7 @@
       <input #password='ngModel' type="password" placeholder="رمز عبور" id="password" name="password"
         [(ngModel)]="userDetail.password" class="input-login lock-input"
         [ngClass]="{'shaking-border': password.invalid && password.touched}" required>
+      <small class="text-secondary d-block text-end mt-1">حداقل ۶ کاراکتر و ترکیبی از حروف بزرگ، کوچک و عدد</small>
     </div>
     <button class="btn btn-danger w-100 mt-3" type="submit" [disabled]="submitting">
       {{ submitting ? 'در حال ثبت‌نام...' : 'ثبت‌نام' }}

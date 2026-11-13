@@ -24,6 +24,30 @@ export class SignupComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  private formatSignupError(res: any): string {
+    if (!res) {
+      return 'ثبت‌نام انجام نشد';
+    }
+    const msg = res['message'];
+    if (msg === 'This mobile number is already registered') {
+      return 'این شماره موبایل قبلاً ثبت شده است';
+    }
+    if (msg === 'Could not create user') {
+      const errors = res['data'];
+      if (Array.isArray(errors) && errors.length) {
+        const descriptions = errors.map((e: any) => e?.description || e?.code).filter(Boolean);
+        if (descriptions.length) {
+          return descriptions.join('، ');
+        }
+      }
+      return 'رمز عبور باید حداقل ۶ کاراکتر و شامل حروف بزرگ، کوچک و عدد باشد';
+    }
+    if (typeof msg === 'string' && msg) {
+      return msg;
+    }
+    return 'ثبت‌نام انجام نشد';
+  }
+
   async singUp(form: any) {
     if (this.submitting) {
       return;
@@ -52,16 +76,18 @@ export class SignupComponent implements OnInit {
         fullName: fullName,
         mobile: mobile
       };
-      const res = await this.mainService.signUp(model).toPromise();
+      const res: any = await this.mainService.signUp(model).toPromise();
       const ok = res && (res['message'] == "User Created Successfully" || res['code'] == 200);
       if (ok) {
         this.utilService.showNotify('ثبت‌نام با موفقیت انجام شد', 'success');
         this.router.navigate(['/login']);
       } else {
-        this.utilService.showNotify(res?.['message'] || 'ثبت‌نام انجام نشد', "error");
+        const msg = this.formatSignupError(res);
+        this.utilService.showNotify(msg, "error");
       }
-    } catch (error) {
-      this.utilService.showNotify("خطا در ثبت‌نام، دوباره تلاش کنید", "error");
+    } catch (error: any) {
+      const msg = this.formatSignupError(error?.error) || 'خطا در ثبت‌نام، دوباره تلاش کنید';
+      this.utilService.showNotify(msg, "error");
     } finally {
       this.submitting = false;
     }
