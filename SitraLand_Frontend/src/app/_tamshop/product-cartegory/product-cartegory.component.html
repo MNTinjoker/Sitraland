@@ -5,7 +5,7 @@
       <h5 class="title-vod  mt-5 pt-4">{{title()}}</h5>
     </div>
     <div>
-      <p-dataview #dv [value]="productList" [paginator]="true" [lazy]="true" [totalRecords]="totalRecords" [rows]="16" [sortField]="sortField"
+      <p-dataview #dv [value]="productList" [paginator]="true" [lazy]="true" [totalRecords]="totalRecords" [rows]="16" [first]="firstRecord" [sortField]="sortField"
         [sortOrder]="sortOrder" [layout]="layoutGird" (onLazyLoad)="loadProducts($event)" emptyMessage="فعلا محصولی موجود نیست">
         <ng-template #header>
           <div class="d-lg-flex justify-content-between ">
@@ -19,7 +19,7 @@
             </span> -->
             <ul id='categoryHomeList' class="d-lg-flex px-0 mb-3 mt-1"
               [ngClass]="{'customCategoryHomeList': isCustomStyle}">
-              <li *ngFor="let item of categoryHomeList" (click)="selectCategory(item.categoryId)">
+              <li *ngFor="let item of categoryHomeList" [attr.data-category-id]="item.categoryId" (click)="selectCategory(item.categoryId)">
                 <p class="mb-0">{{item.categoryTitle}}</p>
               </li>
             </ul>

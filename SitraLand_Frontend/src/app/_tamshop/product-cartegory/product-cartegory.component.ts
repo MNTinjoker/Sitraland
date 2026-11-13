@@ -46,6 +46,7 @@ export class ProductCartegoryComponent implements OnInit {
   isCustomStyle = false;
   totalRecords: number = 0;
   searchTerm: string = '';
+  firstRecord: number = 0;
   private lastLazyEvent: any = { first: 0, rows: 16 };
 
   /** The image of a category, the title in the database can have a suffix. */
@@ -100,6 +101,9 @@ export class ProductCartegoryComponent implements OnInit {
     const first = this.lastLazyEvent.first || 0;
     const rows = this.lastLazyEvent.rows || 16;
     const page = Math.floor(first / rows) + 1;
+
+    // The paginator of the data view follows the page that is shown.
+    this.firstRecord = first;
 
     this.mainService.getCategory(this.cartegoryId, page, rows, this.searchTerm).subscribe(res => {
       this.productList = res['data'] ?? [];
@@ -164,21 +168,22 @@ export class ProductCartegoryComponent implements OnInit {
     this.cartegoryId = id;
     this.applySelectedCategory(id);
     this.setActiveClassHome(id);
+    // A new category always starts at the first page.
+    this.firstRecord = 0;
     this.loadProducts({ first: 0, rows: 16 });
   }
 
   setActiveClassHome(id) {
-    let div = document.getElementsByTagName('li');
-    for (let i = 0; i < div.length; i++) {
-      div[i].classList.remove('active-li-home');
+    // Only the items of the category list, the page has more lists.
+    const categoryList = document.getElementById('categoryHomeList');
+
+    if (!categoryList) {
+      return;
     }
-    if (id == -1) {
-      id = 0
-      div[id].classList.add('active-li-home');
-    }
-    else {
-      div[id - 1].classList.add('active-li-home');
-    }
+
+    categoryList.querySelectorAll('li').forEach(item => {
+      item.classList.toggle('active-li-home', +item.getAttribute('data-category-id') == id);
+    });
   }
 
 }
