@@ -87,7 +87,7 @@
             <div class="row me-2" *ngFor="let item of cartDetail">
               <div class="row my-2 w-100">
                 <div class="col-4">
-                  <img width="50" [src]="server + item.imageFolderPath" alt="">
+                  <img width="50" [src]="server + item.imageFolderPath" alt="" appImageFallback>
                 </div>
                 <div class="col-8">
                   <p class="text-justify">{{item.productName}}</p>

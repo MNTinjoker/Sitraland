@@ -52,7 +52,7 @@
               <tr>
                 <td class="min-width">{{rowIndex + 1}}</td>
                 <td class="min-width">
-                  <img width="50" [src]="server + product.imageFolderPath" alt="">
+                  <img width="50" [src]="server + product.imageFolderPath" alt="" appImageFallback>
                 </td>
                 <td class="min-width">
                   {{product.productName}}

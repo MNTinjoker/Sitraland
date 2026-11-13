@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NumberSplitPipe, ShamsiDatePipe, inputNumberSplitPipe } from './custom.pipe';
+import { ImageFallbackDirective } from './image-fallback.directive';
 import { TableModule } from 'primeng/table';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { SelectModule } from 'primeng/select';
@@ -11,7 +12,8 @@ import { DialogModule } from 'primeng/dialog';
   declarations: [
     NumberSplitPipe,
     ShamsiDatePipe,
-    inputNumberSplitPipe
+    inputNumberSplitPipe,
+    ImageFallbackDirective
   ],
   imports: [
     CommonModule,
@@ -21,6 +23,7 @@ import { DialogModule } from 'primeng/dialog';
     NumberSplitPipe,
     ShamsiDatePipe,
     inputNumberSplitPipe,
+    ImageFallbackDirective,
     TableModule,
     RadioButtonModule,
     NgxDropzoneModule,

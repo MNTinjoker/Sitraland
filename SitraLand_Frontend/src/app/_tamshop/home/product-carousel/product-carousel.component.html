@@ -17,7 +17,7 @@
             <article class="product-card" [class.product-card--empty]="product.count == 0"
                 (click)="goToProductDetail(product.productId)">
                 <div class="product-card-media" [class.is-empty]="product.count == 0">
-                    <img [src]="server + product.imageFolderPath" [alt]="product.productName" loading="lazy" decoding="async">
+                    <img [src]="server + product.imageFolderPath" [alt]="product.productName" loading="lazy" decoding="async" appImageFallback>
                     <span class="badge rounded-pill stock-badge" [class.bg-success]="product.count > 0"
                         [class.bg-danger]="product.count == 0">
                         <ng-container *ngIf="product.count > 0">{{product.count}} موجود</ng-container>

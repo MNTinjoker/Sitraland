@@ -91,22 +91,24 @@ app.UseHttpsRedirection();
 // bundle and the product images are sent uncompressed.
 app.UseResponseCompression();
 
-var productImagesFolder = Path.Combine(app.Environment.ContentRootPath, @"Files");
+// The uploaded images are stored outside the published files, so a deployment
+// never overwrites them. The folder is created when it is missing, so the
+// middleware is always registered and the images are served as soon as they
+// are uploaded.
+var productImagesFolder = Path.Combine(app.Environment.ContentRootPath, "Files");
+Directory.CreateDirectory(productImagesFolder);
 
-if (Directory.Exists(productImagesFolder))
+app.UseStaticFiles(new StaticFileOptions()
 {
-    app.UseStaticFiles(new StaticFileOptions()
+    FileProvider = new PhysicalFileProvider(productImagesFolder),
+    RequestPath = new PathString("/Images"),
+    OnPrepareResponse = context =>
     {
-        FileProvider = new PhysicalFileProvider(productImagesFolder),
-        RequestPath = new PathString("/Images"),
-        OnPrepareResponse = context =>
-        {
-            // The product images do not change under the same name, so the browser
-            // and the mobile networks do not have to download them again.
-            context.Context.Response.Headers.CacheControl = "public, max-age=604800";
-        }
-    });
-}
+        // The product images do not change under the same name, so the browser
+        // and the mobile networks do not have to download them again.
+        context.Context.Response.Headers.CacheControl = "public, max-age=604800";
+    }
+});
 
 if (!app.Environment.IsDevelopment())
 {

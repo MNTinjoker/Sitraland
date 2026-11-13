@@ -10,7 +10,7 @@
         <div class="col-12 mb-3">
           <div class="product-box row text-end">
             <div class="col-lg-5 col-12 ">
-              <img *ngIf="mainImage" class="w-100 pointer" [src]="server + mainImage" alt=""
+              <img *ngIf="mainImage" class="w-100 pointer" [src]="server + mainImage" alt="" appImageFallback
                 (click)='open(mainImage)'>
               <div *ngIf="!mainImage" class="w-100 text-center border rounded p-5 text-gray">
                 تصویری برای این محصول ثبت نشده است
@@ -20,7 +20,7 @@
                 <owl-carousel-o [options]="productThumbCarouselOption">
                   <ng-container *ngFor="let image of galleryImages">
                     <ng-template carouselSlide [id]="image">
-                      <img [src]="server + image" class="thumb pointer"
+                      <img [src]="server + image" class="thumb pointer" appImageFallback
                         [ngClass]="{'product-gallery__carousel-item--active': mainImage === image}"
                         (click)="changeimage(image)" />
                     </ng-template>

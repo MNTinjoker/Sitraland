@@ -845,3 +845,15 @@ input[type='search'] {
   font-size: 0.85rem;
   font-weight: normal;
 }
+
+/* ==========================================================================
+   The placeholder shown by the appImageFallback directive when a product
+   photo can not be loaded (no photo for the product, or a photo that is
+   missing on the server). It replaces the browser's broken image icon.
+   ========================================================================== */
+
+img.image-fallback {
+  object-fit: contain;
+  background-color: var(--sitra-neutral-100);
+  padding: 0.35rem;
+}

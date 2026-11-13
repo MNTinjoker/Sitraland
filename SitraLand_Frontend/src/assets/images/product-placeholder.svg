@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200" role="img" aria-label="تصویری برای این محصول ثبت نشده است">
+  <rect width="200" height="200" fill="#f4f6f7"/>
+  <g fill="none" stroke="#4c6966" stroke-opacity="0.5" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">
+    <rect x="42" y="50" width="116" height="92" rx="14"/>
+    <path d="M48 124l28-26 22 20 18-16 36 30"/>
+  </g>
+  <circle cx="78" cy="82" r="11" fill="#4c6966" fill-opacity="0.35"/>
+</svg>
