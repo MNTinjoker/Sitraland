@@ -475,6 +475,105 @@ namespace SitraLand_Api.Services.Implementations
             return result;
         }
 
+        public async Task<ResponseGlobal> DeleteProductGalleryImage(int productId, string? imagePath)
+        {
+            var result = new ResponseGlobal();
+
+            if (productId < 1 || string.IsNullOrWhiteSpace(imagePath))
+            {
+                result.Message = "Invalid Body Request";
+                result.Code = (int)HttpStatusCode.BadRequest;
+                return result;
+            }
+
+            var gallery = await _databaseContext.ProductGallerys
+                .FirstOrDefaultAsync(g => g.ProductId == productId);
+
+            if (gallery?.ImageFolderPath == null || !gallery.ImageFolderPath.Contains(imagePath))
+            {
+                result.Message = "Submitted Data Is Invalid";
+                result.Code = (int)HttpStatusCode.NotFound;
+                return result;
+            }
+
+            gallery.ImageFolderPath.Remove(imagePath);
+
+            var product = await _databaseContext.Products.FirstOrDefaultAsync(p => p.ProductId == productId);
+            if (product != null && string.Equals(product.ImageFolderPath, imagePath, StringComparison.OrdinalIgnoreCase))
+            {
+                // If the removed image was the main photo, fall back to the next gallery photo.
+                product.ImageFolderPath = gallery.ImageFolderPath.FirstOrDefault();
+            }
+
+            await _databaseContext.SaveChangesAsync();
+            TryDeleteImageFile(imagePath);
+
+            result.Message = "Success";
+            result.Code = (int)HttpStatusCode.OK;
+            result.Data = 1;
+            return result;
+        }
+
+        public async Task<ResponseGlobal> SetMainGalleryImage(int productId, string? imagePath)
+        {
+            var result = new ResponseGlobal();
+
+            if (productId < 1 || string.IsNullOrWhiteSpace(imagePath))
+            {
+                result.Message = "Invalid Body Request";
+                result.Code = (int)HttpStatusCode.BadRequest;
+                return result;
+            }
+
+            var product = await _databaseContext.Products.FirstOrDefaultAsync(p => p.ProductId == productId);
+            if (product == null)
+            {
+                result.Message = "Submitted Data Is Invalid";
+                result.Code = (int)HttpStatusCode.NotFound;
+                return result;
+            }
+
+            var gallery = await _databaseContext.ProductGallerys.AsNoTracking()
+                .FirstOrDefaultAsync(g => g.ProductId == productId);
+
+            if (gallery?.ImageFolderPath == null || !gallery.ImageFolderPath.Contains(imagePath))
+            {
+                result.Message = "Submitted Data Is Invalid";
+                result.Code = (int)HttpStatusCode.NotFound;
+                return result;
+            }
+
+            // The selected gallery photo becomes the main photo shown for the product.
+            product.ImageFolderPath = imagePath;
+            await _databaseContext.SaveChangesAsync();
+
+            result.Message = "Success";
+            result.Code = (int)HttpStatusCode.OK;
+            result.Data = 1;
+            return result;
+        }
+
+        private static void TryDeleteImageFile(string? relativePath)
+        {
+            if (string.IsNullOrWhiteSpace(relativePath))
+            {
+                return;
+            }
+
+            try
+            {
+                var fullPath = Path.Combine("Files", relativePath);
+                if (System.IO.File.Exists(fullPath))
+                {
+                    System.IO.File.Delete(fullPath);
+                }
+            }
+            catch
+            {
+                // Deleting the file is best-effort; the database state is already correct.
+            }
+        }
+
         private string SaveProductImage(string base64Content, string? fileName)
         {
             var type = Path.GetExtension(fileName)?.ToLowerInvariant();

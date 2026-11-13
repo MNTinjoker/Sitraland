@@ -17,5 +17,7 @@ namespace SitraLand_Api.Services.Interfaces
         Task<ResponseGlobal> DeleteCategory(int categoryId);
         Task<ResponseGlobal> SaveProductGallery(SaveProductGalleryDTO model);
         Task<ResponseGlobal> GetProductGallery(int productId);
+        Task<ResponseGlobal> DeleteProductGalleryImage(int productId, string? imagePath);
+        Task<ResponseGlobal> SetMainGalleryImage(int productId, string? imagePath);
     }
 }

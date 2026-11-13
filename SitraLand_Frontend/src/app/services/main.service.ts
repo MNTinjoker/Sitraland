@@ -110,6 +110,16 @@ export class MainService {
     return this.http.post(uri, data, this.jsonHeaders);
   }
 
+  deleteProductGalleryImage(productId: number, imagePath: string) {
+    const uri = this.url + "/api/products/deleteProductGalleryImage";
+    return this.http.post<any>(uri, { productId, imagePath }, this.jsonHeaders);
+  }
+
+  setMainGalleryImage(productId: number, imagePath: string) {
+    const uri = this.url + "/api/products/setMainGalleryImage";
+    return this.http.post<any>(uri, { productId, imagePath }, this.jsonHeaders);
+  }
+
   // Basket / orders
   getBasket(basketCode: any) {
     const uri = this.url + "/api/basket/getBasket/" + basketCode;

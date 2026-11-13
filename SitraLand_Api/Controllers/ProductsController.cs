@@ -107,5 +107,23 @@ namespace SitraLand_Api.Controllers
 
             return Ok(result);
         }
+
+        [HttpPost("deleteProductGalleryImage")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> DeleteProductGalleryImage(ProductGalleryImageRequestDTO model)
+        {
+            var result = await _productsService.DeleteProductGalleryImage(model.ProductId, model.ImagePath);
+
+            return Ok(result);
+        }
+
+        [HttpPost("setMainGalleryImage")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> SetMainGalleryImage(ProductGalleryImageRequestDTO model)
+        {
+            var result = await _productsService.SetMainGalleryImage(model.ProductId, model.ImagePath);
+
+            return Ok(result);
+        }
     }
 }

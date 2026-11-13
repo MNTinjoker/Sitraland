@@ -156,45 +156,57 @@
   <p-dialog header="گالری محصولات" [(visible)]="isShowPhotoGalleryModal" [modal]="true" [style]="{ width: '50vw' }"
     [draggable]="false" [resizable]="false">
 
+    <p class="text-muted mb-3">عکس اصلی محصول در کارت فروشگاه نمایش داده می‌شود. از اینجا می‌توانید عکس گالری را به‌عنوان عکس اصلی انتخاب یا حذف کنید.</p>
     <table class='table gallery' *ngIf="productGallery.length>0">
       <tr>
         <th>#</th>
         <th>نام</th>
-        <th></th>
+        <th>وضعیت</th>
+        <th>عملیات</th>
       </tr>
-      <tr *ngFor="let elem of productGallery; let i">
+      <tr *ngFor="let elem of productGallery">
         <td *ngIf="elem.name">
-          <img *ngIf="elem.isServer && !elem.isVideo" [src]='elem.src'
-            (error)="this.notShow = false" class="img-fluid vertical-align-middle" width="150"
-            (click)='open(elem.src)'>
-          <img *ngIf="!elem.isServer && !elem.isVideo" [src]='elem.src' (error)="this.notShow = false"
-            class="img-fluid vertical-align-middle" width="150" (click)='open(elem.src)'>
+          <img *ngIf="!elem.isVideo" [src]='elem.src' (error)="this.notShow = false"
+            class="img-fluid vertical-align-middle" width="120" (click)='open(elem.src)'>
           <img *ngIf="elem.isServer && elem.isVideo" src='../../../../assets/images/video-icon.png'
-            (error)="this.notShow = false" class="img-fluid vertical-align-middle" width="150"
-            (click)='open(elem.src, true)'>
+            class="img-fluid vertical-align-middle" width="120" (click)='open(elem.src, true)'>
           <img *ngIf="!elem.isServer && elem.isVideo" src='../../../../assets/images/video-icon.png'
-            (error)="this.notShow = false" class="img-fluid vertical-align-middle" width="150" (click)='open(1)'>
+            class="img-fluid vertical-align-middle" width="120" (click)='open(1)'>
         </td>
-        <td class="vertical-align-middle">{{elem.name}}</td>
-        <!-- <td class="vertical-align-middle"><a (click)='deleteImageProduct(elem.id)' class='pointer text-danger'><i
-              class='fa fa-trash fa-2x'></i></a>
-        </td> -->
-        <td class="vertical-align-middle"><a class='pointer text-info'><i class='fa fa-edit fa-2x'></i></a>
+        <td class="vertical-align-middle">
+          {{elem.name}}
+          <div class="small text-muted" *ngIf="!elem.isServer">آپلود نشده</div>
+        </td>
+        <td class="vertical-align-middle">
+          <span class="badge bg-success" *ngIf="elem.isServer && elem.isMain">عکس اصلی</span>
+          <span class="badge bg-secondary" *ngIf="!elem.isServer">در انتظار ذخیره</span>
+        </td>
+        <td class="vertical-align-middle">
+          <ng-container *ngIf="elem.isServer">
+            <button class="btn btn-sm btn-outline-primary mx-1" *ngIf="!elem.isMain && !elem.isVideo"
+              (click)="setAsMain(elem)">تنظیم به‌عنوان عکس اصلی</button>
+            <button class="btn btn-sm btn-outline-danger mx-1" (click)="deleteGalleryImage(elem)">حذف</button>
+          </ng-container>
+          <ng-container *ngIf="!elem.isServer">
+            <button class="btn btn-sm btn-outline-danger mx-1" (click)="removePendingGalleryImage(elem)">حذف</button>
+          </ng-container>
         </td>
       </tr>
     </table>
     <div class="col-12 mb-3 mb-5">
       <div class="custom-dropzone fileUploader selectedProduct" ngx-dropzone
-        [accept]="'image/* ,video/mp4,video/x-m4v,video/*'" (change)="onSelect($event)" id="targetProduct"
+        [accept]="'image/*'" (change)="onSelect($event)" id="targetProduct"
         [multiple]="true">
         <ngx-dropzone-label>
           <div>
-            <h6 id="firstUploadLabel" class="mr-top-130 fileUploadLabel">انتخاب فایل</h6>
+            <h6 id="firstUploadLabel" class="mr-top-130 fileUploadLabel">انتخاب فایل (عکس)</h6>
           </div>
         </ngx-dropzone-label>
       </div>
       <div class="text-start">
-        <button class="mt-4 btn btn-primary" (click)="saveProductImage()">ذخیره گالری</button>
+        <button class="mt-4 btn btn-primary" (click)="saveProductImage()" [disabled]="savingGallery || customGalleryModel.length == 0">
+          {{ savingGallery ? 'در حال ذخیره...' : 'ذخیره گالری' }}
+        </button>
       </div>
     </div>
   </p-dialog>

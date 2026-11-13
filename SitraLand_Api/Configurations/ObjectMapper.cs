@@ -20,8 +20,9 @@ namespace SitraLand_Api.Configurations
                 Count = model.Count,
                 IsActive = model.IsActive,
                 ExtraDetails = model.ExtraDetails,
-                Image = model.Image,
-                ImageName = model.ImageName,
+                // The image is stored on disk and referenced by ImageFolderPath; do not persist base64.
+                Image = null,
+                ImageName = null,
                 CategoryId = model.CategoryId,
                 ImageFolderPath = model.ImageFolderPath
             };
@@ -35,8 +36,9 @@ namespace SitraLand_Api.Configurations
             product.Count = model.Count;
             product.IsActive = model.IsActive;
             product.ExtraDetails = model.ExtraDetails;
-            product.Image = model.Image;
-            product.ImageName = model.ImageName;
+            // Keep base64 upload data out of the database; the saved file path is the source of truth.
+            product.Image = null;
+            product.ImageName = null;
             product.CategoryId = model.CategoryId;
             product.ImageFolderPath = model.ImageFolderPath;
         }

@@ -33,8 +33,9 @@ public class ObjectMapperTests
         Assert.Equal(model.Count, product.Count);
         Assert.Equal(model.IsActive, product.IsActive);
         Assert.Equal(model.ExtraDetails, product.ExtraDetails);
-        Assert.Equal(model.Image, product.Image);
-        Assert.Equal(model.ImageName, product.ImageName);
+        // Base64 upload data must not be persisted; the saved file path is the source of truth.
+        Assert.Null(product.Image);
+        Assert.Null(product.ImageName);
         Assert.Equal(model.CategoryId, product.CategoryId);
         Assert.Equal(model.ImageFolderPath, product.ImageFolderPath);
     }
@@ -48,7 +49,9 @@ public class ObjectMapperTests
             ProductName = "قدیمی",
             Price = 100,
             Count = 1,
-            IsActive = false
+            IsActive = false,
+            Image = "old-base64",
+            ImageName = "old.png"
         };
 
         var model = new SaveProductsDTO
@@ -58,7 +61,9 @@ public class ObjectMapperTests
             Price = 500,
             Count = 9,
             IsActive = true,
-            CategoryId = 4
+            CategoryId = 4,
+            Image = "new-base64",
+            ImageName = "new.png"
         };
 
         model.MapTo(product);
@@ -69,6 +74,8 @@ public class ObjectMapperTests
         Assert.Equal(9, product.Count);
         Assert.True(product.IsActive);
         Assert.Equal(4, product.CategoryId);
+        Assert.Null(product.Image);
+        Assert.Null(product.ImageName);
     }
 
     [Fact]

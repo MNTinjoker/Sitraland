@@ -54,6 +54,8 @@ export class ProductConfigComponent implements OnInit {
   productCategoryList: any = [];
   customGalleryModel: any = [];
   productGallery: any = [];
+  mainImagePath: string = '';
+  savingGallery = false;
   OptionNgSelected: any;
   OptionNgSelected2: any;
   title: string = "";
@@ -129,16 +131,19 @@ export class ProductConfigComponent implements OnInit {
   }
 
   removeFile() {
-    this.product.Filename = '';
+    this.product.Filename = this.mainImagePath || '';
     this.fileType = '';
     this.fileToUpload = null;
     this.product.Base64 = '';
+    this.notShow = true;
   }
-
 
   handleFileInput() {
     const inputElement = document.getElementById('files') as HTMLInputElement;
-    let files: any = inputElement.files;
+    let files: any = inputElement?.files;
+    if (!files || !files[0]) {
+      return;
+    }
     let type = files[0]['name'].split('.').pop();
     if (!ValidFormat.includes(type.toLowerCase())) {
       this.utilService.showNotify("فرمت وارد شده معتبر نمی باشد.", "error");
@@ -147,13 +152,14 @@ export class ProductConfigComponent implements OnInit {
     this.fileToUpload = files.item(0);
     this.utilService.getBase64(files.item(0)).then((data: any) => {
       let base: any = data;
-      this.product.Base64 = base;
-      let createdBase = this.product.Base64.split(",");
+      let createdBase = base.split(",");
       this.fileToUpload["base64"] = createdBase[1];
       this.fileToUpload["Name"] = createdBase[1];
       this.product.Filename = this.fileToUpload['name'];
-      this.product.Base64 = this.fileToUpload["Name"];
+      this.product.Base64 = this.fileToUpload["base64"];
       this.fileType = this.fileToUpload["type"];
+      this.notShow = true;
+      this.changeDetectorRef.markForCheck();
     });
   }
 
@@ -186,11 +192,15 @@ export class ProductConfigComponent implements OnInit {
 
   async saveProduct() {
     this.submit = true;
-    if (!this.product.title || !this.product.description || !this.product.categorySelected) {
+    if (!this.product.title || !this.product.description || this.product.categorySelected == null) {
       this.utilService.showNotify('لطفا همه فیلد هارو پر کنید ', "error");
       this.submit = false;
       return;
     }
+
+    // Send a file name with extension for new uploads; for existing saved images no upload is sent.
+    const hasNewMainImage = !!this.product.Base64;
+    const imageName = hasNewMainImage ? (this.fileToUpload?.name || this.product.Filename) : null;
 
     let model = {
       editOrNewId: this.product.productId,
@@ -199,8 +209,8 @@ export class ProductConfigComponent implements OnInit {
       price: this.product.price,
       count: this.product.count,
       isActive: this.product.isActive ? 1 : 0,
-      image: this.product.Base64,
-      imageName: this.product.Filename,
+      image: hasNewMainImage ? this.product.Base64 : null,
+      imageName: imageName,
       // categoryId: this.product.categorySelected ? this.product.categorySelected.join(',') : '',
       categoryId: this.product.categorySelected,
       extraDetails: this.product.extraDetail,
@@ -208,17 +218,17 @@ export class ProductConfigComponent implements OnInit {
 
     }
     try {
-      let data = await this.mainService.saveProduct(model).toPromise();
-      if (data['data'] == 1) {
+      let data: any = await this.mainService.saveProduct(model).toPromise();
+      if (data && (data['data'] == 1 || data['code'] == 200)) {
         this.utilService.showNotify("با موفقیت ذخیره شد", "success");
         this.router.navigate(['/admin/product-list']);
       }
       else {
-        this.utilService.showNotify('خطا', "error");
+        this.utilService.showNotify(data?.['message'] || 'خطا', "error");
         this.submit = false;
       }
-    } catch (error) {
-      this.utilService.showNotify('خطا', "error");
+    } catch (error: any) {
+      this.utilService.showNotify(error?.error?.message || 'خطا', "error");
       this.submit = false;
     }
   }
@@ -242,35 +252,45 @@ export class ProductConfigComponent implements OnInit {
   }
 
   async getProduct() {
-    let data = await this.mainService.getProduct(this.product.productId).toPromise();
-    let info = data['data'] ? data['data'][0] : null;
-    if (info) {
-      this.editMode = true
-      this.product.title = info['productName'];
-      this.product.price = info['price'];
-      this.product.count = info['count'];
-      this.product.categorySelected = info['categoryId'];
-      this.product.isActive = info['isActive'];
-      this.product.description = info['productDescription'];
-      this.product.extraDetail = info['extraDetails'];
-      this.product.Filename = info['imageFolderPath'];
-      this.notShow = true;
+    try {
+      let data: any = await this.mainService.getProduct(this.product.productId).toPromise();
+      let info = data && data['data'] ? data['data'][0] : null;
+      if (info) {
+        this.editMode = true
+        this.product.title = info['productName'];
+        this.product.price = info['price'];
+        this.product.count = info['count'];
+        this.product.categorySelected = info['categoryId'];
+        this.product.isActive = info['isActive'];
+        this.product.description = info['productDescription'];
+        this.product.extraDetail = info['extraDetails'];
+        this.mainImagePath = info['imageFolderPath'] || '';
+        this.product.Filename = this.mainImagePath;
+        this.product.Base64 = '';
+        this.notShow = true;
+      }
+    } catch (error) {
+      this.utilService.showNotify('خطا در دریافت اطلاعات محصول', 'error');
     }
   }
 
   async getProductImage() {
     try {
-      let data = await this.mainService.getProductGallery(this.product.productId).toPromise();
-      let paths: string[] = data['data'] || [];
-      this.productGallery = paths.map((path: string) => ({
-        name: path,
+      let data: any = await this.mainService.getProductGallery(this.product.productId).toPromise();
+      let paths: string[] = (data && data['data']) ? data['data'] : [];
+      const pending = (this.productGallery || []).filter((item: any) => !item.isServer);
+      const serverItems = paths.map((path: string) => ({
+        name: path.split('/').pop() || path,
+        path: path,
         src: this.serverAddress + path,
         isServer: true,
-        isVideo: /\.(mp4|m4v|m3u8)$/i.test(path)
+        isVideo: /\.(mp4|m4v|m3u8)$/i.test(path),
+        isMain: !!this.mainImagePath && this.mainImagePath === path
       }));
+      this.productGallery = [...serverItems, ...pending];
+      this.changeDetectorRef.markForCheck();
     } catch (error) {
-      // this.utilService.showNotify('خطا در دریافت اطلاعات', 'error')
-
+      this.utilService.showNotify('خطا در دریافت گالری تصاویر', 'error');
     }
   }
 
@@ -279,12 +299,10 @@ export class ProductConfigComponent implements OnInit {
       this.utilService.showNotify('لطفا عکس مورد نظر را انتخاب کنید', 'error');
       return
     }
+    this.savingGallery = true;
     let imageList: any = []
-    this.customGalleryModel.forEach((element: { name: any; base64: any; }, index: number) => {
-      let listItem: any = {};
-      listItem['imageName'] = element.name;
-      listItem['image'] = element.base64;
-      imageList.push(listItem);
+    this.customGalleryModel.forEach((element: { name: any; base64: any; }) => {
+      imageList.push({ imageName: element.name, image: element.base64 });
     });
 
     let model = {
@@ -292,56 +310,90 @@ export class ProductConfigComponent implements OnInit {
       imageList: imageList
     }
     try {
-      let res = await this.mainService.saveProductGallery(model).toPromise();
-      if (res['data'] == 1) {
+      let res: any = await this.mainService.saveProductGallery(model).toPromise();
+      if (res && (res['data'] == 1 || res['code'] == 200)) {
         this.customGalleryModel = [];
+        await this.getProduct();
         await this.getProductImage();
-        this.changeDetectorRef.markForCheck();
-        this.utilService.showNotify('با موفقیت ذخیره شد', 'success')
+        this.utilService.showNotify('گالری با موفقیت ذخیره شد', 'success')
       } else {
-        this.utilService.showNotify(res['message'] || 'خطا در ذخیره اطلاعات', 'error')
+        this.utilService.showNotify(res?.['message'] || 'خطا در ذخیره گالری', 'error')
       }
-    } catch (error) {
-      this.utilService.showNotify('خطا در ذخیره اطلاعات', 'error')
-
+    } catch (error: any) {
+      this.utilService.showNotify(error?.error?.message || 'خطا در ذخیره گالری', 'error')
+    } finally {
+      this.savingGallery = false;
+      this.changeDetectorRef.markForCheck();
     }
   }
+
   onSelect(event: { addedFiles: any[]; }) {
     event.addedFiles.forEach((element: { name: any; type: string; }) => {
       let photoModel: any = {};
       photoModel["name"] = element.name;
+      photoModel["isServer"] = false;
 
       this.utilService.getBase64(element).then((data: any) => {
         let base: any = data;
         let createdBase = base.split(",");
         photoModel["base64"] = createdBase[1];
-        photoModel["src"] = 'data:' + element.type + ';base64,' + photoModel["base64"];
+        photoModel["src"] = base;
         photoModel["isVideo"] = element.type.split('/')[0] == 'video' ? true : false;
-
+        this.changeDetectorRef.markForCheck();
       });
       this.productGallery.push(photoModel);
       this.customGalleryModel.push(photoModel);
-
     });
-
   }
 
+  removePendingGalleryImage(elem: any) {
+    this.productGallery = (this.productGallery || []).filter((item: any) => item !== elem);
+    this.customGalleryModel = (this.customGalleryModel || []).filter((item: any) => item !== elem);
+  }
 
+  async setAsMain(elem: any) {
+    if (!elem?.isServer || !elem.path) {
+      return;
+    }
+    try {
+      const res: any = await this.mainService.setMainGalleryImage(this.product.productId, elem.path).toPromise();
+      if (res && (res['data'] == 1 || res['code'] == 200)) {
+        this.mainImagePath = elem.path;
+        this.product.Filename = this.mainImagePath;
+        this.product.Base64 = '';
+        this.notShow = true;
+        await this.getProduct();
+        await this.getProductImage();
+        this.utilService.showNotify('عکس اصلی محصول تنظیم شد', 'success');
+      } else {
+        this.utilService.showNotify(res?.['message'] || 'خطا در تنظیم عکس اصلی', 'error');
+      }
+    } catch (error: any) {
+      this.utilService.showNotify(error?.error?.message || 'خطا در تنظیم عکس اصلی', 'error');
+    }
+  }
 
-  // async deleteImageProduct(imgId) {
-  //   try {
-  //     this.utilService.sweetAlert({ message: 'از حذف این عکس مطمئن هستید؟' }).then(async result => {
-  //       if (result.value) {
-  //         let res = await this.mainService.deleteProductImage(imgId).toPromise();
-  //         this.getProductImage();
-  //         this.utilService.showNotify('با موفقیت حذف شد', 'success')
-  //       }
-  //     })
-  //   } catch (error) {
-  //     this.utilService.showNotify('خطا در ذخیره اطلاعات', 'error')
-
-  //   }
-  // }
+  async deleteGalleryImage(elem: any) {
+    if (!elem?.isServer || !elem.path) {
+      return;
+    }
+    const confirm = await this.utilService.sweetAlert({ message: 'از حذف این عکس مطمئن هستید؟' });
+    if (!confirm || !confirm.value) {
+      return;
+    }
+    try {
+      const res: any = await this.mainService.deleteProductGalleryImage(this.product.productId, elem.path).toPromise();
+      if (res && (res['data'] == 1 || res['code'] == 200)) {
+        await this.getProduct();
+        await this.getProductImage();
+        this.utilService.showNotify('عکس حذف شد', 'success');
+      } else {
+        this.utilService.showNotify(res?.['message'] || 'خطا در حذف عکس', 'error');
+      }
+    } catch (error: any) {
+      this.utilService.showNotify(error?.error?.message || 'خطا در حذف عکس', 'error');
+    }
+  }
 
   showPhotoGalleryModal() {
     this.isShowPhotoGalleryModal = true;
