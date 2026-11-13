@@ -29,7 +29,9 @@ export class OrdersListComponent implements OnInit, OnDestroy {
   selectedStatus: number = -1;
   searchTerm: string = '';
   lastLazyEvent: any = { first: 0, rows: 10 };
+  sendingIds = new Set<number | string>();
   private search$ = new Subject<string>();
+  private loadRequestId = 0;
 
   ngOnInit() {
     this.search$
@@ -59,14 +61,19 @@ export class OrdersListComponent implements OnInit, OnDestroy {
     const rows = this.lastLazyEvent.rows || 10;
     const page = Math.floor(first / rows) + 1;
 
+    const requestId = ++this.loadRequestId;
     this.loading = true;
+    this.changeDetectorRef.markForCheck();
     try {
       let response = await this.mainService.getAllBasket(page, rows, this.selectedStatus, this.searchTerm).toPromise();
+      if (requestId !== this.loadRequestId) {
+        return;
+      }
 
       this.ordersList = response['data'] || [];
       this.totalRecords = response['totalCount'] || 0;
 
-      this.ordersList.forEach(element => {
+      this.ordersList.forEach((element: any) => {
         element.fullName = (element.name || '') + ' ' + (element.lastName || '');
         element.titles = element.titles ? element.titles.split(',') : [];
         element.product = "";
@@ -77,9 +84,14 @@ export class OrdersListComponent implements OnInit, OnDestroy {
         }
       });
     } catch (error) {
-      this.utilService.showNotify('خطا در دریافت اطلاعات', 'error');
+      if (requestId === this.loadRequestId) {
+        this.utilService.showNotify('خطا در دریافت اطلاعات', 'error');
+      }
     } finally {
-      this.loading = false;
+      if (requestId === this.loadRequestId) {
+        this.loading = false;
+        this.changeDetectorRef.markForCheck();
+      }
     }
   }
 
@@ -93,18 +105,31 @@ export class OrdersListComponent implements OnInit, OnDestroy {
     this.loadOrders(this.lastLazyEvent);
   }
 
-  async sendOrderConfirm(id) {
-    this.utilService.sweetAlert({ title: "آیا از ارسال سفارش  مطمئن هستید ؟", message: '' }).then(async result => {
-      if (result.value) {
-        try {
-          await this.mainService.sendOrderConfirm(id).toPromise();
-          await this.loadOrders(this.lastLazyEvent);
-          this.changeDetectorRef.markForCheck();
-        } catch (error) {
-          this.utilService.showNotify('خطایی پیش آمده', 'error');
-        }
+  isSending(id: any): boolean {
+    return this.sendingIds.has(id);
+  }
 
-      }
-    })
+  async sendOrderConfirm(id) {
+    if (this.isSending(id)) {
+      return;
+    }
+
+    const result = await this.utilService.sweetAlert({ title: "آیا از ارسال سفارش  مطمئن هستید ؟", message: '' });
+    if (!result || !result.value) {
+      return;
+    }
+
+    this.sendingIds.add(id);
+    this.changeDetectorRef.markForCheck();
+    try {
+      await this.mainService.sendOrderConfirm(id).toPromise();
+      this.utilService.showNotify('وضعیت سفارش به «ارسال شده» تغییر کرد', 'success');
+      await this.loadOrders(this.lastLazyEvent);
+    } catch (error) {
+      this.utilService.showNotify('خطایی پیش آمده', 'error');
+    } finally {
+      this.sendingIds.delete(id);
+      this.changeDetectorRef.markForCheck();
+    }
   }
 }
