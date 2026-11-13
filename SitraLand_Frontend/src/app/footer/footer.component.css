@@ -1,6 +1,7 @@
 .footer-container {
-    width: calc(89% - 6.5vw) !important;
-    margin-right: 16vw !important;
+    width: 100% !important;
+    max-width: 1400px;
+    margin: 0 auto !important;
     margin-bottom: 0vw !important;
     min-height: 195px;
     display: flex;
@@ -93,7 +94,7 @@
 
 @media(max-width: 760px) {
     .footer-container {
-        width: calc(99% - -0.5vw) !important;
+        width: 100% !important;
         margin-right: 0vw !important;
         margin-bottom: 1vw !important;
         min-height: 412px;

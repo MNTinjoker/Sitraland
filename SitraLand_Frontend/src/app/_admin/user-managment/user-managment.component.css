@@ -8,8 +8,9 @@
 }
 
 .appContainer {
-  width: calc(95% - 10vw) !important;
-  margin-right: 12vw !important;
+  width: 100% !important;
+  max-width: 1400px;
+  margin: 0 auto !important;
 }
 
 .hideBtn {
@@ -41,6 +42,8 @@
 
 @media (max-width : 760px) {
   .appContainer {
-    margin-right: 7vw !important;
+    width: 100% !important;
+    max-width: 100%;
+    margin: 0 auto !important;
   }
 }
