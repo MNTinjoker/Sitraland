@@ -142,7 +142,14 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.MapWhen(x => x.Request.Path.Value?.StartsWith("/api", StringComparison.OrdinalIgnoreCase) == false, builder =>
+// Every page is served by the single page application, except the API and the
+// uploaded images. A photo that is missing on the server must answer with 404
+// instead of the index.html of the application, so the browser does not
+// download the whole page for a photo that does not exist.
+app.MapWhen(x =>
+    x.Request.Path.Value?.StartsWith("/api", StringComparison.OrdinalIgnoreCase) == false &&
+    x.Request.Path.Value?.StartsWith("/images", StringComparison.OrdinalIgnoreCase) == false,
+    builder =>
 {
     builder.UseSpa(spa =>
     {
