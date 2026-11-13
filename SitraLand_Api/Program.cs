@@ -149,6 +149,16 @@ app.MapWhen(x => x.Request.Path.Value?.StartsWith("/api", StringComparison.Ordin
 
         spa.Options.SourcePath = "ClientApp";
 
+        // The index.html must always be revalidated, otherwise the visitors would
+        // keep an old version of the application.
+        spa.Options.DefaultPageStaticFileOptions = new StaticFileOptions
+        {
+            OnPrepareResponse = context =>
+            {
+                context.Context.Response.Headers.CacheControl = "no-cache";
+            }
+        };
+
         //if (env.IsDevelopment())
         //{
         //  spa.UseAngularCliServer(npmScript: "start");
