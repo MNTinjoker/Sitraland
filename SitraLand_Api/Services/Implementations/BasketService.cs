@@ -233,8 +233,22 @@ namespace SitraLand_Api.Services.Implementations
         {
             var result = new ResponseGlobal();
 
+            if (string.IsNullOrWhiteSpace(basketCode))
+            {
+                result.Message = "Invalid Body Request";
+                result.Code = (int)HttpStatusCode.BadRequest;
+                return result;
+            }
+
             var basket = await _dbContext.Baskets.AsNoTracking()
                 .FirstOrDefaultAsync(q => q.BasketCode == basketCode);
+
+            if (basket == null)
+            {
+                result.Message = "Submitted Data Is Invalid";
+                result.Code = (int)HttpStatusCode.NotFound;
+                return result;
+            }
 
             result.Message = "success";
             result.Code = (int)HttpStatusCode.OK;
@@ -246,10 +260,18 @@ namespace SitraLand_Api.Services.Implementations
         {
             var result = new ResponseGlobal();
 
+            if (basketId < 1)
+            {
+                result.Message = "Invalid Body Request";
+                result.Code = (int)HttpStatusCode.BadRequest;
+                return result;
+            }
+
             var basket = await _dbContext.Baskets.FirstOrDefaultAsync(q => q.BasketId == basketId);
             if (basket == null)
             {
                 result.Message = "Submitted Data Is Invalid";
+                result.Code = (int)HttpStatusCode.NotFound;
                 return result;
             }
 
@@ -269,6 +291,7 @@ namespace SitraLand_Api.Services.Implementations
             if (basketId < 1)
             {
                 result.Message = "Invalid Body Request";
+                result.Code = (int)HttpStatusCode.BadRequest;
                 return result;
             }
 
@@ -279,6 +302,7 @@ namespace SitraLand_Api.Services.Implementations
             if (affected == 0)
             {
                 result.Message = "Submitted Data Is Invalid";
+                result.Code = (int)HttpStatusCode.NotFound;
                 return result;
             }
 

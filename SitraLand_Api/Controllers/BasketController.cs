@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SitraLand_Api.Models.BasketModels;
+using SitraLand_Api.Models.Response;
 using SitraLand_Api.Services.Interfaces;
 
 namespace SitraLand_Api.Controllers
@@ -16,12 +17,24 @@ namespace SitraLand_Api.Controllers
             _basketService = basketService;
         }
 
+        // Returns the service result with its HTTP status while keeping the body
+        // compatible with existing clients that read the ResponseGlobal envelope.
+        private IActionResult FromResult(ResponseGlobal result)
+        {
+            if (result.Code >= 400 && result.Code <= 599)
+            {
+                return StatusCode(result.Code, result);
+            }
+
+            return Ok(result);
+        }
+
         [HttpPost("saveBasket")]
         public async Task<IActionResult> SaveBasket(SaveBasketDTO model)
         {
             var result = await _basketService.SaveBasket(model);
 
-            return Ok(result);
+            return FromResult(result);
         }
 
         [HttpGet("getAllBasket")]
@@ -30,15 +43,16 @@ namespace SitraLand_Api.Controllers
         {
             var result = await _basketService.GetAllBasket(page, pageSize, status, search);
 
-            return Ok(result);
+            return FromResult(result);
         }
 
         [HttpGet("getBasket/{basketCode}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetBasket(string basketCode)
         {
             var result = await _basketService.GetBasket(basketCode);
 
-            return Ok(result);
+            return FromResult(result);
         }
 
         [HttpPost("getBasketProducts")]
@@ -55,7 +69,7 @@ namespace SitraLand_Api.Controllers
         {
             var result = await _basketService.UpdateBasket(basketId, model);
 
-            return Ok(result);
+            return FromResult(result);
         }
 
         [HttpDelete("deleteBasket/{basketId}")]
@@ -64,7 +78,7 @@ namespace SitraLand_Api.Controllers
         {
             var result = await _basketService.DeleteBasket(basketId);
 
-            return Ok(result);
+            return FromResult(result);
         }
 
         [HttpPost("sendOrderConfirm/{basketCode}")]
@@ -73,7 +87,7 @@ namespace SitraLand_Api.Controllers
         {
             var result = await _basketService.SendOrderConfirm(basketCode);
 
-            return Ok(result);
+            return FromResult(result);
         }
     }
 }

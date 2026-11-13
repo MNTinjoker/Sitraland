@@ -59,8 +59,8 @@ export class OrderDetailComponent implements OnInit {
       }
 
       this.totalPrice = this.ordersDetail?.totalPrice;
-    } catch (error) {
-      this.utilService.showNotify('خطا در دریافت اطلاعات سفارش', 'error');
+    } catch (error: any) {
+      this.utilService.showNotify(error?.error?.message || 'خطا در دریافت اطلاعات سفارش', 'error');
     }
   }
 

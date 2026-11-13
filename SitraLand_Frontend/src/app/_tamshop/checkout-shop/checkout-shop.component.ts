@@ -208,7 +208,7 @@ export class CheckoutShopComponent implements OnInit {
     };
 
     try {
-      const res = await this.mainService.saveOrder(model).toPromise();
+      const res: any = await this.mainService.saveOrder(model).toPromise();
       if (!res || res['code'] != 200) {
         this.utilService.showNotify(res?.['message'] || 'خطا در ثبت سفارش', 'error');
         return;
@@ -218,8 +218,8 @@ export class CheckoutShopComponent implements OnInit {
       this.cartService.clear();
       localStorage.removeItem("productFinalList");
       this.step = '3';
-    } catch (error) {
-      this.utilService.showNotify('خطا در ثبت سفارش، دوباره تلاش کنید', 'error');
+    } catch (error: any) {
+      this.utilService.showNotify(error?.error?.message || 'خطا در ثبت سفارش، دوباره تلاش کنید', 'error');
     } finally {
       this.submit = false;
       this.buttonTxt = 'ثبت سفارش';

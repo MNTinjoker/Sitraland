@@ -83,9 +83,9 @@ export class OrdersListComponent implements OnInit, OnDestroy {
           }
         }
       });
-    } catch (error) {
+    } catch (error: any) {
       if (requestId === this.loadRequestId) {
-        this.utilService.showNotify('خطا در دریافت اطلاعات', 'error');
+        this.utilService.showNotify(error?.error?.message || 'خطا در دریافت اطلاعات', 'error');
       }
     } finally {
       if (requestId === this.loadRequestId) {
@@ -125,8 +125,8 @@ export class OrdersListComponent implements OnInit, OnDestroy {
       await this.mainService.sendOrderConfirm(id).toPromise();
       this.utilService.showNotify('وضعیت سفارش به «ارسال شده» تغییر کرد', 'success');
       await this.loadOrders(this.lastLazyEvent);
-    } catch (error) {
-      this.utilService.showNotify('خطایی پیش آمده', 'error');
+    } catch (error: any) {
+      this.utilService.showNotify(error?.error?.message || 'خطایی پیش آمده', 'error');
     } finally {
       this.sendingIds.delete(id);
       this.changeDetectorRef.markForCheck();
