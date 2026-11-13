@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MainService } from 'src/app/services/main.service';
 import { UtilService } from 'src/app/services/util.service';
 
@@ -15,42 +15,53 @@ export class LoginComponent implements OnInit {
   constructor(
     private mainService: MainService,
     private router: Router,
-    private utilService:UtilService
+    private activeRoute: ActivatedRoute,
+    private utilService: UtilService
   ) { }
 
   userDetail: any = {};
+  submitting = false;
+
   ngOnInit(): void {
   }
 
-
   async login(form: any) {
+    if (this.submitting) {
+      return;
+    }
     if (form.invalid) {
       form.control.markAllAsTouched();
       return;
     }
-    try {
-      let model = {
-        userName: this.userDetail.mobile,
-        password: this.userDetail.password
-      }
-      let res = await this.mainService.login(model).toPromise();
-      if (res['data'] != null) {
-        localStorage.setItem('token', res['data']);
-        localStorage.setItem('userName', this.userDetail.mobile);
-        if (res['message'] == "Admin") {
-          localStorage.setItem('isAdmin', '1');
-        } else {
-          localStorage.setItem('isAdmin', '0');
-        }
-        this.router.navigate(['/home']);
-      }
-      else {
-        this.utilService.showNotify('خطا', "error");
 
+    const mobile = String(this.userDetail.mobile || '').trim();
+    if (!/^09\d{9}$/.test(mobile)) {
+      this.utilService.showNotify('شماره موبایل معتبر نیست', "error");
+      return;
+    }
+
+    this.submitting = true;
+    try {
+      const model = {
+        userName: mobile,
+        password: this.userDetail.password
+      };
+      const res = await this.mainService.login(model).toPromise();
+      if (res && res['data'] != null) {
+        localStorage.setItem('token', res['data']);
+        localStorage.setItem('userName', mobile);
+        localStorage.setItem('isAdmin', res['message'] == "Admin" ? '1' : '0');
+
+        const returnUrl = this.activeRoute.snapshot.queryParamMap.get('returnUrl');
+        const safeReturnUrl = returnUrl && returnUrl.startsWith('/') ? returnUrl : '/home';
+        this.router.navigateByUrl(safeReturnUrl);
+      } else {
+        this.utilService.showNotify(res?.['message'] || 'نام کاربری یا رمز عبور نادرست است', "error");
       }
     } catch (error) {
-      this.utilService.showNotify('خطا', "error");
-
+      this.utilService.showNotify('خطا در ورود، دوباره تلاش کنید', "error");
+    } finally {
+      this.submitting = false;
     }
   }
 

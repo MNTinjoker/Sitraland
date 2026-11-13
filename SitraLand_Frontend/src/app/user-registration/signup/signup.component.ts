@@ -19,31 +19,51 @@ export class SignupComponent implements OnInit {
   ) { }
 
   userDetail: any = {};
+  submitting = false;
 
   ngOnInit(): void {
   }
 
-
   async singUp(form: any) {
+    if (this.submitting) {
+      return;
+    }
     if (form.invalid) {
       form.control.markAllAsTouched();
       return;
     }
+
+    const mobile = String(this.userDetail.mobile || '').trim();
+    const fullName = String(this.userDetail.fullName || '').trim();
+    const password = String(this.userDetail.password || '');
+    if (!/^09\d{9}$/.test(mobile)) {
+      this.utilService.showNotify('شماره موبایل معتبر نیست', "error");
+      return;
+    }
+    if (!fullName) {
+      this.utilService.showNotify('نام کاربری را وارد کنید', "error");
+      return;
+    }
+
+    this.submitting = true;
     try {
-      let model = {
-        password: this.userDetail.password,
-        fullName: this.userDetail.fullName,
-        mobile: this.userDetail.mobile
-      }
-      let res = await this.mainService.signUp(model).toPromise();
-      if (res['message'] == "User Created Successfully") {
+      const model = {
+        password: password,
+        fullName: fullName,
+        mobile: mobile
+      };
+      const res = await this.mainService.signUp(model).toPromise();
+      const ok = res && (res['message'] == "User Created Successfully" || res['code'] == 200);
+      if (ok) {
         this.utilService.showNotify('ثبت‌نام با موفقیت انجام شد', 'success');
         this.router.navigate(['/login']);
       } else {
-        this.utilService.showNotify(res['message'] || 'خطا', "error");
+        this.utilService.showNotify(res?.['message'] || 'ثبت‌نام انجام نشد', "error");
       }
     } catch (error) {
-      this.utilService.showNotify("خطا", "error");
+      this.utilService.showNotify("خطا در ثبت‌نام، دوباره تلاش کنید", "error");
+    } finally {
+      this.submitting = false;
     }
   }
 
