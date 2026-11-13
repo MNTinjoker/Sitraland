@@ -1,14 +1,14 @@
 <div class="appContainer bg-white">
   <div class="text-end">
     <div class="container-fluid">
-      <div class="mb-3 col-12">
+      <div class="mb-3 col-12 toolbar">
         <button (click)="goToConfg()" class="btn btn-primary">
           <i class="fa fa-plus"></i> محصول
         </button>
       </div>
       <div class="row">
         <div class="col-12">
-          <p-table #dt [showGridlines]="true" [first]="lastLazyEvent.first" [rows]="10" [paginator]="true"
+          <p-table #dt [showGridlines]="false" [stripedRows]="true" [first]="lastLazyEvent.first" [rows]="10" [paginator]="true"
             [lazy]="true" [loading]="loading" [totalRecords]="totalRecords" (onLazyLoad)="loadProducts($event)"
             [value]="productList">
             <ng-template #header>
@@ -76,6 +76,19 @@
                   <button class="btn btn-outline-danger mx-05" (click)='deleteProduct(product.productId)'>
                     حذف
                   </button>
+                </td>
+              </tr>
+            </ng-template>
+            <ng-template #empty>
+              <tr>
+                <td [attr.colspan]="8" class="text-center p-5">
+                  <div class="p-table-empty">
+                    <i class="fa fa-box-open"></i>
+                    <p>هیچ محصولی در این لیست یافت نشد</p>
+                    <button (click)="goToConfg()" class="btn btn-primary mt-2">
+                      <i class="fa fa-plus"></i> افزودن محصول جدید
+                    </button>
+                  </div>
                 </td>
               </tr>
             </ng-template>

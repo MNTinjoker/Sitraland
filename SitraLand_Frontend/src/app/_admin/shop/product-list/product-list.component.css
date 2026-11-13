@@ -1,3 +1,8 @@
+.toolbar {
+  display: flex;
+  justify-content: flex-end;
+}
+
 .button-box {
   width: 320px;
 }
@@ -7,4 +12,21 @@
 }
 .mx-05{
   margin:  .5rem;
+}
+
+/* The empty state of the product list. */
+.p-table-empty {
+  text-align: center;
+  padding: 2rem 1rem;
+  color: var(--sitra-neutral-500, #6b7280);
+}
+
+.p-table-empty i {
+  font-size: 2.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.p-table-empty p {
+  margin: 0;
+  font-size: 0.95rem;
 }

@@ -138,3 +138,90 @@
         justify-content: space-around;
     }
 }
+
+
+/* ==========================================================================
+   Phase 2 - the contact block of the footer
+   A big phone number and two direct buttons, big enough to be touched.
+   ========================================================================== */
+
+.footer-contact {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 0.9rem 1.1rem;
+  margin-bottom: 1.2rem;
+  border-radius: var(--sitra-radius);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.footer-phone {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: 'yekan-bold', 'yekan-medium', sans-serif;
+  font-size: 1.6rem;
+  color: #fff !important;
+  text-decoration: none !important;
+}
+
+.footer-phone i {
+  font-size: 1.2rem;
+}
+
+.footer-contact-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.footer-contact-btn {
+  min-height: var(--sitra-touch);
+  padding: 0 1.3rem;
+  border-radius: var(--sitra-radius-sm);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  font-size: 0.95rem;
+}
+
+.footer-whatsapp {
+  background: #25d366 !important;
+  border-color: #25d366 !important;
+  color: #fff !important;
+}
+
+.footer-whatsapp img {
+  width: 22px;
+  height: 22px;
+}
+
+/* The small texts of the footer are easier to read. */
+.img-text {
+  font-size: 0.85rem;
+}
+
+@media (max-width: 767px) {
+  .footer-contact {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+
+  .footer-phone {
+    justify-content: center;
+    font-size: 1.4rem;
+  }
+
+  .footer-contact-actions {
+    justify-content: center;
+  }
+
+  .footer-contact-btn {
+    flex: 1 1 auto;
+  }
+}

@@ -77,6 +77,7 @@ export class NavbarComponent implements OnInit {
   //   tags: false,
   // };
   userName = 'مهمان'
+  cartCount = 0
 
 
   @HostListener("window:resize", ["$event.target"])
@@ -110,6 +111,7 @@ export class NavbarComponent implements OnInit {
       // if (window.location.pathname.indexOf('admin') !== -1) {
       this.chcekUser();
       this.seeUserMenu();
+      this.getCartCount();
       this.changeDetectorRef.markForCheck();
     });
   }
@@ -131,12 +133,22 @@ export class NavbarComponent implements OnInit {
 
   async getCartCount() {
     let products = localStorage.getItem('products');
-    if (products) {
-      let temp: any = this.utilService.decryptData(products);
-      let orders = temp.orders;
-      let cartCount = orders.length;
-      this.utilService.checkBasketNumber(cartCount);
+
+    if (!products) {
+      this.cartCount = 0;
+      return;
     }
+
+    let temp: any = this.utilService.decryptData(products);
+
+    if (!temp || !Array.isArray(temp.orders)) {
+      this.cartCount = 0;
+      return;
+    }
+
+    let cartCount = temp.orders.length;
+    this.cartCount = cartCount;
+    this.utilService.checkBasketNumber(cartCount);
   }
 
   hamburgerClick2() {
@@ -252,7 +264,12 @@ export class NavbarComponent implements OnInit {
     localStorage.removeItem('isAdmin');
     localStorage.removeItem('token');
     localStorage.removeItem('userName');
-    window.location['pathname'] = "/home";
+
+    this.userName = 'مهمان';
+    this.isAdmin = false;
+    this.cartCount = 0;
+
+    this.router.navigate(['/home']);
   }
 
   //   let tamShopUrl = location.pathname.split("?")[0];

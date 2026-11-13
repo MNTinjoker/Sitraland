@@ -14,26 +14,34 @@
     <p-carousel dir="ltr" id="allProduct" [value]="allItemList" [numVisible]="3" [numScroll]="1" [circular]="true"
         [responsiveOptions]="responsiveCarouselOptions">
         <ng-template #item let-product>
-            <div class="border-1 surface-border border-round m-2 text-center py-0 px-3 w-100 h-100">
-                <div class="mb-3 border round p-2 itemofcarousel" (click)="goToProductDetail(product.productId)">
-                    <p *ngIf="product.count==0 " class="lock-text lock-text-slider lock-category-text">
-                        اتمام موجودی
-                    </p>
-                    <img class="simple-carousel-image w-6 img-fluid" [src]="server + product.imageFolderPath" />
-                    <p [ngClass]="{'lock-product': product.count==0}" class="name-owl-carousel-o mt-3">
-                        {{product.productName}}</p>
-                    <div class="col-12 d-flex align-items-center justify-content-between">
-                        <span class="badge rounded-pill stock-badge"
-                            [class.bg-success]="product.count > 0" [class.bg-danger]="product.count == 0">
-                            <bdi *ngIf="product.count > 0">{{product.count}} موجود</bdi>
-                            <bdi *ngIf="product.count == 0">ناموجود</bdi>
-                        </span>
-                        <div class="price">
-                            <p class="name-owl-carousel-o mt-3 price"> {{product.price | inputNumberSplit}} ریال</p>
+            <article class="product-card" [class.product-card--empty]="product.count == 0"
+                (click)="goToProductDetail(product.productId)">
+                <div class="product-card-media" [class.is-empty]="product.count == 0">
+                    <img [src]="server + product.imageFolderPath" [alt]="product.productName" loading="lazy" decoding="async">
+                    <span class="badge rounded-pill stock-badge" [class.bg-success]="product.count > 0"
+                        [class.bg-danger]="product.count == 0">
+                        <ng-container *ngIf="product.count > 0">{{product.count}} موجود</ng-container>
+                        <ng-container *ngIf="product.count == 0">ناموجود</ng-container>
+                    </span>
+                    <span class="product-card-flag" *ngIf="product.isActive" title="فروش ویژه">
+                        <i class="fa fa-percent"></i>
+                    </span>
+                </div>
+                <div class="product-card-body">
+                    <h3 class="product-card-name">{{product.productName}}</h3>
+                    <div class="product-card-footer">
+                        <div class="product-card-price" [class.is-empty]="product.count == 0">
+                            {{product.price | inputNumberSplit}}
+                            <small>ریال</small>
                         </div>
+                        <button class="product-card-add" type="button" [disabled]="product.count == 0"
+                            [title]="product.count == 0 ? 'ناموجود' : 'افزودن به سبد خرید'"
+                            (click)="addToCart(product.productId, $event)">
+                            <i class="fa fa-cart-plus"></i>
+                        </button>
                     </div>
                 </div>
-            </div>
+            </article>
         </ng-template>
     </p-carousel>
 </div>

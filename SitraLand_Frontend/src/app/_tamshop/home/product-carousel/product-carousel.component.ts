@@ -1,6 +1,7 @@
 import { Component, Input, OnInit, ChangeDetectionStrategy, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { MainService } from 'src/app/services/main.service';
+import { UtilService } from 'src/app/services/util.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -14,7 +15,8 @@ export class ProductCarouselComponent implements OnInit {
 
   constructor(
     private mainService: MainService,
-    private router: Router
+    private router: Router,
+    private utilService: UtilService
   ) { }
   responsiveCarouselOptions: any[] = [
     {
@@ -89,7 +91,38 @@ export class ProductCarouselComponent implements OnInit {
   // }
 
   goToProductDetail(id) {
-    window.location['pathname'] = '/product-detail/' + id;
+    this.router.navigate(['/product-detail', id]);
+  }
+
+  async addToCart(id, event?: Event) {
+    // The button is inside the card, the card must not open the product.
+    if (event) {
+      event.stopPropagation();
+    }
+
+    try {
+      let orders = localStorage.getItem('products');
+      let products: any = {
+        orders: []
+      }
+
+      if (orders) {
+        products = this.utilService.decryptData(orders);
+      }
+
+      let inCart = products.orders.findIndex(x => x.id == id);
+
+      if (inCart != -1) {
+        products.orders[inCart]['Number'] = products.orders[inCart]['Number'] + 1;
+      } else {
+        products.orders.push({ id, Number: 1 });
+      }
+
+      localStorage.setItem('products', this.utilService.encryptData(products));
+      this.utilService.showNotify(`محصول به سبد خریدت اضافه شد `, 'success');
+      this.utilService.checkBasketNumber(null);
+    } catch (error) {
+    }
   }
 
 }

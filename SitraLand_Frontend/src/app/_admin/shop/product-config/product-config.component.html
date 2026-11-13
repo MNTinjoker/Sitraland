@@ -5,29 +5,31 @@
     </div>
     <div class="row text-end">
       <div class="col-lg-4 col-md-4 col-12 mb-4">
-        <label for="title">نام محصول</label>
+        <label class="sitra-label" for="title">نام محصول</label>
         <input type="text" class="form-control" id="title" name="title" [(ngModel)]="product.title">
       </div>
       <div class="col-md-4 col-12 mb-3 mb-5">
-        <!-- <span class="text-danger">*</span> -->
-        <label class="" for="price"> قیمت محصول</label>
-        <input #price='ngModel' class="form-control" id="price" name="price" [(ngModel)]="product.price"
-          OnlyNumber="true" required />
-        <p class="p-1" *ngIf="product.price > 0"> {{product.price |inputNumberSplit}}
-          ریال</p>
-        <!-- <span class="text-danger" *ngIf='price.invalid && price.touched'>
-                قیمت محصول را وارد کنید
-              </span> -->
+        <label class="sitra-label" for="price">قیمت محصول</label>
+        <div class="sitra-price">
+          <input #price="ngModel" class="form-control" id="price" name="price" [ngModel]="priceDisplay"
+            (ngModelChange)="onPriceChange($event)" OnlyNumber="true" required min="1" placeholder="مثلاً 1250000"
+            [class.is-invalid]="price.invalid && price.touched" aria-describedby="priceHint">
+          <span class="sitra-price-unit">ریال</span>
+        </div>
+        <p class="sitra-hint" id="priceHint" *ngIf="product.price > 0">
+          معادل {{product.price | inputNumberSplit}} ریال
+        </p>
+        <p class="sitra-error" *ngIf="price.invalid && price.touched">قیمت محصول را وارد کنید</p>
       </div>
       <div class="col-lg-4 col-md-4 col-12 mb-4">
-        <label for="index"> تعداد</label>
+        <label class="sitra-label" for="index">تعداد</label>
         <input type="text" class="form-control" id="count" name="count" OnlyNumber [(ngModel)]="product.count">
       </div>
 
 
 
       <div class="col-lg-4 col-md-4 col-12  mb-4">
-        <label for="category"> دسته بندی محصولات</label>
+        <label class="sitra-label" for="category">دسته بندی محصولات</label>
         <ng-select2 name='category' width='100%' [(ngModel)]='product.categorySelected' [options]="OptionNgSelected"
           [data]="categoryHomeList">
         </ng-select2>
@@ -49,18 +51,18 @@
         <div class="form-check mt-4 pt-1 me-3">
           <input type="checkbox" class="form-check-input" name="isActive" id="isActive"
             [(ngModel)]="product.isActive">
-          <label for="isActive" class="form-check-label pt-1"> فروش ویژه</label>
+          <label for="isActive" class="form-check-label pt-1">فروش ویژه</label>
         </div>
       </div>
 
       <div class="col-12 mb-4">
-        <label>توضیحات</label>
+        <label class="sitra-label">توضیحات</label>
         <textarea class="desciription" name="text" [(ngModel)]="product.description">
               </textarea>
       </div>
 
       <div class="col-12 mb-4">
-        <label> مشخصات</label>
+        <label class="sitra-label">مشخصات</label>
         <ckeditor [editor]="Editor" [config]="editorConfig" [(ngModel)]="product.extraDetail"
           name="courseDesc"></ckeditor>
 <!-- 

@@ -380,3 +380,468 @@
   font-weight: normal;
   padding: 0.3rem 0.55rem;
 }
+
+/* ==========================================================================
+   Phase 2 - "modern and simple"
+   One primary colour, one accent colour for the calls to action and a neutral
+   grey. Every screen uses these variables, so the site looks like one thing.
+   ========================================================================== */
+
+:root {
+  /* The primary colour of the brand (the green blue of the old sidebar). */
+  --sitra-primary: #4c6966;
+  --sitra-primary-dark: #33504e;
+  --sitra-primary-light: #5c7975;
+  --sitra-primary-soft: #eaf0ef;
+
+  /* The accent colour, only for the calls to action. */
+  --sitra-accent: #c44100;
+  --sitra-accent-dark: #a33700;
+  --sitra-accent-soft: #fdf0e9;
+
+  /* The neutral colours. */
+  --sitra-neutral-900: #1f2933;
+  --sitra-neutral-700: #3e4c59;
+  --sitra-neutral-500: #7b8794;
+  --sitra-neutral-300: #cbd2d9;
+  --sitra-neutral-200: #e4e7eb;
+  --sitra-neutral-100: #f4f6f7;
+  --sitra-surface: #ffffff;
+  --sitra-page: #f7f9f9;
+
+  /* The shape and the rhythm of the site. */
+  --sitra-radius: 14px;
+  --sitra-radius-sm: 10px;
+  --sitra-shadow: 0 2px 10px rgba(31, 41, 51, 0.08);
+  --sitra-shadow-lg: 0 8px 28px rgba(31, 41, 51, 0.14);
+
+  /* The smallest comfortable touch target for a driver with a phone. */
+  --sitra-touch: 44px;
+}
+
+/* The whole site uses the same font and the same base size. */
+body {
+  font-family: 'yekan-medium', 'myFont', sans-serif !important;
+  font-size: 14px !important;
+  color: var(--sitra-neutral-900) !important;
+  background-color: var(--sitra-page) !important;
+  line-height: 1.9;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'yekan-bold', 'yekan-medium', sans-serif;
+  color: var(--sitra-neutral-900);
+}
+
+/* The content is no longer pushed to the side, the green column is gone. */
+.appUserContainer {
+  width: 100% !important;
+  max-width: 1200px;
+  margin: 0 auto !important;
+  padding-top: 4.5rem;
+  padding-bottom: 2rem;
+  min-height: 100vh;
+  text-align: right;
+}
+
+.appContainer {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding-top: 4.5rem;
+  padding-bottom: 2rem;
+  min-height: 100vh;
+  background-color: var(--sitra-page) !important;
+  text-align: right;
+}
+
+@media (max-width: 767px) {
+  .appUserContainer,
+  .appContainer {
+    padding-top: 4rem;
+    /* The bottom tab bar covers the last rows of the page. */
+    padding-bottom: 5.5rem;
+  }
+}
+
+/* A card of the site: white surface, soft border and a small shadow. */
+.sitra-card {
+  background: var(--sitra-surface);
+  border: 1px solid var(--sitra-neutral-200);
+  border-radius: var(--sitra-radius);
+  box-shadow: var(--sitra-shadow);
+}
+
+/* The buttons of the site. */
+.btn {
+  border-radius: var(--sitra-radius-sm);
+  min-height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  font-family: 'yekan-medium', 'myFont', sans-serif;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.btn-primary {
+  background-color: var(--sitra-primary) !important;
+  border-color: var(--sitra-primary) !important;
+  color: #fff !important;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: var(--sitra-primary-dark) !important;
+  border-color: var(--sitra-primary-dark) !important;
+  color: #fff !important;
+}
+
+.btn-danger {
+  background-color: var(--sitra-accent) !important;
+  border-color: var(--sitra-accent) !important;
+  color: #fff !important;
+}
+
+.btn-danger:hover,
+.btn-danger:focus {
+  background-color: var(--sitra-accent-dark) !important;
+  border-color: var(--sitra-accent-dark) !important;
+  color: #fff !important;
+}
+
+.btn-outline-primary {
+  color: var(--sitra-primary) !important;
+  border-color: var(--sitra-primary) !important;
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--sitra-primary) !important;
+  color: #fff !important;
+}
+
+/* The call to action of the hero and of the empty pages. */
+.btn-accent {
+  background-color: var(--sitra-accent) !important;
+  color: #fff !important;
+  border: none !important;
+  min-height: var(--sitra-touch);
+  padding: 0 1.6rem;
+  font-size: 1rem;
+  border-radius: var(--sitra-radius-sm);
+  box-shadow: 0 6px 16px rgba(196, 65, 0, 0.28);
+}
+
+.btn-accent:hover,
+.btn-accent:focus {
+  background-color: var(--sitra-accent-dark) !important;
+  color: #fff !important;
+}
+
+/* The form fields of the site. */
+.form-control,
+.form-select,
+select,
+input[type='text'],
+input[type='number'],
+input[type='tel'],
+input[type='password'],
+input[type='search'] {
+  border: 1px solid var(--sitra-neutral-300);
+  border-radius: var(--sitra-radius-sm);
+  min-height: 42px;
+  font-family: 'yekan-medium', 'myFont', sans-serif;
+  background-color: var(--sitra-surface);
+  color: var(--sitra-neutral-900);
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--sitra-primary);
+  box-shadow: 0 0 0 0.2rem rgba(76, 105, 102, 0.15);
+}
+
+.form-control.is-invalid {
+  border-color: #c0392b;
+}
+
+.form-control.is-invalid:focus {
+  box-shadow: 0 0 0 0.2rem rgba(192, 57, 43, 0.15);
+}
+
+/* The label of a field with the hint and the error of the field. */
+.sitra-label {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--sitra-neutral-700);
+  margin-bottom: 0.35rem;
+}
+
+.sitra-hint {
+  font-size: 0.78rem;
+  color: var(--sitra-neutral-500);
+  margin: 0.3rem 0 0;
+}
+
+.sitra-error {
+  font-size: 0.78rem;
+  color: #c0392b;
+  margin: 0.3rem 0 0;
+}
+
+/* The price field with the "rial" behind the number. */
+.sitra-price {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.sitra-price .form-control {
+  padding-left: 3.4rem;
+  font-weight: bold;
+}
+
+.sitra-price .sitra-price-unit {
+  position: absolute;
+  left: 0.75rem;
+  font-size: 0.82rem;
+  color: var(--sitra-neutral-500);
+  pointer-events: none;
+}
+
+/* The tables of the admin panel. */
+.p-datatable .p-datatable-thead > tr > th {
+  background-color: var(--sitra-primary) !important;
+  color: #fff !important;
+  border-color: var(--sitra-primary-dark) !important;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.p-datatable .p-datatable-tbody > tr:nth-child(even) {
+  background-color: var(--sitra-neutral-100);
+}
+
+.p-datatable .p-datatable-tbody > tr:hover {
+  background-color: var(--sitra-primary-soft);
+}
+
+.p-datatable .p-datatable-tbody > tr > td {
+  border-color: var(--sitra-neutral-200) !important;
+  color: var(--sitra-neutral-700);
+}
+
+/* The empty state of a table or of a list. */
+.sitra-empty {
+  text-align: center;
+  padding: 2.5rem 1rem;
+  color: var(--sitra-neutral-500);
+}
+
+.sitra-empty .sitra-empty-title {
+  font-size: 1.05rem;
+  color: var(--sitra-neutral-700);
+  margin-bottom: 0.4rem;
+}
+
+.sitra-empty .sitra-empty-actions {
+  margin-top: 1.2rem;
+  display: flex;
+  gap: 0.6rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* The floating button of the call and the whatsapp. */
+.sitra-float-contact {
+  position: fixed;
+  inset-inline-end: 1rem;
+  bottom: 1rem;
+  z-index: 900;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.sitra-float-contact a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  box-shadow: var(--sitra-shadow-lg);
+  color: #fff !important;
+}
+
+.sitra-float-contact .sitra-float-call {
+  background: var(--sitra-primary);
+}
+
+.sitra-float-contact .sitra-float-whatsapp {
+  background: #25d366;
+}
+
+.sitra-float-contact img {
+  width: 26px;
+  height: 26px;
+}
+
+@media (max-width: 767px) {
+  /* Above the tab bar of the phone. */
+  .sitra-float-contact {
+    bottom: 5.2rem;
+    inset-inline-end: 0.75rem;
+  }
+
+  .sitra-float-contact a {
+    width: 46px;
+    height: 46px;
+  }
+}
+
+
+/* ==========================================================================
+   The product card: photo, name, price, stock and the button to add it to the
+   basket. Every button is big enough to be touched with a thumb.
+   ========================================================================== */
+
+.product-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  direction: rtl;
+  background: var(--sitra-surface);
+  border: 1px solid var(--sitra-neutral-200);
+  border-radius: var(--sitra-radius);
+  overflow: hidden;
+  box-shadow: var(--sitra-shadow);
+  text-align: right;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--sitra-shadow-lg);
+  border-color: var(--sitra-primary-light);
+}
+
+.product-card-media {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1 / 1;
+  background: var(--sitra-neutral-100);
+  overflow: hidden;
+}
+
+.product-card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 0.6rem;
+}
+
+.product-card-media .stock-badge {
+  position: absolute;
+  top: 0.5rem;
+  inset-inline-start: 0.5rem;
+}
+
+.product-card-media.is-empty img {
+  filter: grayscale(1);
+  opacity: 0.75;
+}
+
+.product-card-media .product-card-flag {
+  position: absolute;
+  top: 0.5rem;
+  inset-inline-end: 0.5rem;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--sitra-accent);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+}
+
+.product-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  padding: 0.7rem 0.8rem 0.85rem;
+  flex: 1;
+}
+
+.product-card-name {
+  font-size: 0.9rem;
+  font-weight: bold;
+  line-height: 1.8;
+  color: var(--sitra-neutral-900);
+  margin: 0;
+  min-height: 3.2em;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.product-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-top: auto;
+  padding-top: 0.4rem;
+  border-top: 1px solid var(--sitra-neutral-200);
+}
+
+.product-card-price {
+  font-weight: bold;
+  color: var(--sitra-primary);
+  font-size: 0.98rem;
+  line-height: 1.5;
+}
+
+.product-card-price small {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: normal;
+  color: var(--sitra-neutral-500);
+}
+
+.product-card-add {
+  flex: 0 0 auto;
+  width: var(--sitra-touch);
+  height: var(--sitra-touch);
+  border-radius: var(--sitra-radius-sm);
+  background: var(--sitra-primary);
+  color: #fff !important;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  transition: background-color 0.15s ease;
+}
+
+.product-card-add:hover {
+  background: var(--sitra-primary-dark);
+}
+
+.product-card-add:disabled {
+  background: var(--sitra-neutral-300);
+  cursor: not-allowed;
+}
+
+/* The empty price of a product that is not in the shop anymore. */
+.product-card-price.is-empty {
+  color: var(--sitra-neutral-500);
+  font-size: 0.85rem;
+  font-weight: normal;
+}

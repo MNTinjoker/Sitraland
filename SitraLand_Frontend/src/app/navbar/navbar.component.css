@@ -888,3 +888,239 @@ footer {
     margin-top: 0.5rem;
   }
 }
+
+
+/* ==========================================================================
+   Phase 2 - the navigation is a simple top bar and a tab bar on the phone.
+   The old green column is gone, so the page can use the whole width.
+   ========================================================================== */
+
+#nav {
+  position: fixed;
+  inset-inline-start: 0;
+  inset-inline-end: 0;
+  top: 0;
+  z-index: 1000;
+  height: auto;
+  min-height: 60px;
+  padding: 0.45rem 1rem;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--sitra-neutral-200);
+  box-shadow: var(--sitra-shadow);
+}
+
+.nav-inner {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.nav-brand {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+}
+
+.nav-logo {
+  width: 6.2rem;
+  height: auto;
+}
+
+.navbar-search {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.navbar-search .form-control {
+  min-height: 40px;
+}
+
+.nav-actions {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.nav-action {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: var(--sitra-touch);
+  padding: 0 0.55rem;
+  border-radius: var(--sitra-radius-sm);
+  color: var(--sitra-neutral-700) !important;
+  font-size: 0.88rem;
+  text-decoration: none !important;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.nav-action:hover {
+  background-color: var(--sitra-primary-soft);
+  color: var(--sitra-primary) !important;
+}
+
+.nav-icon {
+  width: 22px;
+  height: 22px;
+}
+
+/* The number of the products in the basket. */
+.nav-count {
+  min-width: 22px;
+  height: 22px;
+  padding: 0 0.3rem;
+  border-radius: 11px;
+  background: var(--sitra-accent);
+  color: #fff !important;
+  font-size: 0.78rem;
+  font-weight: bold;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  animation: sitra-pop 0.35s ease;
+}
+
+@keyframes sitra-pop {
+  from {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* The old blink of the basket, kept for the animation of the icon. */
+.nav-basket .nav-icon {
+  width: 24px;
+  height: 24px;
+}
+
+.iconboxBlinker.nav-action {
+  background-color: var(--sitra-accent) !important;
+  color: #fff !important;
+}
+
+.iconboxBlinker.nav-action .nav-icon {
+  filter: invert(100%) sepia(3%) saturate(0%) hue-rotate(210deg) brightness(153%) contrast(104%);
+}
+
+/* The tab bar of the phone. */
+.bottom-tabs {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  #nav {
+    padding: 0.5rem 0.75rem;
+  }
+
+  .nav-inner {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .nav-logo {
+    width: 5rem;
+  }
+
+  .navbar-search {
+    order: 3;
+    flex-basis: 100%;
+    max-width: none;
+    margin: 0;
+  }
+
+  .nav-action-text {
+    display: none;
+  }
+
+  .nav-action {
+    padding: 0 0.45rem;
+  }
+
+  .bottom-tabs {
+    display: flex;
+    position: fixed;
+    inset-inline-start: 0;
+    inset-inline-end: 0;
+    bottom: 0;
+    z-index: 1000;
+    background: var(--sitra-surface);
+    border-top: 1px solid var(--sitra-neutral-200);
+    box-shadow: 0 -4px 18px rgba(31, 41, 51, 0.1);
+    padding: 0.25rem 0.25rem calc(0.25rem + env(safe-area-inset-bottom));
+  }
+
+  .bottom-tabs a {
+    position: relative;
+    flex: 1 1 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.15rem;
+    min-height: var(--sitra-touch);
+    color: var(--sitra-neutral-500) !important;
+    font-size: 0.7rem;
+    text-decoration: none !important;
+    border-radius: var(--sitra-radius-sm);
+  }
+
+  .bottom-tabs a i {
+    font-size: 1.15rem;
+  }
+
+  .bottom-tabs a.active {
+    color: var(--sitra-primary) !important;
+    font-weight: bold;
+  }
+
+  .bottom-tabs .nav-count {
+    position: absolute;
+    top: 4px;
+    inset-inline-start: 50%;
+    margin-inline-start: 6px;
+    min-width: 18px;
+    height: 18px;
+    font-size: 0.68rem;
+  }
+}
+
+/* The toolbar of the admin panel: one row under the top bar. */
+.admin-toolbar {
+  position: sticky;
+  top: 60px;
+  z-index: 900;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  padding: 0.5rem 1rem;
+  background: var(--sitra-neutral-100);
+  border-bottom: 1px solid var(--sitra-neutral-200);
+}
+
+.admin-toolbar .btn {
+  min-height: 36px;
+  padding: 0 0.9rem;
+}
+
+@media (max-width: 767px) {
+  .admin-toolbar {
+    top: 92px;
+  }
+}

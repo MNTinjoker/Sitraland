@@ -359,15 +359,9 @@
 }
 
 .appUserContainer {
-  width: calc(91% - 6.5vw) !important;
-  margin-right: 15vw !important;
   padding-top: 5rem;
   min-height: 100vh;
-  background: #F9F9F9;
-}
-
-.container-banner {
-  border-radius: 15px;
+  background: var(--sitra-page);
 }
 
 .title-text {
@@ -460,10 +454,8 @@
   }
 
   .appUserContainer {
-    margin-right: 0 !important;
-    width: 100% !important;
-    padding-top: 95px;
-    margin-bottom: 4rem;
+  padding-top: 6.5rem;
+  margin-bottom: 0;
     background-attachment: none;
     background-size: 100% !important;
     overflow: hidden;
@@ -472,8 +464,9 @@
 
 .container-carousel {
   height: fit-content;
-  border-radius: 15px;
-  background-color: #c44100;
+  border-radius: var(--sitra-radius);
+  background-color: var(--sitra-surface);
+  border: 1px solid var(--sitra-neutral-200);
 }
 
 .custom-round {
@@ -497,4 +490,151 @@
     left: 60px !important
   }
 
+}
+
+
+/* ==========================================================================
+   Phase 2 - the hero of the home page
+   The photo is on one side, the text and the call to action on the other side
+   over a dark gradient, so the words are always readable.
+   ========================================================================== */
+
+.hero {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  min-height: 320px;
+  border-radius: var(--sitra-radius);
+  overflow: hidden;
+  background: linear-gradient(115deg,
+      var(--sitra-primary-dark) 0%,
+      var(--sitra-primary) 48%,
+      var(--sitra-primary-light) 100%);
+  box-shadow: var(--sitra-shadow);
+}
+
+.hero-media {
+  position: absolute;
+  inset-inline-end: 0;
+  top: 0;
+  bottom: 0;
+  width: 46%;
+  overflow: hidden;
+}
+
+.hero-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+/* The photo melts into the gradient, there is no hard edge. */
+.hero-media::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to left,
+      rgba(45, 76, 75, 0.95) 0%,
+      rgba(45, 76, 75, 0.45) 35%,
+      rgba(45, 76, 75, 0) 100%);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  padding: 2rem 2.4rem;
+  /* The photo is on the left, the text stays on the right. */
+  margin-inline-end: 46%;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 640px;
+}
+
+.hero-title {
+  font-family: 'yekan-bold', 'yekan-medium', sans-serif;
+  font-size: 2rem;
+  line-height: 1.5;
+  color: #fff;
+  margin: 0 0 0.5rem;
+}
+
+.hero-subtitle {
+  font-size: 1.05rem;
+  line-height: 1.9;
+  color: rgba(255, 255, 255, 0.92);
+  margin: 0 0 1.5rem;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.btn-hero {
+  min-height: var(--sitra-touch);
+  padding: 0 1.8rem;
+  font-size: 1rem;
+  border-radius: var(--sitra-radius-sm);
+  border: none;
+}
+
+.btn-hero-ghost {
+  background: transparent;
+  color: #fff !important;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.btn-hero-ghost:hover {
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff !important;
+}
+
+@media (max-width: 767px) {
+  .hero {
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  .hero-media {
+    position: relative;
+    inset-inline-end: auto;
+    width: 100%;
+    height: 170px;
+  }
+
+  .hero-media::after {
+    background: linear-gradient(to top,
+        rgba(45, 76, 75, 0.9) 0%,
+        rgba(45, 76, 75, 0) 100%);
+  }
+
+  .hero-content {
+    margin-inline-start: 0;
+    padding: 1.2rem 1.1rem 1.4rem;
+    max-width: none;
+  }
+
+  .hero-title {
+    font-size: 1.35rem;
+  }
+
+  .hero-subtitle {
+    font-size: 0.95rem;
+    margin-bottom: 1.1rem;
+  }
+
+  .btn-hero {
+    min-height: var(--sitra-touch);
+    padding: 0 1.2rem;
+    font-size: 0.92rem;
+  }
 }

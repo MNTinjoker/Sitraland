@@ -31,45 +31,36 @@
           </div>
         </ng-template>
         <ng-template #grid let-items>
-          <ng-container *ngFor="let item of items"><div [ngClass]="{'border-box-right': item.index%4==0}"
-            (click)="goToProductDetail(item.productId)"
-            class="col-lg-3 col-12 text-center p-3 border-box position-relative">
-            <p *ngIf="item.count==0 " class="lock-text lock-text-slider lock-category-text">
-              اتمام موجودی
-            </p>
-            <img [ngClass]="{'lock-product': item.count==0}" 
-              class="img-owl-carousel-o" width="108" [src]="server + item.imageFolderPath" alt="">
-            <img [ngClass]="{'lock-product': item.count==0}" *ngIf="item.isActive"
-              src="../../../assets/images/special-sale.png" class="special-sale-img" alt="">
-            <p [ngClass]="{'lock-product': item.count==0}" class="name-owl-carousel-o mt-3">
-              {{item.productName}}</p>
-            <div [ngClass]="{'lock-product': item.count==0}"
-              class="product-btns justify-content-between align-items-end w-100">
-              <!-- <div class="d-flex align-items-center"
-                [ngClass]="{'justify-content-end': item.fldAmountCoin ==0 , 'justify-content-between' :item.fldAmountCoin !=0}">
-                <div *ngIf="item.fldAmountCoin !=0" class="d-flex align-items-center flex-row-reverse pe-2">
-                  <span class="coinTitle font-10">تام‌کوین</span> <span
-                    class="ps-1 font-16 bold pe-1">{{item.fldAmountCoin}}</span>
-                  <span class="coinTitle font-10 pe-2">تا سقف</span>
-                  <img src="../../../assets/images/coin.png" class="discount-coin-img" width="24" alt="">
-                </div> -->
-              <!-- <img (click)="addToCart(item.fldPkDetailProduct)" src="../../../assets/images/buyIcon.png"
-                  class="discount-coin-img" width="32" alt=""> -->
-              <!-- </div> -->
-              <div class="col-12 d-flex align-items-center justify-content-between">
-                <span class="badge rounded-pill stock-badge"
-                  [class.bg-success]="item.count > 0" [class.bg-danger]="item.count == 0">
-                  <bdi *ngIf="item.count > 0">{{item.count}} موجود</bdi>
-                  <bdi *ngIf="item.count == 0">ناموجود</bdi>
+          <ng-container *ngFor="let item of items">
+            <article class="product-card col-lg-3 col-md-4 col-6 p-0" [class.product-card--empty]="item.count == 0"
+              (click)="goToProductDetail(item.productId)">
+              <div class="product-card-media" [class.is-empty]="item.count == 0">
+                <img [src]="server + item.imageFolderPath" [alt]="item.productName" loading="lazy" decoding="async">
+                <span class="badge rounded-pill stock-badge" [class.bg-success]="item.count > 0"
+                  [class.bg-danger]="item.count == 0">
+                  <ng-container *ngIf="item.count > 0">{{item.count}} موجود</ng-container>
+                  <ng-container *ngIf="item.count == 0">ناموجود</ng-container>
                 </span>
-                <div class="price">
-                  <bdi> {{item.price | inputNumberSplit}} ریال</bdi>
+                <span class="product-card-flag" *ngIf="item.isActive" title="فروش ویژه">
+                  <i class="fa fa-percent"></i>
+                </span>
+              </div>
+              <div class="product-card-body">
+                <h3 class="product-card-name">{{item.productName}}</h3>
+                <div class="product-card-footer">
+                  <div class="product-card-price" [class.is-empty]="item.count == 0">
+                    {{item.price | inputNumberSplit}}
+                    <small>ریال</small>
+                  </div>
+                  <button class="product-card-add" type="button" [disabled]="item.count == 0"
+                    [title]="item.count == 0 ? 'ناموجود' : 'افزودن به سبد خرید'"
+                    (click)="addToCart(item.productId, $event)">
+                    <i class="fa fa-cart-plus"></i>
+                  </button>
                 </div>
               </div>
-              <div>
-              </div>
-            </div>
-          </div></ng-container>
+            </article>
+          </ng-container>
         </ng-template>
       </p-dataview>
     </div>

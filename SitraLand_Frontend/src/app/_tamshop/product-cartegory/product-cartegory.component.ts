@@ -138,7 +138,12 @@ export class ProductCartegoryComponent implements OnInit {
     this.router.navigate(['/product-detail/' + id ]);
   }
 
-  async addToCart(id) {
+  async addToCart(id, event?: Event) {
+    // The button is inside the card, the card must not open the product.
+    if (event) {
+      event.stopPropagation();
+    }
+
     try {
       let orders = localStorage.getItem('products');
       let products: any = {

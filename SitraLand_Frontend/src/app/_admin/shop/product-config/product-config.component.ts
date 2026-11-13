@@ -6,31 +6,12 @@ import { MainService } from 'src/app/services/main.service';
 import { environment } from 'src/environments/environment';
 import { UtilService } from 'src/app/services/util.service';
 import {
-  Alignment,
-  BlockQuote,
   Bold,
   ClassicEditor,
-  Code,
   EditorConfig,
   Essentials,
-  Font,
-  FontFamily,
-  FontSize,
-  Heading,
-  HorizontalLine,
-  Image,
-  ImageToolbar,
-  Indent,
   Italic,
-  Link,
-  List,
-  Paragraph,
-  RemoveFormat,
-  Strikethrough,
-  Table,
-  TableToolbar,
-  TodoList,
-  Underline
+  Link
 } from 'ckeditor5';
 
 
@@ -83,45 +64,19 @@ export class ProductConfigComponent implements OnInit {
   public Editor = ClassicEditor;
 
   // CKEditor 5 v49 no longer ships pre-built bundles, the editor is composed from its plugins.
+  // Phase 2: the editor of the shop is minimal, only bold, italic and link are needed for a driver.
   public editorConfig: EditorConfig = {
     licenseKey: 'GPL',
     plugins: [
       Essentials,
-      Paragraph,
-      Heading,
       Bold,
       Italic,
-      Underline,
-      Strikethrough,
-      Code,
-      BlockQuote,
-      RemoveFormat,
-      Link,
-      List,
-      TodoList,
-      Table,
-      TableToolbar,
-      Image,
-      ImageToolbar,
-      Font,
-      FontFamily,
-      FontSize,
-      Alignment,
-      Indent,
-      HorizontalLine
+      Link
     ],
     toolbar: [
-      'undo', 'redo', '|',
-      'bold', 'italic', 'underline', 'strike', 'code', '|',
-      'removeFormat', '|',
-      'font', 'fontSize', '|',
-      'link', 'unlink', '|',
-      'bulletedList', 'numberedList', 'todoList', '|',
-      'outdent', 'indent', '|',
-      'blockQuote', '|',
-      'insertTable', '|',
-      'image', '|',
-      'horizontalLine'
+      'bold',
+      'italic',
+      'link'
     ]
   };
 
@@ -266,6 +221,24 @@ export class ProductConfigComponent implements OnInit {
       this.utilService.showNotify('خطا', "error");
       this.submit = false;
     }
+  }
+
+  // The price of the product is shown with thousand separators and it is saved as a clean number.
+  get priceDisplay(): string {
+    const value = this.product.price;
+    if (value === null || value === undefined || value === '') {
+      return '';
+    }
+    const digits = String(value).replace(/[^\d]/g, '');
+    if (!digits) {
+      return '';
+    }
+    return digits.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
+
+  onPriceChange(value: any) {
+    const digits = String(value ?? '').replace(/[^\d]/g, '');
+    this.product.price = digits ? Number(digits) : null;
   }
 
   async getProduct() {

@@ -2,4 +2,15 @@
 <router-outlet></router-outlet>
 <app-footer *ngIf="!notSeeMenu() && footerLoaded"></app-footer>
 <app-lightbox></app-lightbox>
+
+<!-- The driver can always call the shop or send a message on whatsapp. -->
+<div class="sitra-float-contact">
+  <a class="sitra-float-call" href="tel:+989126340914" aria-label="تماس تلفنی با فروشگاه">
+    <i class="fa fa-phone"></i>
+  </a>
+  <a class="sitra-float-whatsapp" href="https://wa.me/message/523VQLPPXK7DA1" target="_blank" rel="noopener"
+    aria-label="ارسال پیام در واتساپ">
+    <img src="assets/images/whatsapp.svg" alt="">
+  </a>
+</div>
 <notifier-container style="z-index: 999999999999999;"></notifier-container>

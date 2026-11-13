@@ -1,111 +1,71 @@
 <div *ngIf="!notSeeMenu()">
   <header>
-    <div class="bg-white align-items-center d-flex justify-content-between overflow-auto px-1 navContainer" id="nav">
-      <div (click)="hamburgerClick2()" class="hamburger d-none me-3" id="hamburger-1" style="z-index: 4">
-        <span class="line-hamurger"></span>
-        <span class="line-hamurger my-1"></span>
-        <span class="line-hamurger"></span>
-      </div>
-      <div class="navbar-search d-flex align-items-center">
-        <input #searchInput type="search" class="form-control" placeholder="دنبال چه محصولی میگردی؟" (keyup.enter)="search(searchInput.value)">
-        <button class="btn btn-primary ms-2" type="button" (click)="search(searchInput.value)" aria-label="search">
-          <i class="fa fa-search"></i>
-        </button>
-      </div>
-      <div id="logoInNavbar" class="col-lg-4 text-end pe-0">
-        <a>
-          <img class="logo-navbar me-2 logoS" src="../../assets/images/navbar-logo.webp" alt="SitraLand">
+    <div class="navContainer" id="nav">
+      <div class="nav-inner">
+        <a class="nav-brand" routerLink="/home" aria-label="سیترالند">
+          <img class="nav-logo" src="../../assets/images/navbar-logo.webp" alt="سیترالند">
         </a>
-      </div>
-      <div class="d-flex align-items-center">
 
-        <!-- <a class="me-0 ms-1 d-flex align-items-center pointer goftino" (click)="goftino()">
-          <i class="fal fa-question-circle text-secondary question"></i>
-        </a> -->
-        <div class="mx-2">
-          <a *ngIf="userName =='مهمان' " class="position-relative pointer "  routerLink="/login">
-            ورود
-            <img src="../../assets/images/login.svg" class="admin" alt="login">
-          </a>
-          <a *ngIf="userName !='مهمان' " class="position-relative pointer " (click)="logOut()">
-            خروج
-            <img src="../../assets/images/logout.svg" class="admin" alt="login" >
-          </a>
+        <div class="navbar-search">
+          <input #searchInput type="search" class="form-control" placeholder="دنبال چه محصولی میگردی؟"
+            (keyup.enter)="search(searchInput.value)" aria-label="جستجوی محصول">
+          <button class="btn btn-primary" type="button" (click)="search(searchInput.value)" aria-label="جستجو">
+            <i class="fa fa-search"></i>
+          </button>
         </div>
 
-        <div>
-          <a *ngIf="isAdmin" class="position-relative pointer " (click)="goToAdminPage()">
-            <img src="../../assets/images/admin.svg" class="admin" alt="admin">
+        <div class="nav-actions">
+          <a *ngIf="userName == 'مهمان'" class="nav-action" routerLink="/login">
+            <img src="../../assets/images/login.svg" class="nav-icon" alt="">
+            <span class="nav-action-text">ورود</span>
           </a>
-        </div>
-
-
-        <div class="border-secondary ml-lg-1">
-          <div class="position-relative me-3">
-            <a class="me-0 ms-1 d-flex align-items-center text-secondary basket-num" (click)="handleClick()"
-              routerLink="/basket">
-              <!-- class="iconbox" -->
-              <div>
-                <img src="../../assets/images/basket.svg" class="admin" alt="Buy">
-              </div>
-            </a>
-          </div>
+          <a *ngIf="userName != 'مهمان'" class="nav-action" (click)="logOut()">
+            <img src="../../assets/images/logout.svg" class="nav-icon" alt="">
+            <span class="nav-action-text">خروج</span>
+          </a>
+          <a *ngIf="isAdmin" class="nav-action" (click)="goToAdminPage()">
+            <img src="../../assets/images/admin.svg" class="nav-icon" alt="">
+            <span class="nav-action-text">مدیریت</span>
+          </a>
+          <a class="nav-action nav-basket" routerLink="/basket" (click)="handleClick()">
+            <img src="../../assets/images/basket.svg" class="nav-icon" alt="">
+            <span class="nav-action-text">سبد</span>
+            <span class="nav-count" *ngIf="cartCount > 0">{{cartCount}}</span>
+          </a>
         </div>
       </div>
     </div>
   </header>
-  <div *ngIf='!showAdminSiderBar' [ngClass]='!showNav ? "hideSidebar"  : ""' class=" sidebar flex-column overflow-auto"
-    id="sidebar">
-    <div>
-      <div class="pointer mt-3">
-        <img src="../../assets/images/avatarForNavbar.svg" class="profileImage ms-1 me-2" width="80px" alt="">
-        <h6 class="my-3">{{userName}}</h6>
-      </div>
-      <hr>
-      <div class="flex-fill pt-2">
-        <a routerLink="/home" routerLinkActive='active' (click)="handleClick()">
-          <div class="sidebarBack">
-            <img class="sidebar-icon" src="../../assets/images/dashBoardIcon.svg" alt="">
-            <div class="fw-bold icon-text">صفحه اصلی</div>
-          </div>
-        </a>
-      </div>
 
-      <!-- <div *ngIf="isAdmin" class="flex-fill pt-2">
-        <a routerLink="/admin/home" routerLinkActive='active' (click)="handleClick()">
-          <div class="sidebarBack">
-            <img class="sidebar-icon" src="../../assets/images/dashBoardIcon.svg" alt="">
-            <div class="fw-bold icon-text">صفحه اصلی</div>
-          </div>
-        </a>
-      </div> -->
+  <!-- The tab bar of the phone: home, products, basket, account -->
+  <nav class="bottom-tabs" aria-label="ناوبری موبایل">
+    <a routerLink="/home" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" (click)="handleClick()">
+      <i class="fa fa-home"></i>
+      <span>خانه</span>
+    </a>
+    <a routerLink="/product-cartegory" routerLinkActive="active" (click)="handleClick()">
+      <i class="fa fa-shopping-bag"></i>
+      <span>محصولات</span>
+    </a>
+    <a routerLink="/basket" routerLinkActive="active" (click)="handleClick()">
+      <i class="fa fa-shopping-cart"></i>
+      <span>سبد</span>
+      <span class="nav-count" *ngIf="cartCount > 0">{{cartCount}}</span>
+    </a>
+    <a *ngIf="userName == 'مهمان'" routerLink="/login" routerLinkActive="active" (click)="handleClick()">
+      <i class="fa fa-user"></i>
+      <span>حساب</span>
+    </a>
+    <a *ngIf="userName != 'مهمان'" (click)="logOut()">
+      <i class="fa fa-sign-out"></i>
+      <span>خروج</span>
+    </a>
+  </nav>
 
-      <div class="flex-fill">
-        <a routerLink="/product-cartegory" routerLinkActive='active' (click)="handleClick()">
-          <div class="sidebarBack">
-            <img class="sidebar-icon" src="../../assets/images/shopSidebar.svg" alt="">
-            <div class="icon-text"> محصولات</div>
-          </div>
-        </a>
-      </div>
-
-      <!-- <div class="pt-2">
-        <a routerLink="/orders-list" routerLinkActive='active' (click)="handleClick()">
-          <div class="sidebarBack">
-            <img class="sidebar-icon" src="../../assets/images/bag-tamshop-menu.svg">
-            <div class="fw-bold icon-text"> سفارشات</div>
-          </div>
-        </a>
-      </div> -->
-    </div>
-  </div>
-
-
-  <div [ngClass]='!showNav ? "hideSidebar"  : ""' class="sidebarAdmin flex-column overflow-auto px-3" id="sidebar-admin"
-    *ngIf='showAdminSiderBar'>
-    <button class="btn btn-sm mb-2 w-100 btn-danger" (click)="showAdminSiderBar = false" routerLink="/home">صفحه
-      اصلی</button>
-    <button *ngFor='let menu of sidebarList' class="btn btn-sm mb-2 w-100
-      btn-secondary" (click)="closeAfterClick()" [routerLink]="menu.link">{{menu.text}}</button>
+  <!-- The toolbar of the admin panel -->
+  <div class="admin-toolbar" *ngIf='showAdminSiderBar'>
+    <button class="btn btn-sm btn-danger" (click)="showAdminSiderBar = false" routerLink="/home">صفحه اصلی</button>
+    <button *ngFor='let menu of sidebarList' class="btn btn-sm btn-secondary" (click)="closeAfterClick()"
+      [routerLink]="menu.link">{{menu.text}}</button>
   </div>
 </div>
