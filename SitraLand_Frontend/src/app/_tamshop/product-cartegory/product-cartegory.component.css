@@ -1,17 +1,5 @@
 .appUserContainer {
-  background-size: auto 140px;
-  background-position-y: 5rem;
-  background-position-x: center;
-  background-repeat: no-repeat;
-  /* background-color: #929292; */
   background: var(--sitra-page);
-}
-
-.customAppUserContainer {
-  background-size: 100% 300px !important;
-  background-position-y: 4rem !important;
-  margin-right: 0px !important;
-  width: 100% !important;
 }
 
 ::ng-deep .p-grid {

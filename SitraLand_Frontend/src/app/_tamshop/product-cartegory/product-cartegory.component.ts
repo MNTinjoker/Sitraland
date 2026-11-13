@@ -1,5 +1,7 @@
-import { ChangeDetectorRef, Component, OnInit, ChangeDetectionStrategy, signal } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, ChangeDetectionStrategy, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { SelectItem } from 'primeng/api';
 import { UtilService } from 'src/app/services/util.service';
@@ -12,7 +14,7 @@ import { MainService } from 'src/app/services/main.service';
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./product-cartegory.component.css']
 })
-export class ProductCartegoryComponent implements OnInit {
+export class ProductCartegoryComponent implements OnInit, OnDestroy {
 
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
@@ -22,16 +24,6 @@ export class ProductCartegoryComponent implements OnInit {
     private activeRoute: ActivatedRoute
   ) { }
   cartegoryId: number = 2;
-  bgImage = signal("");
-  // The background image of every category. The ids are read from the database,
-  // so the categories are never hardcoded here.
-    private static readonly categoryImages: { [key: string]: string } = {
-    'موتور': 'engine.svg',
-    'گیربکس': 'gearbox.svg',
-    'بدنه': 'body.svg',
-    'برقی': 'electronic.svg'
-  };
-  bgList: any[] = [];
   title = signal("");
   productList: any = [];
   layoutGird = "grid";
@@ -48,14 +40,7 @@ export class ProductCartegoryComponent implements OnInit {
   searchTerm: string = '';
   firstRecord: number = 0;
   private lastLazyEvent: any = { first: 0, rows: 16 };
-
-  /** The image of a category, the title in the database can have a suffix. */
-  private categoryImage(title?: string): string | undefined {
-    const key = Object.keys(ProductCartegoryComponent.categoryImages).find(name => title?.includes(name));
-
-    return key ? ProductCartegoryComponent.categoryImages[key] : undefined;
-  }
-
+  private search$ = new Subject<string>();
 
   async ngOnInit(): Promise<void> {
     this.sortOptions = [
@@ -66,7 +51,23 @@ export class ProductCartegoryComponent implements OnInit {
     this.cartegoryId = urlId;
     this.isCustomStyle = false;
     this.searchTerm = this.activeRoute.snapshot.queryParamMap.get('search') ?? '';
+
+    // The search waits a short moment, so typing on a slow phone does not send a
+    // request for every letter. Every new search starts from the first page.
+    this.search$
+      .pipe(debounceTime(400), distinctUntilChanged())
+      .subscribe(term => {
+        this.searchTerm = term;
+        this.firstRecord = 0;
+        this.lastLazyEvent = { ...this.lastLazyEvent, first: 0, rows: this.lastLazyEvent.rows || 16 };
+        this.loadProducts(this.lastLazyEvent);
+      });
+
     await this.getCategoriess();
+  }
+
+  ngOnDestroy(): void {
+    this.search$.complete();
   }
 
   async getCategoriess() {
@@ -78,21 +79,13 @@ export class ProductCartegoryComponent implements OnInit {
       ...categories
     ];
 
-    this.bgList = this.categoryHomeList.map(category => ({
-      id: category.categoryId,
-      title: category.categoryTitle,
-      src: '../../../assets/images/' + (this.categoryImage(category.categoryTitle) ?? 'more.svg')
-    }));
-
     this.applySelectedCategory(this.cartegoryId);
     this.changeDetectorRef.markForCheck();
   }
 
   private applySelectedCategory(categoryId: number): void {
-    const selected = this.bgList.find(category => category.id == categoryId) ?? this.bgList[0];
-
-    this.title.set(selected?.title ?? '');
-    this.bgImage.set(selected?.src ?? '');
+    const selected = this.categoryHomeList.find((category: any) => category.categoryId == categoryId) ?? this.categoryHomeList[0];
+    this.title.set(selected?.categoryTitle ?? '');
   }
 
   loadProducts(event: any): void {
@@ -116,8 +109,7 @@ export class ProductCartegoryComponent implements OnInit {
   }
 
   onSearch(term: string): void {
-    this.searchTerm = term ?? '';
-    this.loadProducts({ first: 0, rows: 16 });
+    this.search$.next((term ?? '').trim());
   }
 
 
