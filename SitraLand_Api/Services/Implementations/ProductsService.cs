@@ -43,9 +43,28 @@ namespace SitraLand_Api.Services.Implementations
                     p.CategoryId
                 }).ToListAsync();
 
+            var galleryImage = await _databaseContext.ProductGallerys.AsNoTracking()
+                .Where(g => g.ProductId == productId)
+                .Select(g => g.ImageFolderPath)
+                .FirstOrDefaultAsync();
+
+            var resolvedProduct = product
+                .Select(p => new
+                {
+                    p.Count,
+                    p.ProductDescription,
+                    p.ExtraDetails,
+                    p.ProductId,
+                    ImageFolderPath = ProductImageResolver.Resolve(p.ImageFolderPath, galleryImage),
+                    p.IsActive,
+                    p.ProductName,
+                    p.Price,
+                    p.CategoryId
+                }).ToList();
+
             result.Message = "success";
             result.Code = (int)HttpStatusCode.OK;
-            result.Data = product;
+            result.Data = resolvedProduct;
             return result;
         }
 
@@ -95,10 +114,26 @@ namespace SitraLand_Api.Services.Implementations
                     p.CategoryId
                 }).ToListAsync();
 
+            var galleries = await LoadGalleriesAsync(products.Select(p => p.ProductId).ToList());
+
+            var resolvedProducts = products
+                .Select(p => new
+                {
+                    p.Count,
+                    p.ProductDescription,
+                    p.ExtraDetails,
+                    p.ProductId,
+                    ImageFolderPath = ProductImageResolver.Resolve(p.ImageFolderPath, galleries.GetValueOrDefault(p.ProductId)),
+                    p.IsActive,
+                    p.ProductName,
+                    p.Price,
+                    p.CategoryId
+                }).ToList();
+
             result.Message = "success";
             result.Code = (int)HttpStatusCode.OK;
             result.TotalCount = totalCount;
-            result.Data = products;
+            result.Data = resolvedProducts;
             return result;
         }
 
@@ -261,10 +296,26 @@ namespace SitraLand_Api.Services.Implementations
                 })
                 .ToListAsync();
 
+            var galleries = await LoadGalleriesAsync(products.Select(p => p.ProductId).ToList());
+
+            var resolvedProducts = products
+                .Select(p => new
+                {
+                    p.Count,
+                    p.ProductDescription,
+                    p.ProductId,
+                    ImageFolderPath = ProductImageResolver.Resolve(p.ImageFolderPath, galleries.GetValueOrDefault(p.ProductId)),
+                    p.IsActive,
+                    p.ProductName,
+                    p.Price,
+                    p.CategoryId
+                })
+                .ToList();
+
             result.Message = "success";
             result.Code = (int)HttpStatusCode.OK;
             result.TotalCount = totalCount;
-            result.Data = products;
+            result.Data = resolvedProducts;
             return result;
         }
 
@@ -433,6 +484,30 @@ namespace SitraLand_Api.Services.Implementations
             }
 
             return _imageService.SaveBase64(base64Content, "Products", type, 2);
+        }
+
+        // The gallery of the products on the current page, keyed by product id,
+        // so the photo resolution does not query the gallery for every row.
+        private async Task<Dictionary<int, List<string>?>> LoadGalleriesAsync(List<int> productIds)
+        {
+            var galleries = new Dictionary<int, List<string>?>();
+
+            if (productIds.Count == 0)
+            {
+                return galleries;
+            }
+
+            var rows = await _databaseContext.ProductGallerys.AsNoTracking()
+                .Where(g => productIds.Contains(g.ProductId))
+                .Select(g => new { g.ProductId, g.ImageFolderPath })
+                .ToListAsync();
+
+            foreach (var row in rows)
+            {
+                galleries[row.ProductId] = row.ImageFolderPath;
+            }
+
+            return galleries;
         }
     }
 }

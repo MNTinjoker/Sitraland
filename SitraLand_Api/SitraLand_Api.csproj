@@ -35,4 +35,8 @@
     <Folder Include="Files\Products\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <InternalsVisibleTo Include="SitraLand_Api.Tests" />
+  </ItemGroup>
+
 </Project>
