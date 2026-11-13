@@ -57,6 +57,8 @@ export class homeComponent implements OnInit {
 
   //   productCategoryList: any = [];
   server: string = environment.url + '/images/';
+  categoriesLoading = true;
+  categoriesError = false;
   //   flipBoxList = [
   //     { index: 1, img: '../../../assets/images/invitation.png', title: 'دوستاتو دعوتت کن!', backHeader: 'دوستایی که تو تاملند نیستن رو دعوت کن ، به شرط ثبت نام یکی از دوره ها 200 تام‌کوین بگیر', backImg: '../../../assets/images/coin.png', backTitle: '200 تام کوین' },
   //     { index: 2, img: '../../../assets/images/giveaway 1.png', title: 'ویدیوی آنباکس یادت نره!', backHeader: 'از کالایی که خریدی یه ویدیو آنباکس بگیر و برای ما بفرست و 70 تا تام‌کوین جایزه بگیر', backImg: '../../../assets/images/coin.png', backTitle: '70 تام کوین' },
@@ -106,13 +108,27 @@ export class homeComponent implements OnInit {
   }
 
   async ngOnInit() {
-    const data = await this.mainService.getCategories().toPromise();
+    await this.loadCategories();
+  }
 
-    this.categories = (data['data'] ?? []).map(category => ({
-      id: category.categoryId,
-      title: category.categoryTitle,
-      src: '../../../assets/images/' + (this.categoryImage(category.categoryTitle) ?? 'more.svg')
-    }));
+  async loadCategories() {
+    this.categoriesLoading = true;
+    this.categoriesError = false;
+    this.changeDetectorRef.markForCheck();
+    try {
+      const data: any = await this.mainService.getCategories().toPromise();
+      this.categories = (data?.['data'] ?? []).map((category: any) => ({
+        id: category.categoryId,
+        title: category.categoryTitle,
+        src: '../../../assets/images/' + (this.categoryImage(category.categoryTitle) ?? 'more.svg')
+      }));
+    } catch (error) {
+      this.categoriesError = true;
+      this.categories = [];
+    } finally {
+      this.categoriesLoading = false;
+      this.changeDetectorRef.markForCheck();
+    }
   }
 
   //     let res = await this.getCategoryProducts(-1, -1);

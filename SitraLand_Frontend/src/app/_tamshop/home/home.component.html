@@ -157,7 +157,25 @@
 
       <p class="title-text mt-3">دسته بندی ها</p>
 
-      <div class="container-category shadow col-lg-12 mt-3">
+      <div class="container-category shadow col-lg-12 mt-3" *ngIf="categoriesLoading">
+        <div class="text-center w-100 py-4">
+          <i class="fa fa-spin fa-spinner fa-2x"></i>
+          <p class="mt-2 mb-0 text-muted">در حال بارگذاری دسته‌بندی‌ها...</p>
+        </div>
+      </div>
+
+      <div class="container-category shadow col-lg-12 mt-3" *ngIf="!categoriesLoading && categoriesError">
+        <div class="text-center w-100 py-4">
+          <p class="mb-2">خطا در دریافت دسته‌بندی‌ها</p>
+          <button class="btn btn-outline-danger btn-sm" (click)="loadCategories()">تلاش مجدد</button>
+        </div>
+      </div>
+
+      <div class="container-category shadow col-lg-12 mt-3" *ngIf="!categoriesLoading && !categoriesError && categories.length === 0">
+        <div class="text-center w-100 py-4 text-muted">دسته‌بندی‌ای یافت نشد</div>
+      </div>
+
+      <div class="container-category shadow col-lg-12 mt-3" *ngIf="!categoriesLoading && !categoriesError && categories.length > 0">
         <div class="option-category" *ngFor="let category of categories" (click)="goToProductCartegory(category.id)">
           <img class="img-category p-1" [src]="category.src" alt="">
           <p class="mt-2">{{category.title}}</p>

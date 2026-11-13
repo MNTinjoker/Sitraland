@@ -68,7 +68,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
     this.routeSub?.unsubscribe();
   }
 
-  private async loadProduct() {
+  async loadProduct() {
     this.loader = true;
     this.notFound = false;
     this.productDetail = null;
@@ -77,7 +77,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
     this.changeDetectorRef.markForCheck();
 
     try {
-      const data = await this.mainService.getProduct(this.productId).toPromise();
+      const data: any = await this.mainService.getProduct(this.productId).toPromise();
       this.productDetail = data?.['data'] ? data['data'][0] : null;
       this.categoryId = this.productDetail ? this.productDetail['categoryId'] : null;
 
@@ -94,6 +94,10 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
       this.loader = false;
       this.changeDetectorRef.markForCheck();
     }
+  }
+
+  retry() {
+    this.loadProduct();
   }
 
   async getProductGallery() {

@@ -41,6 +41,8 @@ export class ProductCartegoryComponent implements OnInit, OnDestroy {
   totalRecords: number = 0;
   searchTerm: string = '';
   firstRecord: number = 0;
+  loadingProducts = false;
+  productsError = false;
   private lastLazyEvent: any = { first: 0, rows: 16 };
   private search$ = new Subject<string>();
   // Ignores late responses, so an older search can not overwrite a newer result.
@@ -103,6 +105,8 @@ export class ProductCartegoryComponent implements OnInit, OnDestroy {
     this.firstRecord = first;
 
     const requestId = ++this.loadRequestId;
+    this.loadingProducts = true;
+    this.productsError = false;
 
     this.mainService.getCategory(this.cartegoryId, page, rows, this.searchTerm).subscribe({
       next: (res) => {
@@ -115,6 +119,7 @@ export class ProductCartegoryComponent implements OnInit, OnDestroy {
           product.index = index + 1;
         });
         this.totalRecords = res['totalCount'] ?? 0;
+        this.loadingProducts = false;
         this.changeDetectorRef.markForCheck();
       },
       error: () => {
@@ -122,10 +127,18 @@ export class ProductCartegoryComponent implements OnInit, OnDestroy {
           return;
         }
 
+        this.productList = [];
+        this.totalRecords = 0;
+        this.loadingProducts = false;
+        this.productsError = true;
         this.utilService.showNotify('خطا در دریافت اطلاعات', 'error');
         this.changeDetectorRef.markForCheck();
       }
     });
+  }
+
+  retryLoadProducts(): void {
+    this.loadProducts(this.lastLazyEvent);
   }
 
   onSearch(term: string): void {

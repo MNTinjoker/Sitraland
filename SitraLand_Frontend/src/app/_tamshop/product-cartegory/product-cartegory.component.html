@@ -4,7 +4,15 @@
       <h5 class="title-vod mt-4 pt-2">{{title()}}</h5>
     </div>
     <div>
-      <p-dataview #dv [value]="productList" [paginator]="true" [lazy]="true" [totalRecords]="totalRecords" [rows]="16" [first]="firstRecord" [sortField]="sortField"
+      <div class="text-center py-4" *ngIf="loadingProducts">
+        <i class="fa fa-spin fa-spinner fa-2x"></i>
+        <p class="mt-2 mb-0 text-muted">در حال بارگذاری محصولات...</p>
+      </div>
+      <div class="text-center py-4" *ngIf="!loadingProducts && productsError">
+        <p class="mb-2">خطا در دریافت محصولات</p>
+        <button class="btn btn-outline-danger btn-sm" (click)="retryLoadProducts()">تلاش مجدد</button>
+      </div>
+      <p-dataview #dv *ngIf="!productsError" [value]="productList" [paginator]="true" [lazy]="true" [totalRecords]="totalRecords" [rows]="16" [first]="firstRecord" [sortField]="sortField"
         [sortOrder]="sortOrder" [layout]="layoutGird" (onLazyLoad)="loadProducts($event)" emptyMessage="فعلا محصولی موجود نیست">
         <ng-template #header>
           <div class="d-lg-flex justify-content-between ">
