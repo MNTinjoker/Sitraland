@@ -1,21 +1,20 @@
 .redesign-preview-toggle {
   position: fixed;
-  left: 50%;
-  right: auto;
-  bottom: 0.9rem;
-  transform: translateX(-50%);
+  right: 1rem;
+  left: auto;
+  bottom: 1rem;
   z-index: 1200;
   display: inline-flex;
   align-items: center;
-  gap: 0.55rem;
-  padding: 0.5rem 0.95rem;
-  border: 1px solid rgba(0,0,0,0.12);
+  gap: 0.45rem;
+  padding: 0.42rem 0.8rem;
+  border: 1px solid rgba(0,0,0,0.1);
   border-radius: 999px;
-  background: rgba(255,255,255,0.96);
+  background: rgba(255,255,255,0.94);
   color: #1f2933;
-  box-shadow: 0 8px 24px rgba(31,41,51,0.18);
+  box-shadow: 0 4px 16px rgba(31,41,51,0.14);
   font-family: inherit;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   cursor: pointer;
   backdrop-filter: blur(8px);
 }
@@ -32,11 +31,11 @@
 @media (max-width: 767px) {
   .redesign-preview-toggle {
     bottom: calc(4.9rem + env(safe-area-inset-bottom));
-    left: 50%;
-    right: auto;
+    right: 0.75rem;
+    left: auto;
     max-width: calc(100% - 2rem);
-    font-size: 0.78rem;
-    padding: 0.45rem 0.75rem;
+    font-size: 0.75rem;
+    padding: 0.4rem 0.7rem;
     white-space: nowrap;
   }
 }

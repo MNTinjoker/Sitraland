@@ -7,9 +7,11 @@
 
 <!-- UI redesign preview toggle -->
 <button class="redesign-preview-toggle" type="button" (click)="toggleRedesignPreview()"
-  [attr.aria-pressed]="redesignPreview">
+  [attr.aria-pressed]="redesignPreview"
+  [attr.aria-label]="redesignPreview ? 'بازگشت به طرح فعلی سایت' : 'نمایش پیش‌نمایش طرح جدید'"
+  [attr.title]="redesignPreview ? 'بازگشت به طرح فعلی سایت' : 'نمایش پیش‌نمایش طرح جدید'">
   <span class="toggle-dot" [class.on]="redesignPreview"></span>
-  <span class="toggle-text">{{ redesignPreview ? 'بازگشت به حالت فعلی' : 'پیش‌نمایش طرح جدید' }}</span>
+  <span class="toggle-text">{{ redesignPreview ? 'طرح فعلی' : 'طرح جدید' }}</span>
 </button>
 
 <!-- The driver can always call the shop or send a message on whatsapp. -->
