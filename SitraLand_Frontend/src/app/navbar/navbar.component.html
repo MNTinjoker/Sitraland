@@ -63,9 +63,10 @@
   </nav>
 
   <!-- The toolbar of the admin panel -->
-  <div class="admin-toolbar" *ngIf='showAdminSiderBar'>
-    <button class="btn btn-sm btn-danger" (click)="showAdminSiderBar = false" routerLink="/home">صفحه اصلی</button>
-    <button *ngFor='let menu of sidebarList' class="btn btn-sm btn-secondary" (click)="closeAfterClick()"
-      [routerLink]="menu.link">{{menu.text}}</button>
+  <div class="admin-toolbar" *ngIf="showAdminSiderBar && isAdmin">
+    <span class="text-muted small ms-2">بخش مدیریت:</span>
+    <button class="btn btn-sm btn-outline-danger" routerLink="/home">صفحه اصلی سایت</button>
+    <button *ngFor="let menu of sidebarList" class="btn btn-sm btn-secondary" (click)="closeAfterClick()"
+      [routerLink]="menu.link" routerLinkActive="btn-primary">{{menu.text}}</button>
   </div>
 </div>

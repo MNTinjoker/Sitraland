@@ -231,17 +231,21 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   seeUserMenu() {
-    let url = location.pathname.split("?")[0];
+    const url = location.pathname.split("?")[0];
+    // Always show admin navigation on admin routes for admin users.
+    if (url.startsWith('/admin')) {
+      this.showAdminSiderBar = this.isAdmin || localStorage.getItem('isAdmin') === '1';
+      this.isAdmin = localStorage.getItem('isAdmin') === '1';
+      return;
+    }
     if (
       this.userMenu.includes(url) ||
       this.userMenuWithId.find((x) => x.test(url))
     ) {
       this.showAdminSiderBar = false;
+    } else {
+      this.showAdminSiderBar = localStorage.getItem('isAdmin') === '1';
     }
-    else {
-      this.showAdminSiderBar = true;
-    }
-
   }
 
   notSeeMenu() {
