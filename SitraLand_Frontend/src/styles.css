@@ -856,6 +856,7 @@ img.image-fallback {
   object-fit: contain;
   background-color: var(--sitra-neutral-100);
   padding: 0.35rem;
+}
 
 /* ==========================================================================
    REDESIGN PREVIEW THEME (toggled via :is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview)
