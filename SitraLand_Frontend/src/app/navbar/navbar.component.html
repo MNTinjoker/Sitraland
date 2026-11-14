@@ -69,4 +69,5 @@
     <button *ngFor="let menu of sidebarList" class="btn btn-sm btn-secondary" (click)="closeAfterClick()"
       [routerLink]="menu.link" routerLinkActive="btn-primary">{{menu.text}}</button>
   </div>
+  <div class="admin-toolbar-spacer" *ngIf="showAdminSiderBar && isAdmin"></div>
 </div>

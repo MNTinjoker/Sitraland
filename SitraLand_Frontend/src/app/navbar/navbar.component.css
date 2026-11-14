@@ -1100,18 +1100,25 @@ footer {
   }
 }
 
-/* The toolbar of the admin panel: one row under the top bar. */
+/* The toolbar of the admin panel: fixed under the top bar on admin pages. */
 .admin-toolbar {
-  position: sticky;
+  position: fixed;
   top: 60px;
-  z-index: 900;
+  left: 0;
+  right: 0;
+  z-index: 999;
   display: flex;
   align-items: center;
   gap: 0.5rem;
   flex-wrap: wrap;
   padding: 0.5rem 1rem;
-  background: var(--sitra-neutral-100);
-  border-bottom: 1px solid var(--sitra-neutral-200);
+  background: #f8fafb;
+  border-bottom: 1px solid var(--sitra-neutral-200, #e5e7eb);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.admin-toolbar-spacer {
+  height: 56px;
 }
 
 .admin-toolbar .btn {
@@ -1121,6 +1128,9 @@ footer {
 
 @media (max-width: 767px) {
   .admin-toolbar {
-    top: 92px;
+    top: 104px;
+  }
+  .admin-toolbar-spacer {
+    height: 96px;
   }
 }

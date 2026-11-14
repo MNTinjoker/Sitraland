@@ -172,7 +172,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
   goToAdminPage() {
     this.showAdminSiderBar = true;
     this.handleClick();
-    this.router.navigate(['admin/product-list']);
+    const url = location.pathname.split('?')[0];
+    if (!url.startsWith('/admin')) {
+      this.router.navigate(['/admin/product-list']);
+    }
   }
 
   handleClick() {
