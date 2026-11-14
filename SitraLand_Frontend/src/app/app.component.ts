@@ -28,7 +28,8 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.loadFoooter();
     const saved = localStorage.getItem('sitra-redesign-preview');
-    this.redesignPreview = saved === '1';
+    const urlPreview = new URLSearchParams(window.location.search).get('preview') === '1';
+    this.redesignPreview = urlPreview || saved === '1';
     this.applyPreviewMode();
   }
 
