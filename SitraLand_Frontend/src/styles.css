@@ -858,12 +858,12 @@ img.image-fallback {
   padding: 0.35rem;
 
 /* ==========================================================================
-   REDESIGN PREVIEW THEME (toggled via body.sitra-redesign-preview)
+   REDESIGN PREVIEW THEME (toggled via :is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview)
    Complete UI-only visual overhaul: full-bleed layout, modern surfaces,
    icon/data presentation, cards, tables, forms, admin and all pages.
    Structure, bindings and functionality unchanged.
    ========================================================================== */
-body.sitra-redesign-preview {
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview {
   --rd-bg: #f4f7fb;
   --rd-bg-alt: #eef3f9;
   --rd-surface: #ffffff;
@@ -914,12 +914,12 @@ body.sitra-redesign-preview {
   color: var(--rd-text) !important;
 }
 
-body.sitra-redesign-preview a { color: #0e7490; }
-body.sitra-redesign-preview a:hover { color: #155e75; }
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview a { color: #0e7490; }
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview a:hover { color: #155e75; }
 
 /* Full-bleed: remove side gaps and make content span the page */
-body.sitra-redesign-preview .appUserContainer,
-body.sitra-redesign-preview .appContainer {
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .appUserContainer,
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .appContainer {
   width: 100% !important;
   max-width: 100% !important;
   margin: 0 !important;
@@ -929,51 +929,51 @@ body.sitra-redesign-preview .appContainer {
   background: transparent !important;
 }
 @media (max-width: 767px) {
-  body.sitra-redesign-preview .appUserContainer,
-  body.sitra-redesign-preview .appContainer { padding-top: 7.6rem !important; padding-bottom: 6rem !important; }
+  :is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .appUserContainer,
+  :is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .appContainer { padding-top: 7.6rem !important; padding-bottom: 6rem !important; }
 }
-body.sitra-redesign-preview .container,
-body.sitra-redesign-preview .container-sm,
-body.sitra-redesign-preview .container-md,
-body.sitra-redesign-preview .container-lg,
-body.sitra-redesign-preview .container-xl,
-body.sitra-redesign-preview .container-xxl,
-body.sitra-redesign-preview .container-fluid {
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .container,
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .container-sm,
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .container-md,
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .container-lg,
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .container-xl,
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .container-xxl,
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .container-fluid {
   width: 100% !important;
   max-width: 100% !important;
   padding-inline: 0 !important;
 }
-body.sitra-redesign-preview .appUserContainer > .container,
-body.sitra-redesign-preview .appContainer > .container,
-body.sitra-redesign-preview .appUserContainer .container > .row,
-body.sitra-redesign-preview .appContainer .container > .row {
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .appUserContainer > .container,
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .appContainer > .container,
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .appUserContainer .container > .row,
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .appContainer .container > .row {
   margin-inline: 0;
 }
-body.sitra-redesign-preview .row { --bs-gutter-x: 1rem; }
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .row { --bs-gutter-x: 1rem; }
 
 /* Surfaces & cards */
-body.sitra-redesign-preview .sitra-card,
-body.sitra-redesign-preview .product-box,
-body.sitra-redesign-preview .login,
-body.sitra-redesign-preview .custom-dropzone,
-body.sitra-redesign-preview .card,
-body.sitra-redesign-preview .basket-box,
-body.sitra-redesign-preview .container-carousel,
-body.sitra-redesign-preview .discount-box,
-body.sitra-redesign-preview .simple-carousel-container {
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .sitra-card,
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .product-box,
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .login,
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .custom-dropzone,
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .card,
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .basket-box,
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .container-carousel,
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .discount-box,
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .simple-carousel-container {
   background: var(--rd-surface) !important;
   border: 1px solid var(--rd-border) !important;
   box-shadow: var(--rd-shadow-sm) !important;
   border-radius: var(--rd-radius) !important;
 }
-body.sitra-redesign-preview .shadow,
-body.sitra-redesign-preview .shadow-sm { box-shadow: var(--rd-shadow-sm) !important; }
-body.sitra-redesign-preview .rounded { border-radius: var(--rd-radius) !important; }
-body.sitra-redesign-preview .bg-white { background: var(--rd-surface) !important; }
-body.sitra-redesign-preview .bg-light { background: var(--rd-surface-2) !important; }
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .shadow,
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .shadow-sm { box-shadow: var(--rd-shadow-sm) !important; }
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .rounded { border-radius: var(--rd-radius) !important; }
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .bg-white { background: var(--rd-surface) !important; }
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .bg-light { background: var(--rd-surface-2) !important; }
 
 /* Navbar - modern glass bar */
-body.sitra-redesign-preview #nav {
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview #nav {
   background: rgba(255,255,255,0.82) !important;
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
@@ -981,56 +981,56 @@ body.sitra-redesign-preview #nav {
   box-shadow: 0 8px 30px rgba(15,23,42,0.06) !important;
   padding: 0.5rem var(--rd-page-x) !important;
 }
-body.sitra-redesign-preview .nav-inner { max-width: 100% !important; gap: 1rem; }
-body.sitra-redesign-preview .navbar-search { max-width: 520px; }
-body.sitra-redesign-preview .navbar-search .form-control {
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .nav-inner { max-width: 100% !important; gap: 1rem; }
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .navbar-search { max-width: 520px; }
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .navbar-search .form-control {
   border-radius: 999px !important;
   background: #f1f5f9 !important;
   border: 1px solid transparent !important;
   padding-inline: 1rem 2.4rem !important;
   min-height: 44px;
 }
-body.sitra-redesign-preview .navbar-search .form-control:focus {
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .navbar-search .form-control:focus {
   background: #fff !important;
   border-color: rgba(8,145,178,0.35) !important;
   box-shadow: 0 0 0 4px rgba(8,145,178,0.12) !important;
 }
-body.sitra-redesign-preview .navbar-search .btn {
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .navbar-search .btn {
   border-radius: 999px !important;
   min-height: 38px;
   padding: 0 0.85rem;
 }
-body.sitra-redesign-preview .nav-action {
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .nav-action {
   border-radius: 12px !important;
   color: #334155 !important;
   font-weight: 500;
 }
-body.sitra-redesign-preview .nav-action:hover {
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .nav-action:hover {
   background: rgba(8,145,178,0.1) !important;
   color: #0e7490 !important;
 }
-body.sitra-redesign-preview .bottom-tabs {
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .bottom-tabs {
   background: rgba(255,255,255,0.94) !important;
   backdrop-filter: blur(14px);
   border-top: 1px solid rgba(15,23,42,0.08) !important;
 }
-body.sitra-redesign-preview .bottom-tabs a.active {
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .bottom-tabs a.active {
   color: #0e7490 !important;
   background: rgba(8,145,178,0.08);
 }
-body.sitra-redesign-preview .admin-toolbar {
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .admin-toolbar {
   background: rgba(255,255,255,0.92) !important;
   backdrop-filter: blur(12px);
   border-bottom: 1px solid rgba(15,23,42,0.08) !important;
   padding: 0.55rem var(--rd-page-x) !important;
 }
-body.sitra-redesign-preview .admin-toolbar .btn {
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .admin-toolbar .btn {
   border-radius: 999px !important;
   font-weight: 500;
 }
 
 /* Hero */
-body.sitra-redesign-preview .hero {
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .hero {
   border-radius: 28px !important;
   min-height: 380px !important;
   background: linear-gradient(120deg, #0f172a 0%, #134e4a 42%, #0e7490 100%) !important;
@@ -1038,23 +1038,23 @@ body.sitra-redesign-preview .hero {
   box-shadow: 0 30px 60px rgba(15,23,42,0.18) !important;
   margin-bottom: 1.25rem;
 }
-body.sitra-redesign-preview .hero-media { width: 44% !important; }
-body.sitra-redesign-preview .hero-media::after {
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .hero-media { width: 44% !important; }
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .hero-media::after {
   background: linear-gradient(to left, rgba(15,23,42,0.92) 0%, rgba(15,23,42,0.35) 45%, rgba(15,23,42,0) 100%) !important;
 }
-body.sitra-redesign-preview .hero-content { margin-inline-end: 44% !important; padding: 2.4rem 2.6rem !important; }
-body.sitra-redesign-preview .hero-title { font-size: clamp(1.7rem, 2.6vw, 2.6rem) !important; line-height: 1.35 !important; margin-bottom: 0.75rem !important; }
-body.sitra-redesign-preview .hero-subtitle { font-size: 1.05rem !important; color: rgba(241,245,249,0.9) !important; max-width: 46ch; }
-body.sitra-redesign-preview .btn-hero {
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .hero-content { margin-inline-end: 44% !important; padding: 2.4rem 2.6rem !important; }
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .hero-title { font-size: clamp(1.7rem, 2.6vw, 2.6rem) !important; line-height: 1.35 !important; margin-bottom: 0.75rem !important; }
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .hero-subtitle { font-size: 1.05rem !important; color: rgba(241,245,249,0.9) !important; max-width: 46ch; }
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .btn-hero {
   border-radius: 999px !important;
   padding: 0 1.6rem !important;
   font-weight: 700;
   box-shadow: 0 10px 24px rgba(234,88,12,0.28);
 }
-body.sitra-redesign-preview .btn-hero-ghost { box-shadow: none; backdrop-filter: blur(6px); }
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .btn-hero-ghost { box-shadow: none; backdrop-filter: blur(6px); }
 
 /* Category strip */
-body.sitra-redesign-preview .container-category {
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .container-category {
   background: var(--rd-surface) !important;
   border: 1px solid var(--rd-border) !important;
   box-shadow: var(--rd-shadow-sm) !important;
@@ -1064,18 +1064,18 @@ body.sitra-redesign-preview .container-category {
   padding: 0.75rem 0.5rem !important;
   gap: 0.25rem;
 }
-body.sitra-redesign-preview .option-category {
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .option-category {
   padding: 0.6rem 0.5rem;
   border-radius: 16px;
   min-width: 110px;
   transition: transform .18s ease, background .18s ease, box-shadow .18s ease;
 }
-body.sitra-redesign-preview .option-category:hover {
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .option-category:hover {
   transform: translateY(-4px);
   background: linear-gradient(180deg, #f0fdff, #fff7ed) !important;
   box-shadow: 0 10px 22px rgba(8,145,178,0.12);
 }
-body.sitra-redesign-preview .img-category {
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .img-category {
   width: 64px !important; height: 64px !important;
   border-radius: 18px !important;
   background: linear-gradient(135deg, #ecfeff, #fff7ed);
@@ -1083,13 +1083,13 @@ body.sitra-redesign-preview .img-category {
   filter: none !important;
   box-shadow: inset 0 0 0 1px rgba(8,145,178,0.12);
 }
-body.sitra-redesign-preview .option-category p {
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .option-category p {
   color: #334155 !important;
   font-weight: 600;
   font-size: 0.9rem;
   margin-top: 0.35rem !important;
 }
-body.sitra-redesign-preview .title-text {
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .title-text {
   color: #0f172a !important;
   font-weight: 800 !important;
   font-size: 1.15rem !important;
@@ -1097,79 +1097,79 @@ body.sitra-redesign-preview .title-text {
   align-items: center;
   gap: 0.5rem;
 }
-body.sitra-redesign-preview .title-text::before {
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .title-text::before {
   content: '';
   width: 10px; height: 10px;
   border-radius: 50%;
   background: linear-gradient(135deg, #0891b2, #ea580c);
   box-shadow: 0 0 0 6px rgba(8,145,178,0.12);
 }
-body.sitra-redesign-preview .title-vod { color: #0f172a !important; font-weight: 800; }
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .title-vod { color: #0f172a !important; font-weight: 800; }
 
 /* Buttons */
-body.sitra-redesign-preview .btn {
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .btn {
   border-radius: 12px !important;
   font-weight: 600;
   transition: transform .15s ease, box-shadow .15s ease, filter .15s ease;
 }
-body.sitra-redesign-preview .btn:active { transform: translateY(1px); }
-body.sitra-redesign-preview .btn-primary {
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .btn:active { transform: translateY(1px); }
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .btn-primary {
   background: linear-gradient(135deg, #0891b2, #0f766e) !important;
   border: none !important;
   color: #fff !important;
   box-shadow: 0 10px 20px rgba(8,145,178,0.22);
 }
-body.sitra-redesign-preview .btn-primary:hover { filter: brightness(1.05); box-shadow: 0 14px 26px rgba(8,145,178,0.28); }
-body.sitra-redesign-preview .btn-danger {
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .btn-primary:hover { filter: brightness(1.05); box-shadow: 0 14px 26px rgba(8,145,178,0.28); }
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .btn-danger {
   background: linear-gradient(135deg, #ea580c, #dc2626) !important;
   border: none !important;
   box-shadow: 0 10px 20px rgba(234,88,12,0.22);
 }
-body.sitra-redesign-preview .btn-outline-danger,
-body.sitra-redesign-preview .btn-outline-primary,
-body.sitra-redesign-preview .btn-secondary,
-body.sitra-redesign-preview .btn-outline-secondary,
-body.sitra-redesign-preview .btn-warning {
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .btn-outline-danger,
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .btn-outline-primary,
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .btn-secondary,
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .btn-outline-secondary,
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .btn-warning {
   background: #fff !important;
   border: 1px solid var(--rd-border-strong) !important;
   color: #334155 !important;
 }
-body.sitra-redesign-preview .btn-outline-danger:hover,
-body.sitra-redesign-preview .btn-outline-primary:hover {
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .btn-outline-danger:hover,
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .btn-outline-primary:hover {
   background: #f0fdff !important;
   border-color: rgba(8,145,178,0.35) !important;
   color: #0e7490 !important;
 }
-body.sitra-redesign-preview .btn-sm { border-radius: 10px !important; }
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .btn-sm { border-radius: 10px !important; }
 
 /* Forms */
-body.sitra-redesign-preview .form-control,
-body.sitra-redesign-preview .form-select,
-body.sitra-redesign-preview select,
-body.sitra-redesign-preview textarea,
-body.sitra-redesign-preview input[type='text'],
-body.sitra-redesign-preview input[type='number'],
-body.sitra-redesign-preview input[type='tel'],
-body.sitra-redesign-preview input[type='password'],
-body.sitra-redesign-preview input[type='search'] {
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .form-control,
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .form-select,
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview select,
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview textarea,
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview input[type='text'],
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview input[type='number'],
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview input[type='tel'],
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview input[type='password'],
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview input[type='search'] {
   background: #f8fafc !important;
   border: 1px solid rgba(15,23,42,0.12) !important;
   border-radius: 12px !important;
   color: #0f172a !important;
   min-height: 44px;
 }
-body.sitra-redesign-preview textarea.form-control { min-height: 100px; }
-body.sitra-redesign-preview .form-control:focus,
-body.sitra-redesign-preview .form-select:focus {
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview textarea.form-control { min-height: 100px; }
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .form-control:focus,
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .form-select:focus {
   background: #fff !important;
   border-color: rgba(8,145,178,0.4) !important;
   box-shadow: 0 0 0 4px rgba(8,145,178,0.12) !important;
 }
-body.sitra-redesign-preview label, body.sitra-redesign-preview .sitra-label { color: #334155 !important; font-weight: 600; }
-body.sitra-redesign-preview .text-muted, body.sitra-redesign-preview .sitra-hint { color: #64748b !important; }
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview label, :is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .sitra-label { color: #334155 !important; font-weight: 600; }
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .text-muted, :is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .sitra-hint { color: #64748b !important; }
 
 /* Product cards & carousels */
-body.sitra-redesign-preview .product-card {
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .product-card {
   background: #fff !important;
   border: 1px solid rgba(15,23,42,0.08) !important;
   border-radius: 18px !important;
@@ -1177,62 +1177,62 @@ body.sitra-redesign-preview .product-card {
   box-shadow: 0 8px 20px rgba(15,23,42,0.05);
   transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
 }
-body.sitra-redesign-preview .product-card:hover {
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .product-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 18px 36px rgba(15,23,42,0.1) !important;
   border-color: rgba(8,145,178,0.25) !important;
 }
-body.sitra-redesign-preview .product-card-media {
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .product-card-media {
   background: linear-gradient(180deg, #f8fafc, #eef3f9) !important;
   aspect-ratio: 1 / 1;
   display: flex; align-items: center; justify-content: center;
   padding: 0.75rem;
 }
-body.sitra-redesign-preview .product-card-media img { max-height: 100%; object-fit: contain; }
-body.sitra-redesign-preview .product-card-body { padding: 0.85rem 0.9rem 0.9rem !important; }
-body.sitra-redesign-preview .product-card-name { color: #0f172a !important; font-weight: 700; font-size: 0.95rem; line-height: 1.6; min-height: 3em; }
-body.sitra-redesign-preview .product-card-price { color: #0e7490 !important; font-weight: 800; font-size: 1.02rem; }
-body.sitra-redesign-preview .product-card-price small { color: #64748b !important; font-weight: 600; }
-body.sitra-redesign-preview .product-card-footer { border-top: 1px dashed rgba(15,23,42,0.1) !important; padding-top: 0.65rem; margin-top: 0.35rem; }
-body.sitra-redesign-preview .product-card-add {
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .product-card-media img { max-height: 100%; object-fit: contain; }
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .product-card-body { padding: 0.85rem 0.9rem 0.9rem !important; }
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .product-card-name { color: #0f172a !important; font-weight: 700; font-size: 0.95rem; line-height: 1.6; min-height: 3em; }
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .product-card-price { color: #0e7490 !important; font-weight: 800; font-size: 1.02rem; }
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .product-card-price small { color: #64748b !important; font-weight: 600; }
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .product-card-footer { border-top: 1px dashed rgba(15,23,42,0.1) !important; padding-top: 0.65rem; margin-top: 0.35rem; }
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .product-card-add {
   background: linear-gradient(135deg, #0891b2, #0f766e) !important;
   color: #fff !important; border: none !important;
   width: 40px; height: 40px; border-radius: 12px !important;
   box-shadow: 0 8px 16px rgba(8,145,178,0.22);
 }
-body.sitra-redesign-preview .stock-badge {
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .stock-badge {
   border-radius: 999px !important; padding: 0.3rem 0.55rem; font-weight: 700; font-size: 0.72rem;
   box-shadow: 0 4px 10px rgba(15,23,42,0.12);
 }
-body.sitra-redesign-preview .stock-badge.bg-success { background: #059669 !important; }
-body.sitra-redesign-preview .stock-badge.bg-danger { background: #dc2626 !important; }
-body.sitra-redesign-preview .product-card-flag {
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .stock-badge.bg-success { background: #059669 !important; }
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .stock-badge.bg-danger { background: #dc2626 !important; }
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .product-card-flag {
   background: #fff7ed !important; color: #ea580c !important; border-radius: 10px; box-shadow: 0 4px 10px rgba(234,88,12,0.18);
 }
-body.sitra-redesign-preview .container-carousel { padding: 1rem 1.1rem 1.2rem !important; margin-top: 1rem !important; }
-body.sitra-redesign-preview .carousel-box,
-body.sitra-redesign-preview .simple-carousel-container {
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .container-carousel { padding: 1rem 1.1rem 1.2rem !important; margin-top: 1rem !important; }
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .carousel-box,
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .simple-carousel-container {
   border: 1px solid rgba(15,23,42,0.08) !important;
   border-radius: 18px !important;
   box-shadow: var(--rd-shadow-sm) !important;
 }
-body.sitra-redesign-preview .name-owl-carousel-o { color: #0f172a !important; font-weight: 700; }
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .name-owl-carousel-o { color: #0f172a !important; font-weight: 700; }
 
 /* DataView / listing */
-body.sitra-redesign-preview .p-dataview .p-dataview-content {
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .p-dataview .p-dataview-content {
   background: transparent !important;
   gap: 0.75rem;
   padding: 0.5rem 0 !important;
 }
-body.sitra-redesign-preview .p-dataview .p-dataview-header {
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .p-dataview .p-dataview-header {
   background: #fff !important;
   border: 1px solid var(--rd-border) !important;
   border-radius: 16px !important;
   padding: 0.9rem 1rem !important;
   box-shadow: var(--rd-shadow-sm);
 }
-body.sitra-redesign-preview #categoryHomeList { gap: 0.35rem; flex-wrap: wrap; }
-body.sitra-redesign-preview #categoryHomeList li {
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview #categoryHomeList { gap: 0.35rem; flex-wrap: wrap; }
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview #categoryHomeList li {
   list-style: none;
   background: #f1f5f9;
   color: #334155 !important;
@@ -1242,65 +1242,65 @@ body.sitra-redesign-preview #categoryHomeList li {
   font-weight: 600;
   border: 1px solid transparent;
 }
-body.sitra-redesign-preview #categoryHomeList li:hover,
-body.sitra-redesign-preview #categoryHomeList li.active-li-home {
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview #categoryHomeList li:hover,
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview #categoryHomeList li.active-li-home {
   background: rgba(8,145,178,0.1) !important;
   color: #0e7490 !important;
   border-color: rgba(8,145,178,0.25) !important;
 }
-body.sitra-redesign-preview .search-box .input-search { padding-inline-start: 1rem !important; padding-inline-end: 2.4rem !important; }
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .search-box .input-search { padding-inline-start: 1rem !important; padding-inline-end: 2.4rem !important; }
 
 /* Tables / PrimeNG / admin data */
-body.sitra-redesign-preview .p-datatable,
-body.sitra-redesign-preview .p-table { border-radius: 18px !important; overflow: hidden; border: 1px solid var(--rd-border) !important; box-shadow: var(--rd-shadow-sm) !important; }
-body.sitra-redesign-preview .p-datatable .p-datatable-header,
-body.sitra-redesign-preview .p-datatable .p-datatable-footer { background: #fff !important; border-color: var(--rd-border) !important; }
-body.sitra-redesign-preview .p-datatable .p-datatable-thead > tr > th {
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .p-datatable,
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .p-table { border-radius: 18px !important; overflow: hidden; border: 1px solid var(--rd-border) !important; box-shadow: var(--rd-shadow-sm) !important; }
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .p-datatable .p-datatable-header,
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .p-datatable .p-datatable-footer { background: #fff !important; border-color: var(--rd-border) !important; }
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .p-datatable .p-datatable-thead > tr > th {
   background: linear-gradient(135deg, #0f766e, #0891b2) !important;
   color: #fff !important;
   font-weight: 700;
   border: none !important;
   padding: 0.9rem 0.75rem !important;
 }
-body.sitra-redesign-preview .p-datatable .p-datatable-tbody > tr { background: #fff !important; transition: background .15s ease; }
-body.sitra-redesign-preview .p-datatable .p-datatable-tbody > tr:nth-child(even) { background: #f8fafc !important; }
-body.sitra-redesign-preview .p-datatable .p-datatable-tbody > tr:hover { background: #ecfeff !important; }
-body.sitra-redesign-preview .p-datatable .p-datatable-tbody > tr > td {
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .p-datatable .p-datatable-tbody > tr { background: #fff !important; transition: background .15s ease; }
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .p-datatable .p-datatable-tbody > tr:nth-child(even) { background: #f8fafc !important; }
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .p-datatable .p-datatable-tbody > tr:hover { background: #ecfeff !important; }
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .p-datatable .p-datatable-tbody > tr > td {
   color: #334155 !important;
   border-color: rgba(15,23,42,0.06) !important;
   padding: 0.8rem 0.75rem !important;
   vertical-align: middle;
 }
-body.sitra-redesign-preview .p-paginator {
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .p-paginator {
   background: #fff !important;
   border-top: 1px solid var(--rd-border) !important;
   padding: 0.6rem !important;
 }
-body.sitra-redesign-preview .p-paginator .p-paginator-page.p-highlight {
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .p-paginator .p-paginator-page.p-highlight {
   background: rgba(8,145,178,0.14) !important;
   color: #0e7490 !important;
   border-radius: 10px;
 }
-body.sitra-redesign-preview .appContainer.bg-white { background: transparent !important; }
-body.sitra-redesign-preview .p-table-empty { color: #64748b; }
-body.sitra-redesign-preview .p-table-empty i { font-size: 2rem; color: #94a3b8; margin-bottom: 0.5rem; }
-body.sitra-redesign-preview table.table { background: #fff; border-radius: 16px; overflow: hidden; }
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .appContainer.bg-white { background: transparent !important; }
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .p-table-empty { color: #64748b; }
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .p-table-empty i { font-size: 2rem; color: #94a3b8; margin-bottom: 0.5rem; }
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview table.table { background: #fff; border-radius: 16px; overflow: hidden; }
 
 /* Admin panels */
-body.sitra-redesign-preview .appContainer .card,
-body.sitra-redesign-preview .appContainer .card-header {
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .appContainer .card,
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .appContainer .card-header {
   border-color: var(--rd-border) !important;
 }
-body.sitra-redesign-preview .appContainer .card-header {
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .appContainer .card-header {
   background: linear-gradient(135deg, #f8fafc, #ecfeff) !important;
   color: #0f172a !important;
   font-weight: 700;
   border-bottom: 1px solid var(--rd-border) !important;
 }
-body.sitra-redesign-preview .toolbar { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .toolbar { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
 
 /* Footer - full width, modern */
-body.sitra-redesign-preview .footer-container {
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .footer-container {
   width: 100% !important;
   max-width: 100% !important;
   margin: 0 !important;
@@ -1312,24 +1312,24 @@ body.sitra-redesign-preview .footer-container {
   padding: 1.5rem var(--rd-page-x) !important;
   box-shadow: 0 -20px 50px rgba(15,23,42,0.12);
 }
-body.sitra-redesign-preview .footer-contact {
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .footer-contact {
   background: rgba(255,255,255,0.06) !important;
   border: 1px solid rgba(255,255,255,0.12) !important;
   border-radius: 18px !important;
 }
-body.sitra-redesign-preview .option-card {
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .option-card {
   background: rgba(255,255,255,0.05);
   border: 1px solid rgba(255,255,255,0.08);
   border-radius: 16px !important;
   transition: transform .15s ease, background .15s ease;
 }
-body.sitra-redesign-preview .option-card:hover { transform: translateY(-3px); background: rgba(255,255,255,0.09); }
-body.sitra-redesign-preview .option-footer, body.sitra-redesign-preview .title-footer { color: #f1f5f9 !important; }
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .option-card:hover { transform: translateY(-3px); background: rgba(255,255,255,0.09); }
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .option-footer, :is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .title-footer { color: #f1f5f9 !important; }
 
 /* Auth pages */
-body.sitra-redesign-preview .login-container,
-body.sitra-redesign-preview .loginBg { background: transparent !important; }
-body.sitra-redesign-preview .login {
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .login-container,
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .loginBg { background: transparent !important; }
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .login {
   background: rgba(255,255,255,0.92) !important;
   backdrop-filter: blur(10px);
   border: 1px solid var(--rd-border) !important;
@@ -1337,69 +1337,71 @@ body.sitra-redesign-preview .login {
   box-shadow: var(--rd-shadow) !important;
   max-width: 480px;
 }
-body.sitra-redesign-preview .login h6, body.sitra-redesign-preview .login p { color: #334155 !important; }
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .login h6, :is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .login p { color: #334155 !important; }
 
 /* Basket, checkout, orders */
-body.sitra-redesign-preview .basket-box,
-body.sitra-redesign-preview .order-box,
-body.sitra-redesign-preview .checkout-box { padding: 1rem; }
-body.sitra-redesign-preview .title-vod.fw-bold { display: inline-flex; align-items: center; gap: 0.45rem; }
-body.sitra-redesign-preview .add-remove-box { background: #f8fafc; border: 1px solid var(--rd-border); border-radius: 12px; padding: 0.25rem 0.4rem; }
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .basket-box,
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .order-box,
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .checkout-box { padding: 1rem; }
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .title-vod.fw-bold { display: inline-flex; align-items: center; gap: 0.45rem; }
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .add-remove-box { background: #f8fafc; border: 1px solid var(--rd-border); border-radius: 12px; padding: 0.25rem 0.4rem; }
 
 /* Misc utilities & states */
-body.sitra-redesign-preview .text-dark { color: #0f172a !important; }
-body.sitra-redesign-preview .border, body.sitra-redesign-preview .border-top, body.sitra-redesign-preview .border-bottom, body.sitra-redesign-preview .border-end, body.sitra-redesign-preview .border-start { border-color: var(--rd-border) !important; }
-body.sitra-redesign-preview hr { border-color: var(--rd-border) !important; opacity: 1; }
-body.sitra-redesign-preview .badge { border-radius: 999px; font-weight: 700; }
-body.sitra-redesign-preview .alert { border-radius: 14px; border: 1px solid var(--rd-border); }
-body.sitra-redesign-preview .p-dialog .p-dialog-header,
-body.sitra-redesign-preview .p-dialog .p-dialog-content,
-body.sitra-redesign-preview .p-dialog .p-dialog-footer {
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .text-dark { color: #0f172a !important; }
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .border, :is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .border-top, :is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .border-bottom, :is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .border-end, :is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .border-start { border-color: var(--rd-border) !important; }
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview hr { border-color: var(--rd-border) !important; opacity: 1; }
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .badge { border-radius: 999px; font-weight: 700; }
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .alert { border-radius: 14px; border: 1px solid var(--rd-border); }
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .p-dialog .p-dialog-header,
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .p-dialog .p-dialog-content,
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .p-dialog .p-dialog-footer {
   background: #fff !important; color: #334155 !important; border-color: var(--rd-border) !important;
 }
-body.sitra-redesign-preview .p-dialog { border-radius: 20px !important; overflow: hidden; }
-body.sitra-redesign-preview .p-select, body.sitra-redesign-preview .p-dropdown, body.sitra-redesign-preview .p-multiselect {
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .p-dialog { border-radius: 20px !important; overflow: hidden; }
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .p-select, :is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .p-dropdown, :is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .p-multiselect {
   border-radius: 12px !important; border-color: rgba(15,23,42,0.12) !important; background: #f8fafc !important;
 }
-body.sitra-redesign-preview .sitra-float-contact .sitra-float-call {
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .sitra-float-contact .sitra-float-call {
   background: linear-gradient(135deg, #0891b2, #0f766e) !important;
   box-shadow: 0 12px 28px rgba(8,145,178,0.3) !important;
 }
-body.sitra-redesign-preview .sitra-float-contact .sitra-float-whatsapp { box-shadow: 0 12px 28px rgba(34,197,94,0.25) !important; }
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .sitra-float-contact .sitra-float-whatsapp { box-shadow: 0 12px 28px rgba(34,197,94,0.25) !important; }
 
 /* Home options strip */
-body.sitra-redesign-preview .optionofsitra .img-option { filter: drop-shadow(0 4px 8px rgba(255,255,255,0.15)); }
-body.sitra-redesign-preview .optionofsitra .img-text { font-size: 0.85rem; font-weight: 600; }
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .optionofsitra .img-option { filter: drop-shadow(0 4px 8px rgba(255,255,255,0.15)); }
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .optionofsitra .img-text { font-size: 0.85rem; font-weight: 600; }
 
 /* Product category page width fix (overrides component 90% on mobile in preview) */
 @media (max-width: 768px) {
-  body.sitra-redesign-preview .appUserContainer { width: 100% !important; }
-  body.sitra-redesign-preview .hero { border-radius: 22px !important; min-height: 0 !important; }
-  body.sitra-redesign-preview .hero-media { width: 100% !important; height: 190px; }
-  body.sitra-redesign-preview .hero-media::after { background: linear-gradient(to top, rgba(15,23,42,0.92) 0%, rgba(15,23,42,0) 100%) !important; }
-  body.sitra-redesign-preview .hero-content { margin-inline-end: 0 !important; padding: 1.2rem 1.1rem 1.4rem !important; }
+  :is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .appUserContainer { width: 100% !important; }
+  :is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .hero { border-radius: 22px !important; min-height: 0 !important; }
+  :is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .hero-media { width: 100% !important; height: 190px; }
+  :is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .hero-media::after { background: linear-gradient(to top, rgba(15,23,42,0.92) 0%, rgba(15,23,42,0) 100%) !important; }
+  :is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .hero-content { margin-inline-end: 0 !important; padding: 1.2rem 1.1rem 1.4rem !important; }
 }
 
 /* Preview-only helpers and extra polish */
 .preview-only, .preview-only-inline { display: none !important; }
-body.sitra-redesign-preview .preview-only { display: block !important; }
-body.sitra-redesign-preview .preview-only-inline { display: inline-flex !important; align-items: center; justify-content: center; }
-body.sitra-redesign-preview .admin-page-icon {
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .preview-only { display: block !important; }
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .preview-only-inline { display: inline-flex !important; align-items: center; justify-content: center; }
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .admin-page-icon {
   width: 38px; height: 38px; border-radius: 12px;
   background: linear-gradient(135deg, rgba(8,145,178,0.14), rgba(234,88,12,0.12));
   color: #0e7490;
 }
-body.sitra-redesign-preview .admin-page-header { margin-bottom: 0.5rem; }
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .admin-page-header { margin-bottom: 0.5rem; }
 /* stronger overrides for component-scoped containers */
-body.sitra-redesign-preview div.appUserContainer,
-body.sitra-redesign-preview div.appContainer { width: 100% !important; max-width: 100% !important; margin: 0 !important; }
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview div.appUserContainer,
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview div.appContainer { width: 100% !important; max-width: 100% !important; margin: 0 !important; }
 /* product carousel component light bg fix */
-body.sitra-redesign-preview .container-carousel { background: var(--rd-surface) !important; background-color: var(--rd-surface) !important; }
-body.sitra-redesign-preview .itemofcarousel { background: transparent !important; }
-body.sitra-redesign-preview .basket-box h5.title-vod::before,
-body.sitra-redesign-preview .basket-box h6.title-vod::before { content: none; }
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .container-carousel { background: var(--rd-surface) !important; background-color: var(--rd-surface) !important; }
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .itemofcarousel { background: transparent !important; }
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .basket-box h5.title-vod::before,
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .basket-box h6.title-vod::before { content: none; }
 /* better spacing for listing cards grid */
-body.sitra-redesign-preview .p-dataview .p-dataview-content { justify-content: flex-start; }
-body.sitra-redesign-preview .p-dataview .p-dataview-content > .product-card { margin: 0.35rem; flex: 1 1 calc(25% - 0.7rem); max-width: calc(25% - 0.7rem); }
-@media (max-width: 991px) { body.sitra-redesign-preview .p-dataview .p-dataview-content > .product-card { flex: 1 1 calc(33.333% - 0.7rem); max-width: calc(33.333% - 0.7rem); } }
-@media (max-width: 767px) { body.sitra-redesign-preview .p-dataview .p-dataview-content > .product-card { flex: 1 1 calc(50% - 0.7rem); max-width: calc(50% - 0.7rem); } }
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .p-dataview .p-dataview-content { justify-content: flex-start; }
+:is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .p-dataview .p-dataview-content > .product-card { margin: 0.35rem; flex: 1 1 calc(25% - 0.7rem); max-width: calc(25% - 0.7rem); }
+@media (max-width: 991px) { :is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .p-dataview .p-dataview-content > .product-card { flex: 1 1 calc(33.333% - 0.7rem); max-width: calc(33.333% - 0.7rem); } }
+@media (max-width: 767px) { :is(body,html).sitra-redesign-preview, .sitra-redesign-preview-root.sitra-redesign-preview .p-dataview .p-dataview-content > .product-card { flex: 1 1 calc(50% - 0.7rem); max-width: calc(50% - 0.7rem); } }
+
+

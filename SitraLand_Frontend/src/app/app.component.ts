@@ -40,10 +40,13 @@ export class AppComponent implements OnInit {
 
   private applyPreviewMode() {
     const body = document.body;
+    const root = document.documentElement;
     if (this.redesignPreview) {
       body.classList.add('sitra-redesign-preview');
+      root.classList.add('sitra-redesign-preview');
     } else {
       body.classList.remove('sitra-redesign-preview');
+      root.classList.remove('sitra-redesign-preview');
     }
   }
 
