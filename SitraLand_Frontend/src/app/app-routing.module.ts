@@ -30,6 +30,10 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'admin/site-settings', loadChildren: () => import('./_admin/site-settings/site-settings.module').then(m => m.SiteSettingsModule),
+    canActivate: [AuthGuard]
+  },
+  {
     path: 'product-detail/:id', loadChildren: () => import('./_tamshop/product-detail/product-detail.module').then(m => m.ProductDetailModule),
   },
   {

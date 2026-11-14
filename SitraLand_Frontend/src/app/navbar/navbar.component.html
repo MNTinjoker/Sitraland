@@ -3,7 +3,7 @@
     <div class="navContainer" id="nav">
       <div class="nav-inner">
         <a class="nav-brand" routerLink="/home" aria-label="سیترالند">
-          <img class="nav-logo" src="../../assets/images/navbar-logo.webp" alt="سیترالند">
+          <img class="nav-logo" [src]="logo" alt="سیترالند" appImageFallback>
         </a>
 
         <div class="navbar-search">

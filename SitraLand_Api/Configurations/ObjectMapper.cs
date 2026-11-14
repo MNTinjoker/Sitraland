@@ -47,13 +47,18 @@ namespace SitraLand_Api.Configurations
         {
             return new Category
             {
-                CategoryTitle = model.CategoryTitle
+                CategoryTitle = model.CategoryTitle,
+                ImagePath = model.ImagePath
             };
         }
 
         public static void MapTo(this SaveCategoryDTO model, Category category)
         {
             category.CategoryTitle = model.CategoryTitle;
+            if (!string.IsNullOrEmpty(model.ImagePath))
+            {
+                category.ImagePath = model.ImagePath;
+            }
         }
     }
 }

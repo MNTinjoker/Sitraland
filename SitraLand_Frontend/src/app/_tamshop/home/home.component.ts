@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, OnInit, ChangeDetectionStrategy } from '@
 import { Router } from '@angular/router';
 import { Subscription, timer } from 'rxjs';
 import { MainService } from 'src/app/services/main.service';
+import { SiteBrandingService } from 'src/app/services/site-branding.service';
 import { environment } from 'src/environments/environment';
 import { trigger, state, transition, style, animate } from '@angular/animations';
 
@@ -24,6 +25,7 @@ export class homeComponent implements OnInit {
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
     private mainService: MainService,
+    private brandingService: SiteBrandingService,
     private router: Router,
   ) { }
 
@@ -59,6 +61,7 @@ export class homeComponent implements OnInit {
   server: string = environment.url + '/images/';
   categoriesLoading = true;
   categoriesError = false;
+  heroBanner: string = '../../../assets/images/hero-bus.webp';
   //   flipBoxList = [
   //     { index: 1, img: '../../../assets/images/invitation.png', title: 'دوستاتو دعوتت کن!', backHeader: 'دوستایی که تو تاملند نیستن رو دعوت کن ، به شرط ثبت نام یکی از دوره ها 200 تام‌کوین بگیر', backImg: '../../../assets/images/coin.png', backTitle: '200 تام کوین' },
   //     { index: 2, img: '../../../assets/images/giveaway 1.png', title: 'ویدیوی آنباکس یادت نره!', backHeader: 'از کالایی که خریدی یه ویدیو آنباکس بگیر و برای ما بفرست و 70 تا تام‌کوین جایزه بگیر', backImg: '../../../assets/images/coin.png', backTitle: '70 تام کوین' },
@@ -108,7 +111,17 @@ export class homeComponent implements OnInit {
   }
 
   async ngOnInit() {
-    await this.loadCategories();
+    await Promise.all([this.loadBranding(), this.loadCategories()]);
+  }
+
+  async loadBranding() {
+    try {
+      await this.brandingService.ensureLoaded();
+      const settings = this.brandingService.settings || {};
+      this.heroBanner = this.brandingService.imageUrl(settings['heroBanner'], '../../../assets/images/hero-bus.webp');
+    } catch {
+      this.heroBanner = '../../../assets/images/hero-bus.webp';
+    }
   }
 
   async loadCategories() {
@@ -117,11 +130,15 @@ export class homeComponent implements OnInit {
     this.changeDetectorRef.markForCheck();
     try {
       const data: any = await this.mainService.getCategories().toPromise();
-      this.categories = (data?.['data'] ?? []).map((category: any) => ({
-        id: category.categoryId,
-        title: category.categoryTitle,
-        src: '../../../assets/images/' + (this.categoryImage(category.categoryTitle) ?? 'more.svg')
-      }));
+      this.categories = (data?.['data'] ?? []).map((category: any) => {
+        const id = category.categoryId ?? category.CategoryId;
+        const title = category.categoryTitle ?? category.CategoryTitle;
+        const imagePath = category.imagePath ?? category.ImagePath;
+        const src = imagePath
+          ? this.server + imagePath
+          : '../../../assets/images/' + (this.categoryImage(title) ?? 'more.svg');
+        return { id, title, src };
+      });
     } catch (error) {
       this.categoriesError = true;
       this.categories = [];

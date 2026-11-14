@@ -13,6 +13,7 @@ namespace SitraLand_Api.Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<Basket> Baskets { get; set; }
         public DbSet<ProductGallery> ProductGallerys { get; set; }
+        public DbSet<SiteSetting> SiteSettings { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -31,6 +32,12 @@ namespace SitraLand_Api.Data
             {
                 entity.HasIndex(p => p.CategoryId);
                 entity.HasIndex(p => p.IsActive);
+            });
+
+            builder.Entity<SiteSetting>(entity =>
+            {
+                entity.HasIndex(s => s.Key).IsUnique();
+                entity.Property(s => s.Key).IsRequired();
             });
         }
     }

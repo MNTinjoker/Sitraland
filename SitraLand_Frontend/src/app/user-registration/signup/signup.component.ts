@@ -1,6 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { MainService } from 'src/app/services/main.service';
+import { SiteBrandingService } from 'src/app/services/site-branding.service';
 import { UtilService } from 'src/app/services/util.service';
 
 @Component({
@@ -15,13 +16,33 @@ export class SignupComponent implements OnInit {
   constructor(
     private mainService: MainService,
     private router: Router,
-    private utilService: UtilService
+    private utilService: UtilService,
+    private brandingService: SiteBrandingService
   ) { }
 
   userDetail: any = {};
   submitting = false;
+  logo = '../../../assets/images/logo.webp';
 
   ngOnInit(): void {
+    this.brandingService.ensureLoaded().then(() => {
+      const s = this.brandingService.settings || {};
+      this.logo = this.brandingService.imageUrl(s['siteLogo'] || s['navbarLogo'], '../../../assets/images/logo.webp');
+    });
+  }
+
+  private normalizeMobile(value: string): string | null {
+    if (!value) return null;
+    let v = value.replace(/^\+/, '');
+    const fa = '۰۱۲۳۴۵۶۷۸۹', ar = '٠١٢٣٤٥٦٧٨٩';
+    for (let i = 0; i < 10; i++) {
+      v = v.split(fa[i]).join(String(i)).split(ar[i]).join(String(i));
+    }
+    if (/^09\d{9}$/.test(v)) return v;
+    if (/^9\d{9}$/.test(v)) return '0' + v;
+    if (/^989\d{9}$/.test(v)) return '0' + v.substring(2);
+    if (/^00989\d{9}$/.test(v)) return '0' + v.substring(4);
+    return null;
   }
 
   private formatSignupError(res: any): string {
@@ -57,10 +78,11 @@ export class SignupComponent implements OnInit {
       return;
     }
 
-    const mobile = String(this.userDetail.mobile || '').trim();
+    const rawMobile = String(this.userDetail.mobile || '').trim().replace(/[\s\-()]/g, '');
+    const mobile = this.normalizeMobile(rawMobile);
     const fullName = String(this.userDetail.fullName || '').trim();
     const password = String(this.userDetail.password || '');
-    if (!/^09\d{9}$/.test(mobile)) {
+    if (!mobile) {
       this.utilService.showNotify('شماره موبایل معتبر نیست', "error");
       return;
     }

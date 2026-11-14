@@ -2,6 +2,7 @@ import { ChangeDetectorRef, HostListener, Component, OnDestroy, OnInit, AfterVie
 import { NavigationEnd, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { CartService } from '../services/cart.service';
+import { SiteBrandingService } from '../services/site-branding.service';
 import { UtilService } from '../services/util.service';
 // import { UtilService } from '../../_services/util.service';
 // import { CookieService } from 'ngx-cookie-service';
@@ -25,6 +26,7 @@ export const AdminMenu: imenu[] = [
   { text: ' محصولات', link: 'admin/product-list' },
   { text: 'سفارشات', link: 'admin/orders-report' },
   { text: 'مدیریت کاربران', link: 'admin/user-managment' },
+  { text: 'تنظیمات سایت', link: 'admin/site-settings' },
 ];
 
 
@@ -39,7 +41,7 @@ declare var $: any;
 })
 export class NavbarComponent implements OnInit, OnDestroy {
   isAdmin = false;
-  logo: string = '';
+  logo: string = '../../assets/images/navbar-logo.webp';
   innerWidth = window.innerWidth;
   showNav: boolean = true;
   showAdminSiderBar: boolean = false;
@@ -81,6 +83,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   userName = 'مهمان'
   cartCount = 0
   private cartSub?: Subscription;
+  private brandingSub?: Subscription;
 
 
   @HostListener("window:resize", ["$event.target"])
@@ -109,7 +112,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private changeDetectorRef: ChangeDetectorRef,
     private router: Router,
     private utilService: UtilService,
-    private cartService: CartService
+    private cartService: CartService,
+    private brandingService: SiteBrandingService
   ) {
     this.router.events.subscribe((e) => {
       // Keep the user/admin menu state in sync with the current page.
@@ -131,10 +135,17 @@ export class NavbarComponent implements OnInit, OnDestroy {
       this.cartCount = count;
       this.changeDetectorRef.markForCheck();
     });
+
+    this.brandingSub = this.brandingService.settings$.subscribe(settings => {
+      this.logo = this.brandingService.imageUrl(settings?.['navbarLogo'] || settings?.['siteLogo'], '../../assets/images/navbar-logo.webp');
+      this.changeDetectorRef.markForCheck();
+    });
+    this.brandingService.ensureLoaded();
   }
 
   ngOnDestroy(): void {
     this.cartSub?.unsubscribe();
+    this.brandingSub?.unsubscribe();
   }
 
   hamburgerClick2() {

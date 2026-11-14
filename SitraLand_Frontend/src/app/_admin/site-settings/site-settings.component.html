@@ -1,0 +1,64 @@
+<div class="appContainer">
+  <div class="container-fluid px-4">
+    <div class="mb-3 text-center border-bottom">
+      <h4 class="text-dark text-center py-3">تنظیمات ظاهر سایت (لوگو و بنر)</h4>
+      <p class="text-muted small">از این بخش می‌توانید لوگوها، بنر اصلی و تصاویر دسته‌بندی‌ها را تغییر دهید. در صورت عدم انتخاب تصویر، حالت پیش‌فرض سایت نمایش داده می‌شود.</p>
+    </div>
+
+    <div class="text-center py-4" *ngIf="loading">
+      <i class="fa fa-spin fa-spinner fa-2x"></i>
+      <p class="mt-2 mb-0 text-muted">در حال بارگذاری تنظیمات...</p>
+    </div>
+
+    <ng-container *ngIf="!loading">
+      <div class="card mb-4">
+        <div class="card-header bg-light"><strong>لوگوها و بنر اصلی</strong></div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-lg-4 col-md-6 col-12 mb-4" *ngFor="let item of brandingItems">
+              <div class="border rounded p-3 h-100 text-end">
+                <h6 class="mb-1">{{item.label}}</h6>
+                <p class="text-muted small mb-2">{{item.hint}}</p>
+                <div class="text-center mb-2" style="min-height:120px; display:flex; align-items:center; justify-content:center; background:#f7f9f9; border-radius:8px;">
+                  <img *ngIf="settingImageUrl(item.key)" [src]="settingImageUrl(item.key)" alt="" style="max-width:100%; max-height:140px; object-fit:contain;">
+                  <span *ngIf="!settingImageUrl(item.key)" class="text-muted small">پیش‌فرض</span>
+                </div>
+                <input type="file" class="form-control mb-2" accept="image/*" (change)="onFileChange($event, item.key)">
+                <div class="d-flex gap-2 flex-wrap">
+                  <button class="btn btn-primary btn-sm" (click)="saveBranding(item.key)" [disabled]="savingKey === item.key || !selected[item.key]">
+                    {{ savingKey === item.key ? 'در حال ذخیره...' : 'ذخیره تصویر' }}
+                  </button>
+                  <button class="btn btn-outline-secondary btn-sm" (click)="clearBranding(item.key)" [disabled]="savingKey === item.key || !settings[item.key]">
+                    بازگشت به پیش‌فرض
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card mb-4">
+        <div class="card-header bg-light"><strong>تصاویر دسته‌بندی‌ها</strong></div>
+        <div class="card-body">
+          <div class="row" *ngIf="categories.length > 0">
+            <div class="col-lg-3 col-md-4 col-6 mb-4" *ngFor="let cat of categories">
+              <div class="border rounded p-3 h-100 text-end">
+                <h6 class="mb-2">{{cat.categoryTitle}}</h6>
+                <div class="text-center mb-2" style="min-height:100px; display:flex; align-items:center; justify-content:center; background:#f7f9f9; border-radius:8px;">
+                  <img *ngIf="categoryImageUrl(cat)" [src]="categoryImageUrl(cat)" alt="" style="max-width:100%; max-height:110px; object-fit:contain;">
+                  <span *ngIf="!categoryImageUrl(cat)" class="text-muted small">بدون تصویر اختصاصی</span>
+                </div>
+                <input type="file" class="form-control mb-2" accept="image/*" (change)="onFileChange($event, 'cat_' + cat.categoryId)">
+                <button class="btn btn-primary btn-sm w-100" (click)="saveCategoryImage(cat)" [disabled]="savingKey === ('cat_' + cat.categoryId) || !selected['cat_' + cat.categoryId]">
+                  {{ savingKey === ('cat_' + cat.categoryId) ? 'در حال ذخیره...' : 'ذخیره تصویر دسته' }}
+                </button>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="categories.length === 0" class="text-muted text-center py-3">دسته‌بندی‌ای یافت نشد.</div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>

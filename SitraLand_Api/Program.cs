@@ -18,6 +18,7 @@ builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IProductsService, ProductsService>();
 builder.Services.AddScoped<IImageService, ImageService>();
 builder.Services.AddScoped<IBasketService, BasketService>();
+builder.Services.AddScoped<ISiteSettingsService, SiteSettingsService>();
 
 builder.Services.AddControllers().AddNewtonsoftJson();
 
@@ -77,6 +78,20 @@ builder.Services.ConfigureJWT(builder.Configuration);
 builder.Services.ConfigureSwagger();
 
 var app = builder.Build();
+
+// Apply pending migrations on startup so deployed schema stays in sync.
+using (var scope = app.Services.CreateScope())
+{
+    try
+    {
+        var db = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
+        db.Database.Migrate();
+    }
+    catch (Exception ex)
+    {
+        app.Logger.LogError(ex, "Database migration failed on startup.");
+    }
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

@@ -120,6 +120,22 @@ export class MainService {
     return this.http.post<any>(uri, { productId, imagePath }, this.jsonHeaders);
   }
 
+  // Site settings / branding
+  getSiteSettings() {
+    const uri = this.url + "/api/siteSettings/getSettings";
+    return this.http.get<any>(uri, this.jsonHeaders);
+  }
+
+  saveSiteSetting(data: any) {
+    const uri = this.url + "/api/siteSettings/saveSetting";
+    return this.http.post<any>(uri, data, this.jsonHeaders);
+  }
+
+  saveCategory(data: any) {
+    const uri = this.url + "/api/products/saveCategory";
+    return this.http.post<any>(uri, data, this.jsonHeaders);
+  }
+
   // Basket / orders
   getBasket(basketCode: any) {
     const uri = this.url + "/api/basket/getBasket/" + basketCode;

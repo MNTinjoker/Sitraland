@@ -323,6 +323,18 @@ namespace SitraLand_Api.Services.Implementations
         {
             var result = new ResponseGlobal();
 
+            if (model == null)
+            {
+                result.Message = "Invalid Body Request";
+                result.Code = (int)HttpStatusCode.BadRequest;
+                return result;
+            }
+
+            if (!string.IsNullOrEmpty(model.Image))
+            {
+                model.ImagePath = SaveProductImage(model.Image, model.ImageName);
+            }
+
             if (model.EditOrNewId == -1)
             {
                 var category = model.ToCategory();
@@ -339,14 +351,25 @@ namespace SitraLand_Api.Services.Implementations
             if (existing == null)
             {
                 result.Message = "Submitted Data Is Invalid";
+                result.Code = (int)HttpStatusCode.NotFound;
                 return result;
             }
 
-            model.MapTo(existing);
+            existing.CategoryTitle = model.CategoryTitle;
+            if (!string.IsNullOrEmpty(model.ImagePath))
+            {
+                existing.ImagePath = model.ImagePath;
+            }
+            else if (model.ImagePath == string.Empty)
+            {
+                existing.ImagePath = null;
+            }
+
             await _databaseContext.SaveChangesAsync();
 
             result.Message = "Updated";
             result.Data = 1;
+            result.Code = 200;
             return result;
         }
 
