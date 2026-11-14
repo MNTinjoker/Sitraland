@@ -857,3 +857,292 @@ img.image-fallback {
   background-color: var(--sitra-neutral-100);
   padding: 0.35rem;
 }
+
+/* ==========================================================================
+   REDESIGN PREVIEW THEME (toggled via body.sitra-redesign-preview)
+   UI-only visual overhaul: structure, markup hooks, and functionality unchanged.
+   ========================================================================== */
+body.sitra-redesign-preview {
+  --rd-bg: #0b1220;
+  --rd-bg-2: #0f172a;
+  --rd-surface: rgba(17, 25, 40, 0.78);
+  --rd-surface-solid: #111827;
+  --rd-surface-2: rgba(30, 41, 59, 0.72);
+  --rd-border: rgba(148, 163, 184, 0.18);
+  --rd-text: #e5edf7;
+  --rd-muted: #94a3b8;
+  --rd-primary: #22d3ee;
+  --rd-primary-2: #06b6d4;
+  --rd-accent: #f97316;
+  --rd-accent-2: #fb923c;
+  --rd-success: #34d399;
+  --rd-danger: #fb7185;
+  --rd-shadow: 0 20px 50px rgba(2, 8, 23, 0.45);
+  --rd-shadow-sm: 0 8px 24px rgba(2, 8, 23, 0.28);
+  --rd-radius: 18px;
+  --rd-radius-sm: 14px;
+
+  --sitra-primary: var(--rd-primary-2);
+  --sitra-primary-dark: #0891b2;
+  --sitra-primary-light: #67e8f9;
+  --sitra-primary-soft: rgba(34, 211, 238, 0.12);
+  --sitra-accent: var(--rd-accent);
+  --sitra-accent-dark: #ea580c;
+  --sitra-accent-soft: rgba(249, 115, 22, 0.14);
+  --sitra-neutral-900: var(--rd-text);
+  --sitra-neutral-700: #cbd5e1;
+  --sitra-neutral-500: var(--rd-muted);
+  --sitra-neutral-300: rgba(148,163,184,0.28);
+  --sitra-neutral-200: var(--rd-border);
+  --sitra-neutral-100: rgba(148,163,184,0.08);
+  --sitra-surface: var(--rd-surface-solid);
+  --sitra-page: var(--rd-bg);
+
+  background:
+    radial-gradient(1200px 600px at 100% -10%, rgba(34,211,238,0.18), transparent 60%),
+    radial-gradient(900px 500px at -10% 20%, rgba(249,115,22,0.14), transparent 55%),
+    linear-gradient(180deg, #0b1220 0%, #0a1020 45%, #0b1324 100%) !important;
+  color: var(--rd-text) !important;
+}
+
+body.sitra-redesign-preview h1,
+body.sitra-redesign-preview h2,
+body.sitra-redesign-preview h3,
+body.sitra-redesign-preview h4,
+body.sitra-redesign-preview h5,
+body.sitra-redesign-preview h6,
+body.sitra-redesign-preview p,
+body.sitra-redesign-preview span,
+body.sitra-redesign-preview label,
+body.sitra-redesign-preview li,
+body.sitra-redesign-preview td,
+body.sitra-redesign-preview th {
+  color: inherit;
+}
+
+body.sitra-redesign-preview a { color: #a5f3fc !important; }
+body.sitra-redesign-preview a:hover { color: #67e8f9 !important; }
+
+/* Containers */
+body.sitra-redesign-preview .appUserContainer,
+body.sitra-redesign-preview .appContainer {
+  background: transparent !important;
+}
+body.sitra-redesign-preview .sitra-card,
+body.sitra-redesign-preview .product-box,
+body.sitra-redesign-preview .login,
+body.sitra-redesign-preview .custom-dropzone,
+body.sitra-redesign-preview .p-datatable,
+body.sitra-redesign-preview .p-dialog,
+body.sitra-redesign-preview .card {
+  background: var(--rd-surface) !important;
+  border: 1px solid var(--rd-border) !important;
+  box-shadow: var(--rd-shadow-sm) !important;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-radius: var(--rd-radius) !important;
+}
+
+/* Navbar */
+body.sitra-redesign-preview #nav {
+  background: rgba(8, 15, 30, 0.72) !important;
+  border-bottom: 1px solid rgba(148,163,184,0.14) !important;
+  box-shadow: 0 10px 30px rgba(2,8,23,0.35) !important;
+  backdrop-filter: blur(16px);
+}
+body.sitra-redesign-preview .nav-action,
+body.sitra-redesign-preview .nav-action-text { color: #e2e8f0 !important; }
+body.sitra-redesign-preview .nav-action:hover {
+  background: rgba(34,211,238,0.12) !important;
+  color: #67e8f9 !important;
+}
+body.sitra-redesign-preview .navbar-search .form-control {
+  background: rgba(15,23,42,0.7) !important;
+  border: 1px solid rgba(148,163,184,0.22) !important;
+  color: #e2e8f0 !important;
+}
+body.sitra-redesign-preview .navbar-search .form-control::placeholder { color: #94a3b8; }
+body.sitra-redesign-preview .bottom-tabs {
+  background: rgba(8,15,30,0.88) !important;
+  border-top: 1px solid rgba(148,163,184,0.14) !important;
+}
+body.sitra-redesign-preview .bottom-tabs a { color: #94a3b8 !important; }
+body.sitra-redesign-preview .bottom-tabs a.active { color: #67e8f9 !important; }
+body.sitra-redesign-preview .admin-toolbar {
+  background: rgba(15,23,42,0.9) !important;
+  border-bottom: 1px solid rgba(148,163,184,0.16) !important;
+}
+
+/* Hero & home */
+body.sitra-redesign-preview .hero {
+  background:
+    linear-gradient(115deg, rgba(2,6,23,0.92) 0%, rgba(15,23,42,0.82) 45%, rgba(8,47,73,0.75) 100%) !important;
+  border: 1px solid rgba(103,232,249,0.18);
+  box-shadow: 0 30px 70px rgba(2,8,23,0.5);
+}
+body.sitra-redesign-preview .hero-media::after {
+  background: linear-gradient(to left, rgba(2,6,23,0.92) 0%, rgba(2,6,23,0.35) 40%, rgba(2,6,23,0) 100%) !important;
+}
+body.sitra-redesign-preview .hero-title {
+  color: #f8fafc !important;
+  font-size: clamp(1.6rem, 2.4vw, 2.4rem);
+  letter-spacing: -0.02em;
+}
+body.sitra-redesign-preview .hero-subtitle { color: #cbd5e1 !important; }
+body.sitra-redesign-preview .title-text { color: #e2e8f0 !important; }
+body.sitra-redesign-preview .container-category {
+  background: linear-gradient(135deg, rgba(15,23,42,0.85), rgba(30,41,59,0.7)) !important;
+  border: 1px solid var(--rd-border);
+}
+body.sitra-redesign-preview .option-category {
+  background: rgba(148,163,184,0.06);
+  border-radius: 16px;
+  transition: transform .18s ease, background .18s ease;
+}
+body.sitra-redesign-preview .option-category:hover {
+  transform: translateY(-3px);
+  background: rgba(34,211,238,0.12);
+}
+
+/* Buttons */
+body.sitra-redesign-preview .btn-primary,
+body.sitra-redesign-preview .product-card-add {
+  background: linear-gradient(135deg, var(--rd-primary-2), #2563eb) !important;
+  border: none !important;
+  color: #03111a !important;
+  font-weight: 700;
+  box-shadow: 0 10px 24px rgba(6,182,212,0.28);
+}
+body.sitra-redesign-preview .btn-primary:hover,
+body.sitra-redesign-preview .product-card-add:hover {
+  filter: brightness(1.06);
+  transform: translateY(-1px);
+}
+body.sitra-redesign-preview .btn-danger,
+body.sitra-redesign-preview .btn-accent {
+  background: linear-gradient(135deg, var(--rd-accent), #ef4444) !important;
+  border: none !important;
+  color: #fff !important;
+  box-shadow: 0 10px 24px rgba(249,115,22,0.28);
+}
+body.sitra-redesign-preview .btn-outline-primary,
+body.sitra-redesign-preview .btn-outline-danger,
+body.sitra-redesign-preview .btn-secondary,
+body.sitra-redesign-preview .btn-outline-secondary {
+  background: rgba(148,163,184,0.08) !important;
+  border: 1px solid rgba(148,163,184,0.22) !important;
+  color: #e2e8f0 !important;
+}
+body.sitra-redesign-preview .btn-secondary:hover,
+body.sitra-redesign-preview .btn-outline-primary:hover,
+body.sitra-redesign-preview .btn-outline-secondary:hover {
+  background: rgba(34,211,238,0.14) !important;
+  border-color: rgba(103,232,249,0.35) !important;
+  color: #ecfeff !important;
+}
+
+/* Forms */
+body.sitra-redesign-preview .form-control,
+body.sitra-redesign-preview .form-select,
+body.sitra-redesign-preview select,
+body.sitra-redesign-preview input[type='text'],
+body.sitra-redesign-preview input[type='number'],
+body.sitra-redesign-preview input[type='tel'],
+body.sitra-redesign-preview input[type='password'],
+body.sitra-redesign-preview input[type='search'],
+body.sitra-redesign-preview textarea {
+  background: rgba(15,23,42,0.72) !important;
+  border: 1px solid rgba(148,163,184,0.22) !important;
+  color: #e5edf7 !important;
+}
+body.sitra-redesign-preview .form-control:focus,
+body.sitra-redesign-preview .form-select:focus {
+  border-color: rgba(103,232,249,0.55) !important;
+  box-shadow: 0 0 0 0.22rem rgba(34,211,238,0.14) !important;
+}
+body.sitra-redesign-preview .sitra-label,
+body.sitra-redesign-preview label { color: #cbd5e1 !important; }
+body.sitra-redesign-preview .sitra-hint,
+body.sitra-redesign-preview .text-muted,
+body.sitra-redesign-preview small.text-secondary { color: #94a3b8 !important; }
+
+/* Product cards */
+body.sitra-redesign-preview .product-card {
+  background: linear-gradient(180deg, rgba(30,41,59,0.72), rgba(15,23,42,0.88)) !important;
+  border: 1px solid rgba(148,163,184,0.16) !important;
+  box-shadow: 0 12px 30px rgba(2,8,23,0.3);
+}
+body.sitra-redesign-preview .product-card:hover {
+  border-color: rgba(103,232,249,0.35) !important;
+  box-shadow: 0 22px 45px rgba(2,8,23,0.45);
+}
+body.sitra-redesign-preview .product-card-media { background: rgba(2,6,23,0.35) !important; }
+body.sitra-redesign-preview .product-card-name { color: #f1f5f9 !important; }
+body.sitra-redesign-preview .product-card-price { color: #67e8f9 !important; }
+body.sitra-redesign-preview .product-card-price small { color: #94a3b8 !important; }
+body.sitra-redesign-preview .product-card-footer { border-top-color: rgba(148,163,184,0.14) !important; }
+body.sitra-redesign-preview .stock-badge.bg-success { background: rgba(52,211,153,0.9) !important; color: #052e1f !important; }
+body.sitra-redesign-preview .stock-badge.bg-danger { background: rgba(251,113,133,0.9) !important; color: #fff !important; }
+
+/* Tables / admin */
+body.sitra-redesign-preview .p-datatable .p-datatable-thead > tr > th {
+  background: linear-gradient(135deg, #0f766e, #155e75) !important;
+  color: #ecfeff !important;
+  border-color: rgba(103,232,249,0.18) !important;
+}
+body.sitra-redesign-preview .p-datatable .p-datatable-tbody > tr { background: rgba(15,23,42,0.55) !important; }
+body.sitra-redesign-preview .p-datatable .p-datatable-tbody > tr:nth-child(even) { background: rgba(30,41,59,0.45) !important; }
+body.sitra-redesign-preview .p-datatable .p-datatable-tbody > tr:hover { background: rgba(34,211,238,0.08) !important; }
+body.sitra-redesign-preview .p-datatable .p-datatable-tbody > tr > td { color: #dbe7f3 !important; border-color: rgba(148,163,184,0.12) !important; }
+body.sitra-redesign-preview .table,
+body.sitra-redesign-preview .table th,
+body.sitra-redesign-preview .table td { color: #dbe7f3; border-color: rgba(148,163,184,0.14); }
+
+/* Footer */
+body.sitra-redesign-preview .footer-container {
+  background: linear-gradient(180deg, #0b1220, #020617) !important;
+  border: 1px solid rgba(148,163,184,0.14);
+  color: #cbd5e1 !important;
+}
+body.sitra-redesign-preview .footer-phone,
+body.sitra-redesign-preview .option-footer,
+body.sitra-redesign-preview .title-footer,
+body.sitra-redesign-preview .img-text { color: #e2e8f0 !important; }
+
+/* Auth */
+body.sitra-redesign-preview .login {
+  background: linear-gradient(180deg, rgba(30,41,59,0.78), rgba(15,23,42,0.92)) !important;
+  border: 1px solid rgba(148,163,184,0.18) !important;
+}
+body.sitra-redesign-preview .login h6,
+body.sitra-redesign-preview .login p,
+body.sitra-redesign-preview .login label { color: #e2e8f0 !important; }
+
+/* Misc */
+body.sitra-redesign-preview .bg-white,
+body.sitra-redesign-preview .bg-light { background: rgba(15,23,42,0.55) !important; color: #e2e8f0 !important; }
+body.sitra-redesign-preview .text-dark { color: #f1f5f9 !important; }
+body.sitra-redesign-preview .border,
+body.sitra-redesign-preview .border-top,
+body.sitra-redesign-preview .border-bottom { border-color: rgba(148,163,184,0.14) !important; }
+body.sitra-redesign-preview .badge.bg-secondary { background: rgba(148,163,184,0.3) !important; }
+body.sitra-redesign-preview .sitra-float-contact .sitra-float-call {
+  background: linear-gradient(135deg, #0891b2, #2563eb) !important;
+}
+body.sitra-redesign-preview .container-carousel,
+body.sitra-redesign-preview .appUserContainer.shadow,
+body.sitra-redesign-preview .rounded { border-color: rgba(148,163,184,0.14) !important; }
+
+/* PrimeNG surfaces */
+body.sitra-redesign-preview .p-paginator,
+body.sitra-redesign-preview .p-dataview-header,
+body.sitra-redesign-preview .p-dialog-header,
+body.sitra-redesign-preview .p-dialog-content {
+  background: rgba(15,23,42,0.75) !important;
+  color: #e2e8f0 !important;
+  border-color: rgba(148,163,184,0.14) !important;
+}
+body.sitra-redesign-preview .p-paginator .p-paginator-page.p-highlight {
+  background: rgba(34,211,238,0.18) !important;
+  color: #67e8f9 !important;
+}

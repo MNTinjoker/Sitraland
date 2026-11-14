@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 export class AppComponent implements OnInit {
   title = 'SitraLand';
   withOutMenu = ['/signup', '/login'];
+  redesignPreview = false;
 
   constructor(private _router: Router,
     private http: HttpClient,
@@ -25,8 +26,27 @@ export class AppComponent implements OnInit {
   footerLoaded: boolean = true;
 
   ngOnInit() {
-    this.loadFoooter()
+    this.loadFoooter();
+    const saved = localStorage.getItem('sitra-redesign-preview');
+    this.redesignPreview = saved === '1';
+    this.applyPreviewMode();
   }
+
+  toggleRedesignPreview() {
+    this.redesignPreview = !this.redesignPreview;
+    localStorage.setItem('sitra-redesign-preview', this.redesignPreview ? '1' : '0');
+    this.applyPreviewMode();
+  }
+
+  private applyPreviewMode() {
+    const body = document.body;
+    if (this.redesignPreview) {
+      body.classList.add('sitra-redesign-preview');
+    } else {
+      body.classList.remove('sitra-redesign-preview');
+    }
+  }
+
   getIp() {
     this.http.get('https://api.ipify.org/?format=json').subscribe(
       (res: any) => {

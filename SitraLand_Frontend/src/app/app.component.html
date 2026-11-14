@@ -3,6 +3,13 @@
 <app-footer *ngIf="!notSeeMenu() && footerLoaded"></app-footer>
 <app-lightbox></app-lightbox>
 
+<!-- UI redesign preview toggle -->
+<button class="redesign-preview-toggle" type="button" (click)="toggleRedesignPreview()"
+  [attr.aria-pressed]="redesignPreview">
+  <span class="toggle-dot" [class.on]="redesignPreview"></span>
+  <span class="toggle-text">{{ redesignPreview ? 'بازگشت به حالت فعلی' : 'پیش‌نمایش طرح جدید' }}</span>
+</button>
+
 <!-- The driver can always call the shop or send a message on whatsapp. -->
 <div class="sitra-float-contact">
   <a class="sitra-float-call" href="tel:+989126340914" aria-label="تماس تلفنی با فروشگاه">
