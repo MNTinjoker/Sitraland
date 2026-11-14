@@ -74,7 +74,11 @@ jobs:
           mkdir -p artifacts/deploy/ClientApp/dist
           mkdir -p artifacts/deploy/Files
 
+          # Keep SPA files under ClientApp/dist (used by ASP.NET Core SPA middleware)
+          # and also copy them to the deploy root so stale root-level frontend files
+          # from previous deployments are overwritten on the server.
           cp -a SitraLand_Frontend/dist/SitraLand/. artifacts/deploy/ClientApp/dist/
+          cp -a SitraLand_Frontend/dist/SitraLand/. artifacts/deploy/
 
           touch artifacts/deploy/Files/.keep
 
