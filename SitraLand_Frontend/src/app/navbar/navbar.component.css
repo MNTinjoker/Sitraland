@@ -1100,13 +1100,15 @@ footer {
   }
 }
 
-/* The toolbar of the admin panel: fixed under the top bar on admin pages. */
+/* The toolbar of the admin panel: sticks right below the top bar on admin
+   pages. It stays in the normal flow, so the page content can never be
+   hidden behind it, and its offset uses the measured height of the top bar
+   (the bar is fixed and its height depends on the logo and the viewport). */
 .admin-toolbar {
-  position: fixed;
-  top: 60px;
-  left: 0;
-  right: 0;
-  z-index: 999;
+  position: sticky;
+  top: var(--sitra-nav-height, 60px);
+  z-index: 900;
+  margin-top: var(--sitra-nav-height, 60px);
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -1117,20 +1119,7 @@ footer {
   box-shadow: 0 2px 8px rgba(0,0,0,0.04);
 }
 
-.admin-toolbar-spacer {
-  height: 56px;
-}
-
 .admin-toolbar .btn {
   min-height: 36px;
   padding: 0 0.9rem;
-}
-
-@media (max-width: 767px) {
-  .admin-toolbar {
-    top: 104px;
-  }
-  .admin-toolbar-spacer {
-    height: 96px;
-  }
 }

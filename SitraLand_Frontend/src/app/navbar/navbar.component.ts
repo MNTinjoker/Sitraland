@@ -23,10 +23,10 @@ export interface imenu {
 }
 
 export const AdminMenu: imenu[] = [
-  { text: ' محصولات', link: 'admin/product-list' },
-  { text: 'سفارشات', link: 'admin/orders-report' },
-  { text: 'مدیریت کاربران', link: 'admin/user-managment' },
-  { text: 'تنظیمات سایت', link: 'admin/site-settings' },
+  { text: ' محصولات', link: '/admin/product-list' },
+  { text: 'سفارشات', link: '/admin/orders-report' },
+  { text: 'مدیریت کاربران', link: '/admin/user-managment' },
+  { text: 'تنظیمات سایت', link: '/admin/site-settings' },
 ];
 
 
@@ -39,7 +39,7 @@ declare var $: any;
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ["./navbar.component.css"],
 })
-export class NavbarComponent implements OnInit, OnDestroy {
+export class NavbarComponent implements OnInit, OnDestroy, AfterViewInit {
   isAdmin = false;
   logo: string = '../../assets/images/navbar-logo.webp';
   innerWidth = window.innerWidth;
@@ -84,6 +84,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   cartCount = 0
   private cartSub?: Subscription;
   private brandingSub?: Subscription;
+  private navResizeObserver?: ResizeObserver;
 
 
   @HostListener("window:resize", ["$event.target"])
@@ -106,6 +107,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     } else {
       this.hamburgerClick();
     }
+    window.setTimeout(() => this.measureNavHeight(), 0);
   }
 
   constructor(
@@ -120,6 +122,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
       this.chcekUser();
       this.seeUserMenu();
       this.changeDetectorRef.markForCheck();
+      if (e instanceof NavigationEnd) {
+        window.setTimeout(() => this.measureNavHeight(), 0);
+      }
     });
   }
 
@@ -143,9 +148,45 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.brandingService.ensureLoaded();
   }
 
+  ngAfterViewInit(): void {
+    this.measureNavHeight();
+  }
+
   ngOnDestroy(): void {
     this.cartSub?.unsubscribe();
     this.brandingSub?.unsubscribe();
+    this.navResizeObserver?.disconnect();
+  }
+
+  /**
+   * The top bar is positioned with "fixed", so every element that has to sit
+   * right below it (the admin toolbar) needs its real height. The height is not
+   * constant: the logo and the search box decide it and they change with the
+   * viewport, so it is measured and published as a CSS variable.
+   */
+  private measureNavHeight() {
+    const nav = document.getElementById('nav');
+    if (!nav) {
+      return;
+    }
+
+    const apply = () => {
+      const height = Math.round(nav.getBoundingClientRect().height);
+      if (height > 0) {
+        document.documentElement.style.setProperty('--sitra-nav-height', `${height}px`);
+      }
+    };
+
+    apply();
+
+    if (typeof ResizeObserver !== 'undefined') {
+      this.navResizeObserver?.disconnect();
+      this.navResizeObserver = new ResizeObserver(apply);
+      this.navResizeObserver.observe(nav);
+    }
+
+    // The logo arrives after the first paint and can change the bar height.
+    window.setTimeout(apply, 250);
   }
 
   hamburgerClick2() {
