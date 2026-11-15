@@ -1,18 +1,9 @@
-<div class="sitra-app-shell" [class.sitra-redesign-preview-root]="redesignPreview">
+<div class="sitra-app-shell">
   <app-navbar></app-navbar>
   <router-outlet></router-outlet>
   <app-footer *ngIf="!notSeeMenu() && footerLoaded"></app-footer>
   <app-lightbox></app-lightbox>
 </div>
-
-<!-- UI redesign preview toggle -->
-<button class="redesign-preview-toggle" type="button" (click)="toggleRedesignPreview()"
-  [attr.aria-pressed]="redesignPreview"
-  [attr.aria-label]="redesignPreview ? 'بازگشت به طرح فعلی سایت' : 'نمایش پیش‌نمایش طرح جدید'"
-  [attr.title]="redesignPreview ? 'بازگشت به طرح فعلی سایت' : 'نمایش پیش‌نمایش طرح جدید'">
-  <span class="toggle-dot" [class.on]="redesignPreview"></span>
-  <span class="toggle-text">{{ redesignPreview ? 'طرح فعلی' : 'طرح جدید' }}</span>
-</button>
 
 <!-- The driver can always call the shop or send a message on whatsapp. -->
 <div class="sitra-float-contact">

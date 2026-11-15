@@ -12,7 +12,6 @@ import { Router } from '@angular/router';
 export class AppComponent implements OnInit {
   title = 'SitraLand';
   withOutMenu = ['/signup', '/login'];
-  redesignPreview = false;
 
   constructor(private _router: Router,
     private http: HttpClient,
@@ -27,28 +26,11 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.loadFoooter();
-    const saved = localStorage.getItem('sitra-redesign-preview');
-    const urlPreview = new URLSearchParams(window.location.search).get('preview') === '1';
-    this.redesignPreview = urlPreview || saved === '1';
-    this.applyPreviewMode();
-  }
-
-  toggleRedesignPreview() {
-    this.redesignPreview = !this.redesignPreview;
-    localStorage.setItem('sitra-redesign-preview', this.redesignPreview ? '1' : '0');
-    this.applyPreviewMode();
-  }
-
-  private applyPreviewMode() {
-    const body = document.body;
-    const root = document.documentElement;
-    if (this.redesignPreview) {
-      body.classList.add('sitra-redesign-preview');
-      root.classList.add('sitra-redesign-preview');
-    } else {
-      body.classList.remove('sitra-redesign-preview');
-      root.classList.remove('sitra-redesign-preview');
-    }
+    // The UI redesign (v2) lives in assets/sl-redesign.js and keeps its own
+    // state in localStorage under the "sl-v2" key.
+    localStorage.removeItem('sitra-redesign-preview');
+    document.body.classList.remove('sitra-redesign-preview');
+    document.documentElement.classList.remove('sitra-redesign-preview');
   }
 
   getIp() {
