@@ -26,9 +26,12 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.loadFoooter();
-    // The UI redesign (v2) lives in assets/sl-redesign.js and keeps its own
-    // state in localStorage under the "sl-v2" key.
+    // The UI redesign (v2) is the only design now. Its CSS lives in
+    // assets/sl-redesign.js and the "sl-v2" class is set in index.html.
+    // Only the keys of the old preview builds are cleaned up here.
+    localStorage.removeItem('sl-v2');
     localStorage.removeItem('sitra-redesign-preview');
+    document.body.classList.add('sl-v2');
     document.body.classList.remove('sitra-redesign-preview');
     document.documentElement.classList.remove('sitra-redesign-preview');
   }

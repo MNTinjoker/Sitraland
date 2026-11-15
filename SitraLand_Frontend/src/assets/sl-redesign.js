@@ -1,6 +1,7 @@
-/* Sitraland UI Redesign v2 – تک‌فایل (CSS + دکمه روشن/خاموش + بخش‌های صفحه اصلی)
-   نصب: این فایل را در src/assets/ بگذار و در index.html قبل از </body> اضافه کن:
-   <script src="assets/sl-redesign.js" defer></script> */
+/* SitraLand UI Redesign v2 – تک‌فایل (CSS + بخش‌های صفحه اصلی)
+   این طرح، طرح اصلی و همیشگی سایت است؛ دکمه روشن/خاموش و حالت «طرح عادی» حذف شده‌اند.
+   نصب: این فایل در src/assets/ است و در index.html با
+   <script src="assets/sl-redesign.js" defer></script> بارگذاری می‌شود. */
 (function(){
   var s=document.createElement('style');s.id='sl-v2-css';
   s.textContent=`/* =========================================================
@@ -145,16 +146,8 @@ html body.sl-v2.sl-v2 ::-webkit-scrollbar{width:10px;height:10px}
 html body.sl-v2.sl-v2 ::-webkit-scrollbar-thumb{background:#c3d3dc;border-radius:10px;border:2px solid var(--sl-bg)}
 
 /* =========================================================
-   دکمه روشن/خاموش پیش‌نمایش
+   Scrollbar / selection helpers above; the theme is always on.
    ========================================================= */
-#sl-v2-toggle{position:fixed;z-index:2147483000;right:16px;bottom:16px;display:inline-flex;align-items:center;gap:.6rem;
-  padding:.5rem .55rem .5rem .9rem;border:1px solid rgba(0,0,0,.08);border-radius:999px;background:rgba(255,255,255,.95);
-  color:#14212b;font:600 .8rem/1 inherit;font-family:inherit;cursor:pointer;box-shadow:0 10px 28px -8px rgba(15,35,50,.4);backdrop-filter:blur(10px)}
-#sl-v2-toggle .sw{position:relative;width:40px;height:22px;border-radius:999px;background:#cbd5e1;transition:.25s}
-#sl-v2-toggle .sw::after{content:"";position:absolute;top:3px;right:3px;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.3);transition:.25s}
-#sl-v2-toggle[aria-pressed="true"] .sw{background:linear-gradient(135deg,#0e7490,#14a3b8)}
-#sl-v2-toggle[aria-pressed="true"] .sw::after{transform:translateX(-18px)}
-@media(max-width:767px){#sl-v2-toggle{bottom:calc(5.2rem + env(safe-area-inset-bottom))}}
 
 /* ---------- Layout fix: compact navbar + admin toolbar below it ---------- */
 html body.sl-v2.sl-v2 .nav-logo,html body.sl-v2.sl-v2 .nav-brand{width:54px!important;height:54px!important}
@@ -210,7 +203,6 @@ html body.sl-v2.sl-v2 .footer-container ul{margin:0;padding:0;list-style:none;di
 .sl-faq details[open]{border-color:rgba(14,116,144,.4)}
 .sl-faq p{margin:.6rem 0 0;color:var(--sl-muted);font-size:.85rem}
 @media(max-width:767px){.sl-trust,.sl-steps-grid{grid-template-columns:repeat(2,1fr)}.sl-cta{padding:1.2rem}}
-body:not(.sl-v2) .sl-extra{display:none!important}
 
 /* دسته‌بندی: کاشی‌های بزرگ‌تر */
 html body.sl-v2.sl-v2 .container-category{display:flex;flex-wrap:wrap;justify-content:center;gap:.6rem;padding:1.1rem!important}
@@ -250,39 +242,27 @@ html body.sl-v2.sl-v2 .wrapper-footer{flex-direction:row!important;flex-wrap:now
 `;
   document.head.appendChild(s);
   function boot(){
-/* Sitraland redesign preview toggle */
+/* SitraLand v2 is the only design of the site: the classes are always on. */
 (function () {
-  var KEY = 'sl-v2', OLD = 'sitra-redesign-preview', CSS_ID = 'sl-v2-css';
-  var isAdmin = localStorage.getItem('isAdmin') === '1';
-  var on = (localStorage.getItem(KEY) || (isAdmin ? '1' : '0')) === '1';
+  var OLD_CLASS = 'sitra-redesign-preview';
+  // Keys of the old preview builds; a stale "off" value must not come back.
+  localStorage.removeItem('sl-v2');
+  localStorage.removeItem(OLD_CLASS);
 
   function apply() {
-    document.body.classList.toggle('sl-v2', on);
-    // حالت خاموش = طرح اصلی سایت: پیش‌نمایش قدیمی هم خاموش می‌شود
-    if (!on) document.body.classList.remove(OLD);
-    var b = document.getElementById('sl-v2-toggle');
-    if (b) {
-      b.setAttribute('aria-pressed', String(on));
-      b.querySelector('.t').textContent = on ? 'پیش‌نمایش طرح جدید' : 'طرح عادی';
-    }
+    document.body.classList.add('sl-v2');
+    document.body.classList.remove(OLD_CLASS);
   }
 
-  if (!document.getElementById('sl-v2-toggle')) {
-    var b = document.createElement('button');
-    b.id = 'sl-v2-toggle'; b.type = 'button';
-    b.innerHTML = '<span class="t"></span><span class="sw"></span>';
-    b.onclick = function () { on = !on; localStorage.setItem(KEY, on ? '1' : '0'); apply(); };
-    document.body.appendChild(b);
-  }
-  // اگر Angular کلاس‌های body را دوباره نوشت، دوباره اعمال شود
+  // Angular can rewrite the body classes, so the theme is applied again.
   new MutationObserver(function () {
-    if (document.body.classList.contains('sl-v2') !== on ||
-        (!on && document.body.classList.contains(OLD))) apply();
+    if (!document.body.classList.contains('sl-v2') ||
+        document.body.classList.contains(OLD_CLASS)) apply();
   }).observe(document.body, { attributes: true, attributeFilter: ['class'] });
   apply();
 })();
 
-/* Sitraland v2 – extra home sections (preview only) */
+/* SitraLand v2 – extra home sections */
 (function(){
   function build(){
     var home=document.querySelector('app-home .appUserContainer>div, app-home .appUserContainer');
